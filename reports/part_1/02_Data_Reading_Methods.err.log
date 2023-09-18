@@ -1,0 +1,86 @@
+Traceback (most recent call last):
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# lets practice some.  
+# Take a look at this website https://www.timeanddate.com/
+
+
+import pandas as pd
+pd.read_clipboard()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mParserError[0m                               Traceback (most recent call last)
+[0;32m<ipython-input-5-1e4bb0462abc>[0m in [0;36m<module>[0;34m[0m
+[1;32m      4[0m [0;34m[0m[0m
+[1;32m      5[0m [0;32mimport[0m [0mpandas[0m [0;32mas[0m [0mpd[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 6[0;31m [0mpd[0m[0;34m.[0m[0mread_clipboard[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/clipboards.py[0m in [0;36mread_clipboard[0;34m(sep, dtype_backend, **kwargs)[0m
+[1;32m    108[0m         )
+[1;32m    109[0m [0;34m[0m[0m
+[0;32m--> 110[0;31m     [0;32mreturn[0m [0mread_csv[0m[0;34m([0m[0mStringIO[0m[0;34m([0m[0mtext[0m[0;34m)[0m[0;34m,[0m [0msep[0m[0;34m=[0m[0msep[0m[0;34m,[0m [0mdtype_backend[0m[0;34m=[0m[0mdtype_backend[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    111[0m [0;34m[0m[0m
+[1;32m    112[0m [0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py[0m in [0;36mread_csv[0;34m(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)[0m
+[1;32m    910[0m     [0mkwds[0m[0;34m.[0m[0mupdate[0m[0;34m([0m[0mkwds_defaults[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    911[0m [0;34m[0m[0m
+[0;32m--> 912[0;31m     [0;32mreturn[0m [0m_read[0m[0;34m([0m[0mfilepath_or_buffer[0m[0;34m,[0m [0mkwds[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    913[0m [0;34m[0m[0m
+[1;32m    914[0m [0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py[0m in [0;36m_read[0;34m(filepath_or_buffer, kwds)[0m
+[1;32m    581[0m [0;34m[0m[0m
+[1;32m    582[0m     [0;32mwith[0m [0mparser[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 583[0;31m         [0;32mreturn[0m [0mparser[0m[0;34m.[0m[0mread[0m[0;34m([0m[0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    584[0m [0;34m[0m[0m
+[1;32m    585[0m [0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py[0m in [0;36mread[0;34m(self, nrows)[0m
+[1;32m   1702[0m                     [0mcolumns[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1703[0m                     [0mcol_dict[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1704[0;31m                 [0;34m)[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_engine[0m[0;34m.[0m[0mread[0m[0;34m([0m  [0;31m# type: ignore[attr-defined][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1705[0m                     [0mnrows[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1706[0m                 )
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/parsers/python_parser.py[0m in [0;36mread[0;34m(self, rows)[0m
+[1;32m    288[0m             [0mcontent[0m [0;34m=[0m [0mcontent[0m[0;34m[[0m[0;36m1[0m[0;34m:[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    289[0m [0;34m[0m[0m
+[0;32m--> 290[0;31m         [0malldata[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_rows_to_cols[0m[0;34m([0m[0mcontent[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    291[0m         [0mdata[0m[0;34m,[0m [0mcolumns[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_exclude_implicit_index[0m[0;34m([0m[0malldata[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    292[0m [0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/parsers/python_parser.py[0m in [0;36m_rows_to_cols[0;34m(self, content)[0m
+[1;32m   1051[0m                     [0mmsg[0m [0;34m+=[0m [0;34m". "[0m [0;34m+[0m [0mreason[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1052[0m [0;34m[0m[0m
+[0;32m-> 1053[0;31m                 [0mself[0m[0;34m.[0m[0m_alert_malformed[0m[0;34m([0m[0mmsg[0m[0;34m,[0m [0mrow_num[0m [0;34m+[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1054[0m [0;34m[0m[0m
+[1;32m   1055[0m         [0;31m# see gh-13320[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/io/parsers/python_parser.py[0m in [0;36m_alert_malformed[0;34m(self, msg, row_num)[0m
+[1;32m    772[0m         """
+[1;32m    773[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mon_bad_lines[0m [0;34m==[0m [0mself[0m[0;34m.[0m[0mBadLineHandleMethod[0m[0;34m.[0m[0mERROR[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 774[0;31m             [0;32mraise[0m [0mParserError[0m[0;34m([0m[0mmsg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    775[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mon_bad_lines[0m [0;34m==[0m [0mself[0m[0;34m.[0m[0mBadLineHandleMethod[0m[0;34m.[0m[0mWARN[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    776[0m             [0mbase[0m [0;34m=[0m [0;34mf"Skipping line {row_num}: "[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mParserError[0m: Expected 7 fields in line 7, saw 8. Error could possibly be due to quotes being ignored when a multi-char delimiter is used.
+ParserError: Expected 7 fields in line 7, saw 8. Error could possibly be due to quotes being ignored when a multi-char delimiter is used.
+

@@ -1,0 +1,1476 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 4: Handling Text Data &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_1/04_Handling Text Data';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 5: Grouping the Data" href="05_Grouping_Data.html" />
+    <link rel="prev" title="Chapter 3: Introducing Features and Observations" href="03_Tidying_the_Data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_1/04_Handling Text Data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_1/04_Handling Text Data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 4: Handling Text Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-text-data">What is Text Data ?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-11-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 11:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-string-operations">Pandas String Operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-common-data-entry-problem">A common Data entry problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-12-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 12:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-of-regular-expressions">Use of Regular Expressions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080">Example:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-13-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 13:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-4-handling-text-data">
+<h1>Chapter 4: Handling Text Data<a class="headerlink" href="#chapter-4-handling-text-data" title="Permalink to this heading">#</a></h1>
+<p><strong>Learning objectives:</strong></p>
+<ul class="simple">
+<li><p><strong>Foundation of Textual Data:</strong></p>
+<ul>
+<li><p>Define what a string data type is and identify its significance in datasets.</p></li>
+<li><p>Differentiate between numerical, categorical, and textual data in a dataset.</p></li>
+</ul>
+</li>
+<li><p><strong>Pandas Essentials for Text Data:</strong></p>
+<ul>
+<li><p>Introduce the pandas library and its significance in data manipulation.</p></li>
+<li><p>Highlight the str accessor in pandas and its use for vectorized string operations.</p></li>
+</ul>
+</li>
+<li><p><strong>Basic Text Processing with Pandas:</strong></p>
+<ul>
+<li><p>Learn to convert data columns to string data type using the astype(str) method.</p></li>
+<li><p>Demonstrate how to slice strings using the str accessor.</p></li>
+<li><p>Explore common string methods like lower(), upper(), len(), strip(), and their equivalents in pandas.</p></li>
+</ul>
+</li>
+<li><p><strong>Advanced String Manipulation:</strong></p>
+<ul>
+<li><p>Use str.split() to break strings into parts and understand the significance of the expand parameter.</p></li>
+<li><p>Highlight the use of str.contains() to find substrings within a Series.</p></li>
+<li><p>Understand and implement the str.replace() method for replacing textual content.</p></li>
+</ul>
+</li>
+<li><p><strong>Regular Expressions in Pandas:</strong></p>
+<ul>
+<li><p>Introduce the concept of regular expressions for advanced text matching and manipulation.</p></li>
+<li><p>Apply regular expressions with pandas functions like str.extract(), str.contains(), and str.replace().</p></li>
+</ul>
+</li>
+</ul>
+<div class="section" id="introduction">
+<h2>Introduction:<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<div class="section" id="what-is-text-data">
+<h3>What is Text Data ?<a class="headerlink" href="#what-is-text-data" title="Permalink to this heading">#</a></h3>
+<p><strong>Text data</strong>, also known as <strong>string data</strong>, refers to a collection of characters or words that form textual information. In Data Science, Text data plays a crucial role due to the vast amount of unstructured textual information available today.</p>
+<p>Working with text data offers numerous benefits.</p>
+<ol class="arabic simple">
+<li><p>Firstly, text data provides rich context and insights into <strong>human behavior, opinions, and sentiments</strong>, which can be leveraged for various applications such as <strong>sentiment analysis, customer feedback analysis</strong>, and <strong>social media monitoring</strong>.</p></li>
+<li><p>Secondly, text data enables natural language processing (NLP) techniques, allowing machines to understand and process human language, enabling tasks like <strong>machine translation, chatbot development</strong>, and <strong>text summarization</strong>.</p></li>
+</ol>
+<p>Furthermore, working with text data enables information retrieval, text classification, topic modeling, and other text-based machine learning algorithms, aiding in tasks like <strong>document clustering, content recommendation</strong>, and <strong>text generation</strong>.</p>
+<p>Dealing with Text data is foundational to understanding the building blocks of Large Language Models which  are revolutionizing the way we interact with the internet today. It all starts with strings.</p>
+<p>A string is a sequence of characters. You can access the characters one at a time with the bracket operator.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span> <span class="o">=</span> <span class="s1">&#39;douala&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;o&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>In Python, the index
+is an offset from the beginning of the string, and the offset of the first letter is zero</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;d&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;do&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>What about accessing the last letter</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;a&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>An intuitive way of accessing the last element of the string is by passing -1 as an index</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;a&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>If I’m interested in getting the whole string except the last element</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;doual&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span><span class="p">(</span><span class="n">town</span><span class="p">)</span>  <span class="c1">#This command will give all possible attribute we can use to play with strings</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;__add__&#39;,
+ &#39;__class__&#39;,
+ &#39;__contains__&#39;,
+ &#39;__delattr__&#39;,
+ &#39;__dir__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__eq__&#39;,
+ &#39;__format__&#39;,
+ &#39;__ge__&#39;,
+ &#39;__getattribute__&#39;,
+ &#39;__getitem__&#39;,
+ &#39;__getnewargs__&#39;,
+ &#39;__gt__&#39;,
+ &#39;__hash__&#39;,
+ &#39;__init__&#39;,
+ &#39;__init_subclass__&#39;,
+ &#39;__iter__&#39;,
+ &#39;__le__&#39;,
+ &#39;__len__&#39;,
+ &#39;__lt__&#39;,
+ &#39;__mod__&#39;,
+ &#39;__mul__&#39;,
+ &#39;__ne__&#39;,
+ &#39;__new__&#39;,
+ &#39;__reduce__&#39;,
+ &#39;__reduce_ex__&#39;,
+ &#39;__repr__&#39;,
+ &#39;__rmod__&#39;,
+ &#39;__rmul__&#39;,
+ &#39;__setattr__&#39;,
+ &#39;__sizeof__&#39;,
+ &#39;__str__&#39;,
+ &#39;__subclasshook__&#39;,
+ &#39;capitalize&#39;,
+ &#39;casefold&#39;,
+ &#39;center&#39;,
+ &#39;count&#39;,
+ &#39;encode&#39;,
+ &#39;endswith&#39;,
+ &#39;expandtabs&#39;,
+ &#39;find&#39;,
+ &#39;format&#39;,
+ &#39;format_map&#39;,
+ &#39;index&#39;,
+ &#39;isalnum&#39;,
+ &#39;isalpha&#39;,
+ &#39;isascii&#39;,
+ &#39;isdecimal&#39;,
+ &#39;isdigit&#39;,
+ &#39;isidentifier&#39;,
+ &#39;islower&#39;,
+ &#39;isnumeric&#39;,
+ &#39;isprintable&#39;,
+ &#39;isspace&#39;,
+ &#39;istitle&#39;,
+ &#39;isupper&#39;,
+ &#39;join&#39;,
+ &#39;ljust&#39;,
+ &#39;lower&#39;,
+ &#39;lstrip&#39;,
+ &#39;maketrans&#39;,
+ &#39;partition&#39;,
+ &#39;removeprefix&#39;,
+ &#39;removesuffix&#39;,
+ &#39;replace&#39;,
+ &#39;rfind&#39;,
+ &#39;rindex&#39;,
+ &#39;rjust&#39;,
+ &#39;rpartition&#39;,
+ &#39;rsplit&#39;,
+ &#39;rstrip&#39;,
+ &#39;split&#39;,
+ &#39;splitlines&#39;,
+ &#39;startswith&#39;,
+ &#39;strip&#39;,
+ &#39;swapcase&#39;,
+ &#39;title&#39;,
+ &#39;translate&#39;,
+ &#39;upper&#39;,
+ &#39;zfill&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Douala&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">town</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;DOUALA&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-800080-task-11-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 11:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-11-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<ol class="arabic simple">
+<li><p>Write a function that takes a string as input, and return a new string with the same letters in reverse order.</p></li>
+<li><p>Write a function that takes a sentence (a collection of strings separated by a space character) as input, Return the longest word in the sentence.</p></li>
+<li><p>Write a function that takes a string as input and returns the number of vowels in the string. You may assume that all the letters are lower cased.</p></li>
+<li><p>Write a function that takes a string and returns true if it is a palindrome. A palindrome is a string that is the same whether written backward or forward. Assume that there are no spaces; only lowercase  letters will be given</p></li>
+</ol>
+</div>
+<div class="section" id="pandas-string-operations">
+<h3>Pandas String Operations<a class="headerlink" href="#pandas-string-operations" title="Permalink to this heading">#</a></h3>
+<p>While Python offers some built-in string methods for basic text processing, pandas extends these functionalities by introducing <strong>vectorized string operations that can be applied to entire columns or series of text data</strong>. This shift unlocks the power of performing efficient and scalable operations on large datasets, allowing for faster data preprocessing, cleaning, and analysis.</p>
+<p>These functionalities introduce vectorized string operations that can be applied to entire columns or series of text data. With pandas string operations, tasks like <strong>extracting substrings, replacing patterns, splitting strings</strong>, and <strong>performing regex operations</strong> can be performed seamlessly across multiple data points. In this section, we are going to cover a few which includes <strong>islower , isupper , title , lower() , upper(), replace , rsplit , strip , startwith</strong> .</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">animals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;cat&#39;</span> <span class="p">,</span> <span class="s1">&#39;dog&#39;</span> <span class="p">,</span> <span class="s1">&#39;mouse&#39;</span> <span class="p">,</span> <span class="s1">&#39;rabbit&#39;</span><span class="p">,</span> <span class="s1">&#39;lion&#39;</span><span class="p">])</span>
+<span class="n">animals</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       cat
+1       dog
+2     mouse
+3    rabbit
+4      lion
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">animals</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       CAT
+1       DOG
+2     MOUSE
+3    RABBIT
+4      LION
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">animals</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       Cat
+1       Dog
+2     Mouse
+3    Rabbit
+4      Lion
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">animals</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    3
+1    3
+2    5
+3    6
+4    4
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="a-common-data-entry-problem">
+<h3>A common Data entry problem<a class="headerlink" href="#a-common-data-entry-problem" title="Permalink to this heading">#</a></h3>
+<p>One common problem that often arises during data entry, particularly when dealing with string data, is <strong>the presence of extra white spaces</strong> and/or <strong>mishandling of cases</strong>. Extra white spaces can occur due to inadvertent keyboard inputs or inconsistent data entry practices, leading to inconsistencies in the data.</p>
+<p>Similarly, mishandling of cases, such as inconsistent capitalization or differences in letter casing, can introduce variability and inaccuracies in the dataset. These issues hamper data analysis, as they make it difficult to match and compare strings accurately, resulting in errors or skewed results.</p>
+<p>Series and Index are equipped with a set of string processing methods that make it easy to operate on each element of the array. Perhaps most importantly, these methods exclude missing/NA values automatically. These are accessed via the <strong>str</strong> attribute and generally have names matching the equivalent (scalar) built-in string methods:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">instruments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39; guitar&#39;</span> <span class="p">,</span> <span class="s1">&#39;   drum &#39;</span><span class="p">,</span> <span class="s1">&#39;piano &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="p">,</span> <span class="s2">&quot;violon       &quot;</span><span class="p">])</span>
+<span class="n">instruments</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0           guitar
+1            drum 
+2           piano 
+3              NaN
+4    violon       
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.strip()</span></code> method removes extra white spaces from left side and from the right side. Please note that it does not overwrite the old information, so you would have to overwrite the content of the instruments series with the tidy information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">instruments</span>  <span class="o">=</span> <span class="n">instruments</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> 
+<span class="n">instruments</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    guitar
+1      drum
+2     piano
+3       NaN
+4    violon
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is not obvious to depict extra white spaces in dataframes as you could see below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NorthAfr_cities</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="s1">&#39;    Faiyhum&#39;</span> <span class="p">,</span> <span class="s1">&#39;   Annaba  &#39;</span> <span class="p">,</span> <span class="s1">&#39;   Bizerte  &#39;</span> <span class="p">,</span>
+                                <span class="s1">&#39;  Luxor  &#39;</span> <span class="p">,</span> <span class="s1">&#39;Djelfa&#39;</span><span class="p">,</span> <span class="s1">&#39;Hammamet   &#39;</span><span class="p">]</span> <span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;na_Cities&#39;</span><span class="p">])</span>
+<span class="n">NorthAfr_cities</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>na_Cities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Faiyhum</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Annaba</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bizerte</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Luxor</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Djelfa</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Hammamet</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NorthAfr_cities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;    Faiyhum&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">.strip()</span></code> operation on the untidy pandas Series, one is able to get rid of the extra white space in a vectorized fashion.m</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NorthAfr_cities</span><span class="p">[</span><span class="s1">&#39;tidyUp_cities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NorthAfr_cities</span><span class="p">[</span><span class="s1">&#39;na_Cities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">NorthAfr_cities</span> <span class="o">=</span> <span class="n">NorthAfr_cities</span><span class="p">[[</span><span class="s1">&#39;tidyUp_cities&#39;</span><span class="p">]]</span>
+<span class="n">NorthAfr_cities</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tidyUp_cities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Faiyhum</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Annaba</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bizerte</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Luxor</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Djelfa</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Hammamet</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NorthAfr_cities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Faiyhum&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes, two (or more) different type of information could be tied up into a single string and the data entry person uses a common delimiter to separate them instead of entering them in different columns. For instance, take a look at this dataframe of female african artists.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">female_ziks</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="s1">&#39;Fatoumata Diawara_Maliba_Mali&#39;</span> <span class="p">,</span> <span class="s1">&#39;Cina Soul_ For Times we lost_Ghana&#39;</span> <span class="p">,</span>
+                          <span class="s1">&#39;Mampi_Love Recipe_Zambia&#39;</span><span class="p">,</span>  <span class="s1">&#39;Aster Aweke_Soba_Ethiopia&#39;</span><span class="p">]</span> <span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;music&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">female_ziks</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>music</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Fatoumata Diawara_Maliba_Mali</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Cina Soul_ For Times we lost_Ghana</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Mampi_Love Recipe_Zambia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Aster Aweke_Soba_Ethiopia</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">female_ziks</span><span class="p">[</span><span class="s1">&#39;composer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">female_ziks</span><span class="p">[</span><span class="s1">&#39;music&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">female_ziks</span><span class="p">[</span><span class="s1">&#39;album_title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">female_ziks</span><span class="p">[</span><span class="s1">&#39;music&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">female_ziks</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">female_ziks</span><span class="p">[</span><span class="s1">&#39;music&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">female_ziks</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>music</th>
+      <th>composer</th>
+      <th>album_title</th>
+      <th>country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Fatoumata Diawara_Maliba_Mali</td>
+      <td>Fatoumata Diawara</td>
+      <td>Maliba</td>
+      <td>Mali</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Cina Soul_ For Times we lost_Ghana</td>
+      <td>Cina Soul</td>
+      <td>For Times we lost</td>
+      <td>Ghana</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Mampi_Love Recipe_Zambia</td>
+      <td>Mampi</td>
+      <td>Love Recipe</td>
+      <td>Zambia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Aster Aweke_Soba_Ethiopia</td>
+      <td>Aster Aweke</td>
+      <td>Soba</td>
+      <td>Ethiopia</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">female_ziks</span> <span class="o">=</span>  <span class="n">female_ziks</span><span class="p">[[</span><span class="s1">&#39;composer&#39;</span><span class="p">,</span> <span class="s1">&#39;album_title&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">]]</span>
+<span class="n">female_ziks</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>composer</th>
+      <th>album_title</th>
+      <th>country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Fatoumata Diawara</td>
+      <td>Maliba</td>
+      <td>Mali</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Cina Soul</td>
+      <td>For Times we lost</td>
+      <td>Ghana</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Mampi</td>
+      <td>Love Recipe</td>
+      <td>Zambia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Aster Aweke</td>
+      <td>Soba</td>
+      <td>Ethiopia</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="font-color-800080-task-12-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 12:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-12-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<ol class="arabic">
+<li><p>Run the command <code class="docutils literal notranslate"><span class="pre">%load</span> <span class="pre">goat1.py</span></code> in a cell below. It provides a list of african  popular writers and their country of origin.</p>
+<p>a. Report the incorrectness that you may have observed in the data.</p>
+<p>b. Use some of the above pandas string operations to tidy up the data.</p>
+</li>
+<li><p>Consider the very same information as above, but encapsulated in a csv file called <code class="docutils literal notranslate"><span class="pre">african_writers.csv</span></code>. Perform an inconsistency check and adress them if any.</p></li>
+<li><p>Run the command <code class="docutils literal notranslate"><span class="pre">%load</span> <span class="pre">goat3.py</span></code> in a cell below. It provides a list of african  popular singers and their country of origin.</p>
+<p>a. Report the incorrectness that you may have observed in the data.</p>
+<p>b. Use some of the above pandas string operations to tidy up the data.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="use-of-regular-expressions">
+<h3>Use of Regular Expressions<a class="headerlink" href="#use-of-regular-expressions" title="Permalink to this heading">#</a></h3>
+<p>Regular expressions (regex) are a powerful tool for pattern matching in text. They can be used to extract, clean, and transform text data in a variety of ways. For example, regex can be used to:</p>
+<ul class="simple">
+<li><p>Extract specific pieces of information from text, such as email addresses, phone numbers, or dates.</p></li>
+<li><p>Clean up text data by removing unwanted characters or formatting.</p></li>
+<li><p>Transform text data by converting it to a different format, such as changing all uppercase letters to lowercase letters.</p></li>
+</ul>
+<p>The use of regex with pandas dataframes can be a bit daunting at first, but it is a powerful tool that can be used to solve a wide variety of problems. Some basic regex patterns and examples include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">\d</span></code> matches any digit. For example, the regex pattern <code class="docutils literal notranslate"><span class="pre">\d</span></code> would match the string <code class="docutils literal notranslate"><span class="pre">&quot;1234&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">\w</span></code> matches any word character. For example, the regex pattern <code class="docutils literal notranslate"><span class="pre">\w</span></code> would match the string “hello”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">\s</span></code> matches any whitespace character. For example, the regex pattern <code class="docutils literal notranslate"><span class="pre">\s</span></code> would match the string ” “.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.</span></code> matches any character. For example, the regex pattern . would match the string “a” or the string “.”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">^</span></code> matches the beginning of a string. For example, the regex pattern <code class="docutils literal notranslate"><span class="pre">^hello</span></code> would match the string <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code> only if it was at the beginning of the string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> matches a set of characters. For example, the regex pattern <code class="docutils literal notranslate"><span class="pre">[0-9]</span></code> would match any digit from 0 to 9.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{}</span></code> specifies the number of times a character or set of characters can be matched. For example, the regex pattern   <code class="docutils literal notranslate"><span class="pre">\d{5}</span></code> would match a string of five digits.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> matches either one or the other of two patterns. For example, the regex pattern <code class="docutils literal notranslate"><span class="pre">hello|world</span></code> would match the string <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code> or the string <code class="docutils literal notranslate"><span class="pre">&quot;world&quot;</span></code>.</p></li>
+</ul>
+<div class="section" id="font-color-800080-example-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Example:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>See a couple of namings below related to Mali, which is a country located in West Africa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a pandas series</span>
+<span class="n">MaliCiv_infos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;mali&quot;</span><span class="p">,</span> <span class="s2">&quot;EaglesOfMali&quot;</span><span class="p">,</span> <span class="s2">&quot;+233&quot;</span><span class="p">,</span> <span class="s2">&quot;mali223&quot;</span><span class="p">,</span> <span class="s2">&quot;Mali_1960&quot;</span> <span class="p">,</span> <span class="s2">&quot;MALIPUISSANCI&quot;</span><span class="p">,</span> 
+                          <span class="s2">&quot;cotedivoire&quot;</span> <span class="p">,</span> <span class="s2">&quot;ElephantCoteDivoire&quot;</span> <span class="p">,</span><span class="s2">&quot;+225&quot;</span> <span class="p">,</span>  <span class="s2">&quot;civ225&quot;</span><span class="p">,</span> <span class="s2">&quot;Civ_1960&quot;</span> <span class="p">,</span> <span class="s2">&quot;CIVYAFOYE&quot;</span><span class="p">])</span>
+
+<span class="n">MaliCiv_infos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0                    mali
+1            EaglesOfMali
+2                    +233
+3                 mali223
+4               Mali_1960
+5           MALIPUISSANCI
+6             cotedivoire
+7     ElephantCoteDivoire
+8                    +225
+9                  civ225
+10               Civ_1960
+11              CIVYAFOYE
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p>Create a regular expression to match strings that only contains lower cases</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regex_1</span> <span class="o">=</span> <span class="s2">&quot;[a-z]+$&quot;</span>
+
+<span class="c1"># Create a sub series of strings that match the regex</span>
+<span class="n">query1</span> <span class="o">=</span> <span class="n">MaliCiv_infos</span><span class="p">[</span><span class="n">MaliCiv_infos</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex_1</span><span class="p">)]</span>
+
+<span class="c1"># Print the sub series</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">query1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0           mali
+6    cotedivoire
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create a regular expression to match strings that only contains lower cases or upper cases letter</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regex_2</span> <span class="o">=</span> <span class="s2">&quot;^[a-zA-Z]+$&quot;</span>
+
+<span class="c1"># Create a sub series of strings that match the regex</span>
+<span class="n">query2</span> <span class="o">=</span> <span class="n">MaliCiv_infos</span><span class="p">[</span><span class="n">MaliCiv_infos</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex_2</span><span class="p">)]</span>
+<span class="n">query2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0                    mali
+1            EaglesOfMali
+5           MALIPUISSANCI
+6             cotedivoire
+7     ElephantCoteDivoire
+11              CIVYAFOYE
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Create a regular expression to match strings that only contains upper cases letter</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regex_3</span> <span class="o">=</span> <span class="s2">&quot;^[A-Z]+$&quot;</span>
+<span class="c1"># Create a sub series of strings that match the regex</span>
+<span class="n">query3</span> <span class="o">=</span> <span class="n">MaliCiv_infos</span><span class="p">[</span><span class="n">MaliCiv_infos</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex_3</span><span class="p">)]</span>
+<span class="n">query3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5     MALIPUISSANCI
+11        CIVYAFOYE
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Create a regular expression to match strings that only ends with 4 digits</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regex_4</span> <span class="o">=</span>  <span class="s2">&quot;^.*\d</span><span class="si">{4}</span><span class="s2">&quot;</span>
+<span class="c1"># Create a sub series of strings that match the regex</span>
+<span class="n">query4</span> <span class="o">=</span> <span class="n">MaliCiv_infos</span><span class="p">[</span><span class="n">MaliCiv_infos</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex_4</span><span class="p">)]</span>
+<span class="n">query4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4     Mali_1960
+10     Civ_1960
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Create a regular expression to match strings that only ends with 4 digits</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regex_5</span> <span class="o">=</span>  <span class="s2">&quot;^\+&quot;</span>
+<span class="c1"># Create a sub series of strings that match the regex</span>
+<span class="n">query5</span> <span class="o">=</span> <span class="n">MaliCiv_infos</span><span class="p">[</span><span class="n">MaliCiv_infos</span>     <span class="c1">#.str.match(regex_5)]</span>
+<span class="n">query5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">  File</span><span class="nn"> &quot;&lt;ipython-input-31-dd6546937ee4&gt;&quot;</span><span class="gt">, line </span><span class="mi">4</span>
+    <span class="n">query5</span>
+    <span class="o">^</span>
+<span class="ne">SyntaxError</span>: invalid syntax
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-800080-task-13-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 13:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-13-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>Egerton University is the oldest university in Kenya having been in 1939. It was founded as Egerton Farm College and became part of the University of Kenya in 1986 and a university in its own right in 1987. They are hosting a Public Policy Hub who has secured funding from the National Research Fund (NRF) Kenya, to conduct a study across different African Countries to understand the “Year of Africa”.</p>
+<p>The Year of Africa is a term often coined  to represent a particular year where many countries across the continent celebrated the joy, excitement, and possibilities of independence. The end goal is develop and propose a new History Book “for Africans by Africans” that will be used as educational manual across several African countries to teach a different narrative to the upcoming generation. They have collected information on several african countries through corresponding state agencies. Some information include their date of independance, their official language and other country related detail.</p>
+<p>Through the grant they received, they will have to hire a Data Analyst to assist them into that project. You just completed your specialization in Statistics from Jomo Kenyatta University of Agriculture and Technology and have been given a role in the project as a data analyst. Their data sits in a csv file is and is called <code class="docutils literal notranslate"><span class="pre">classified_african_info.csv</span></code>.</p>
+<ol class="arabic simple">
+<li><p>What are the two countries/empires that were at the forefront of imperialism and colonialims in Africa? According to you, what was the reason behind?</p></li>
+<li><p>Load the data and tell us what you observe.</p></li>
+<li><p>What are the countries that obtained their independance in 1960? Do you have any story to tell behind that?</p></li>
+<li><p>What are the countries that obtained their independance before 1960? What do you observe about them? Do you have any story to tell behind that?</p></li>
+<li><p>Some African countries wrote their independance day in letter instead of numbers. Display those countries and tell how many of them are French Speaking nations?</p></li>
+<li><p>Break down the independance date in to day month and year. Which month seemed to be the most prominent for independances?</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_Tidying_the_Data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 3: Introducing Features and Observations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_Grouping_Data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 5: Grouping the Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-text-data">What is Text Data ?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-11-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 11:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-string-operations">Pandas String Operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-common-data-entry-problem">A common Data entry problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-12-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 12:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-of-regular-expressions">Use of Regular Expressions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080">Example:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-13-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 13:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

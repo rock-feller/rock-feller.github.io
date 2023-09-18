@@ -1,0 +1,1164 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 4: Feature Extraction from Images &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_3/04_Feature Extraction from Images_SVD';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 5: Preparing Image Data for Model Training" href="05_Preparing%20Images%20Data%20for%20Model%20Training.html" />
+    <link rel="prev" title="Chapter 3: Advanced Image Pre-processing operations" href="03_Advanced%20Image%20Pre-processing%20operations.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_3/04_Feature Extraction from Images_SVD.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_3/04_Feature Extraction from Images_SVD.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 4: Feature Extraction from Images</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#singular-value-decomposition-with-images">Singular Value Decomposition with Images</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">Mathematical Formulation:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-for-a-random-data-matrix">SVD for a random data matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-approximation">Matrix Approximation:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-for-an-image-data-matrix">SVD for an image data matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-reconstruction-with-reduced-dimensions">Image Reconstruction with Reduced Dimensions:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-6-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 6:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-7-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 7:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bank-cheque-authentication">Bank Cheque Authentication</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-8-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 8:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#personalizing-digital-advertisements">Personalizing Digital Advertisements</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-4-feature-extraction-from-images">
+<h1>Chapter 4: Feature Extraction from Images<a class="headerlink" href="#chapter-4-feature-extraction-from-images" title="Permalink to this heading">#</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>In the intricate world of image processing and computer vision, images are not just mere visual depictions but a dense collection of data. Every pixel, every hue, every gradient contains information. But how do we decipher the most meaningful patterns or components from an image? This is where <strong>feature extraction</strong> steps in.</p>
+<p>Feature extraction techniques on images involve processes that distill or extract significant information from an image, translating raw data into insightful descriptors. These descriptors could be certain patterns, edges, textures, colors, or any unique characteristics, which, when fed into machine learning models, lead to better understanding and prediction. In essence, feature extraction is about transforming the vast dimensionality of images into a concise and relevant set of features, enabling algorithms to operate efficiently and effectively.</p>
+<p><strong>Learning Objectives:</strong></p>
+<p>At the end of this chapter, you should be able to:</p>
+<ul class="simple">
+<li><p><strong>Understand the Essence of Features:</strong> Comprehend what constitutes a “feature” in an image and its importance in computer vision tasks.</p></li>
+<li><p><strong>Familiarize with Popular Techniques:</strong> Explore the commonly used techniques for feature extraction like Singular Value Decomposition (SVD), Fast Fourier Transform (FFT) and</p></li>
+<li><p><strong>Application in Machine Learning:</strong> Learn how extracted features play a pivotal role in improving the efficiency and accuracy of machine learning models, especially in classification tasks.</p></li>
+<li><p><strong>Hands-on Implementation:</strong> Acquire practical skills by implementing feature extraction methods on real-world image datasets and observing their impacts.</p></li>
+</ul>
+</div>
+<div class="section" id="singular-value-decomposition-with-images">
+<h2>Singular Value Decomposition with Images<a class="headerlink" href="#singular-value-decomposition-with-images" title="Permalink to this heading">#</a></h2>
+<p><strong>Singular Value Decomposition (SVD)</strong> is a powerful mathematical tool used in various domains, including image processing.</p>
+<p>The SVD provides a systematic way to determine a low-dimensional approximation to <strong>high-dimensional data</strong> in terms of dominant patterns. This technique is data-driven in that patterns are discovered purely from data, without the addition of expert knowledge or intuition.</p>
+<p>The SVD is numerically stable and provides a hierarchical representation of the data in terms of a new coordinate system defined by dominant correlations within the data. In the context of images, it can be used for tasks like data compression, noise reduction, and feature extraction.</p>
+<p>When it comes to images, SVD plays a role in several practical scenarios:</p>
+<ul class="simple">
+<li><p><strong>Image Compression:</strong> SVD can be used to compress images by keeping only the significant singular values and their associated vectors. This essentially reduces the amount of information needed to represent the image without a significant loss in quality. This technique is particularly useful for large-scale image databases or when storage space is at a premium.</p></li>
+<li><p><strong>Image Denoising:</strong> SVD can help in denoising images by decomposing them into a sum of rank-1 matrices. Noise in images often affects the smaller singular values, so by eliminating or reducing the singular values below a certain threshold, noise can be effectively reduced.</p></li>
+<li><p><strong>Face Recognition (Eigenfaces):</strong> SVD is used in the eigenfaces technique, which is a popular method in face recognition. The principle here is to represent facial images in a lower-dimensional space using the most significant singular vectors (eigenvectors). This reduces the complexity of the images while retaining the features necessary for recognition.</p></li>
+</ul>
+<div class="section" id="mathematical-formulation">
+<h3>Mathematical Formulation:<a class="headerlink" href="#mathematical-formulation" title="Permalink to this heading">#</a></h3>
+<p>Generally, we are interested in analyzing a large data set <span class="math notranslate nohighlight">\(A \in \mathbb{C}^{n×m} \)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    \vert &amp; \vert  &amp; &amp; &amp; \vert\\
+    a_1   &amp; a_2  &amp; \dots &amp; &amp; a_m \\
+    \vert &amp; \vert
+\end{bmatrix}
+\end{split}\]</div>
+<p>The columns <span class="math notranslate nohighlight">\(a_k \in \mathbb{C}^{n}\)</span>  may be measurements from simulations or experiments. For example, columns may represent images that have been reshaped into column vectors with as many elements as pixels in the image.
+The column vectors may also represent the state of a physical system that is evolving in time, such as the fluid velocity at a set of discrete points, a set of neural measurements, or the state of a weather simulation with one square kilometer resolution. The index <span class="math notranslate nohighlight">\(k\)</span> is a label indicating the kth distinct set of measurements.</p>
+<p>The SVD is a unique matrix decomposition that exists for every complex-
+valued matrix <span class="math notranslate nohighlight">\(A \in \mathbb{C}^{n×m} \)</span>:</p>
+<div class="math notranslate nohighlight">
+\[A = U S V^{*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(U \in \mathbb{C}^{n×n}\)</span>  and <span class="math notranslate nohighlight">\(V \in \mathbb{C}^{m×m}\)</span> are unitary matrices  with orthonormal columns,
+and <span class="math notranslate nohighlight">\(S \in \mathbb{C}^{n×m}\)</span> is a matrix with real, non-negative entries on the diagonal and zeros off the diagonal. Here <span class="math notranslate nohighlight">\(∗\)</span> denotes the complex conjugate transpose.</p>
+</div>
+<div class="section" id="svd-for-a-random-data-matrix">
+<h3>SVD for a random data matrix<a class="headerlink" href="#svd-for-a-random-data-matrix" title="Permalink to this heading">#</a></h3>
+<p>Let’s see how SVD works for a random data matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n_rows = int(input(&quot;enter n, the number of rows you want in your matrix &quot;))</span>
+<span class="c1"># m_columns = int(input(&quot;enter m,  the number of columns you want in your matrix &quot;))</span>
+<span class="n">n_rows</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">m_columns</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">m_columns</span><span class="p">)</span> <span class="c1"># Create random data matrix</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#Full SVD</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the resulting <span class="math notranslate nohighlight">\(U\)</span> ,  <span class="math notranslate nohighlight">\(S\)</span>  and <span class="math notranslate nohighlight">\(V^{*}\)</span> obtained from the SVD decomposition.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.48437269, 0.88184213, 0.85536716],
+       [0.07471043, 0.37648378, 0.37585894],
+       [0.09669827, 0.28448289, 0.7413394 ],
+       [0.56021811, 0.54948977, 0.26373724],
+       [0.81439884, 0.92023678, 0.69413749]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-5.88204337e-01,  2.15548972e-01,  4.20006137e-01,
+        -3.60006582e-01, -5.49130590e-01],
+       [-2.26548969e-01,  2.53213303e-01,  6.31312024e-01,
+         4.62136077e-01,  5.21952069e-01],
+       [-3.02394520e-01,  7.16292304e-01, -5.77830215e-01,
+         2.48183327e-01,  4.11505078e-04],
+       [-3.47876303e-01, -4.90592141e-01, -1.27987268e-01,
+         6.94688800e-01, -3.73266875e-01],
+       [-6.24684604e-01, -3.68329135e-01, -2.73443735e-01,
+        -3.35615873e-01,  5.35437487e-01]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#note that Python renders S in form of an array with the singular values.</span>
+<span class="n">S</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.23168557, 0.58428214, 0.16677788])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s recreate <strong>Sigma</strong> the singular value matrix</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">m_columns</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ind_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)):</span>
+    <span class="n">Sigma</span><span class="p">[</span><span class="n">ind_</span><span class="p">,</span><span class="n">ind_</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">ind_</span><span class="p">]</span>
+    
+<span class="n">Sigma</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[2.23168557, 0.        , 0.        ],
+       [0.        , 0.58428214, 0.        ],
+       [0.        , 0.        , 0.16677788],
+       [0.        , 0.        , 0.        ],
+       [0.        , 0.        , 0.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">VT</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.46364315, -0.65243674, -0.59946753],
+       [-0.65416595, -0.20425339,  0.72824958],
+       [-0.59758006,  0.72979918, -0.33210122]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lets check if the matrix multiplication <span class="math notranslate nohighlight">\(U S V^{*}\)</span> will return <span class="math notranslate nohighlight">\(A\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">Sigma</span><span class="p">)</span> <span class="p">,</span><span class="n">VT</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.48437269, 0.88184213, 0.85536716],
+       [0.07471043, 0.37648378, 0.37585894],
+       [0.09669827, 0.28448289, 0.7413394 ],
+       [0.56021811, 0.54948977, 0.26373724],
+       [0.81439884, 0.92023678, 0.69413749]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">b5fec669aca1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">X</span>
+
+<span class="ne">NameError</span>: name &#39;X&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="matrix-approximation">
+<h3>Matrix Approximation:<a class="headerlink" href="#matrix-approximation" title="Permalink to this heading">#</a></h3>
+<p>Perhaps the most useful and defining property of the SVD is that it provides an optimal low-rank approximation to a matrix A. In fact, the SVD provides a hierarchy of <strong>low-rank approximations</strong>, since a <span class="math notranslate nohighlight">\(rank-r\)</span> approximation is obtained by keeping the leading <span class="math notranslate nohighlight">\(r\)</span> singular values and vectors, and discarding the rest. Because S is diagonal, it is possible to express the matrix <span class="math notranslate nohighlight">\(A = U S V^{*}\)</span> as a sum of rank-one matrices:
+$<span class="math notranslate nohighlight">\(
+\begin{eqnarray}
+A &amp;=&amp; \sum_{k=1}^{m}  \sigma_{k}u_{k}v_{k}^{*} \\
+&amp;=&amp; \sigma_{1}u_{1}v_{1}^* +  \sigma_{2}u_{2}v_{2}^* +  \sigma_{3}u_{3}v_{3}^* + \dots +  \sigma_{m}u_{m}v_{m}^*
+\end{eqnarray}
+\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(\sigma_{k}\)</span> is the <span class="math notranslate nohighlight">\(k\)</span>th diagonal entry of <span class="math notranslate nohighlight">\(S\)</span>, and <span class="math notranslate nohighlight">\(u_{k}\)</span> and <span class="math notranslate nohighlight">\(v_{k}\)</span> are the <span class="math notranslate nohighlight">\(k\)</span>th columns of
+<span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span>, respectively.</p>
+<p>This is known as the <strong>dyadic summation</strong>. The singular values <span class="math notranslate nohighlight">\(\sigma_{k}\)</span>  are arranged in decreasing order, <span class="math notranslate nohighlight">\(\sigma_{1} \geq \sigma_{2} \geq \sigma_{3} \geq \sigma_{m} \geq 0\)</span>, so each subsequent rank-one matrix <span class="math notranslate nohighlight">\(\sigma_{k}u_{k}v_{k}^{*}\)</span> is less important than the previous matrix in capturing the information in <span class="math notranslate nohighlight">\(A\)</span>. For many systems, the singular values <span class="math notranslate nohighlight">\(\sigma_{k}\)</span> decrease rapidly, and it is possible to obtain a good approximation of <span class="math notranslate nohighlight">\(A\)</span> by truncating at some rank <span class="math notranslate nohighlight">\(r\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{eqnarray}
+A &amp;\approx&amp; \tilde{A}\\
+&amp;=&amp; \sum_{k=1}^{r}  \sigma_{k}u_{k}v_{k}^{*} \\
+&amp;=&amp; \sigma_{1}u_{1}v_{1}^* +  \sigma_{2}u_{2}v_{2}^* +  \sigma_{3}u_{3}v_{3}^* + \dots +  \sigma_{r}u_{r}v_{r}^*
+\end{eqnarray}
+\end{split}\]</div>
+<p>Here, we establish the notation that a truncated SVD basis (and the resulting approximated matrix X̃) will be denoted by <span class="math notranslate nohighlight">\(\tilde{A} = \tilde{U} \tilde{S} \tilde{V}^{*}\)</span> , where <span class="math notranslate nohighlight">\(\tilde{U}\)</span> and <span class="math notranslate nohighlight">\(\tilde{V}\)</span> contain the first <span class="math notranslate nohighlight">\(r\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span>, and <span class="math notranslate nohighlight">\(\tilde{S}\)</span> contains the first <span class="math notranslate nohighlight">\(r \times r\)</span> sub-block of <span class="math notranslate nohighlight">\(\tilde{S}\)</span>.</p>
+<p>The truncated SVD is illustrated in the Figure below  with  <span class="math notranslate nohighlight">\(\tilde{U}\)</span>,  <span class="math notranslate nohighlight">\(\tilde{S}\)</span> and <span class="math notranslate nohighlight">\(\tilde{V}\)</span> denoting the truncated matrices. If <span class="math notranslate nohighlight">\(A\)</span> does not have full rank, then some of the singular values in <span class="math notranslate nohighlight">\(\tilde{U} \tilde{S} \tilde{V}^{*}\)</span> may be zero, and the truncated SVD may still be exact.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/svd_demo.png&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e4f34cd4de26c0a2b49c98ef481499aef9d9995d9c150c00849432f21754db3d.png" src="../_images/e4f34cd4de26c0a2b49c98ef481499aef9d9995d9c150c00849432f21754db3d.png" />
+</div>
+</div>
+<p>However, for truncation values <span class="math notranslate nohighlight">\(r\)</span> that are smaller than the number of non-zero singular values (i.e., the rank of X), the truncated SVD only approximates X.  For a given rank r, there is no better approximation for X, in the L-2 sense, than the truncated SVD approximation X̃. There are numerous choices for the truncation rank <span class="math notranslate nohighlight">\(r\)</span>. Thus, high-dimensional data may be well described by a few dominant patterns given by the columns of <span class="math notranslate nohighlight">\(\tilde{U}\)</span> and <span class="math notranslate nohighlight">\(\tilde{V}\)</span>.</p>
+<p>To illustrate that a bit more clearly, let’s revisit the above example, but with a new random data matrix</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n_rows = int(input(&quot;enter n, the number of rows you want in your matrix &quot;))</span>
+<span class="c1"># m_columns = int(input(&quot;enter m,  the number of columns you want in your matrix &quot;))</span>
+
+<span class="n">n_rows</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">m_columns</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">m_columns</span><span class="p">)</span> <span class="c1"># Create random data matrix</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function below takes as arguments the data matrix and the <span class="math notranslate nohighlight">\(rank-r\)</span> you want the <span class="math notranslate nohighlight">\(A\)</span> matrix’s approximation for.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">svd_reconstruct</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;this function takes the matrix M and the k-th value and return the rank-k approximation&quot;&quot;&quot;</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">U_r</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:</span> <span class="p">,</span> <span class="p">:</span><span class="n">r</span><span class="p">]</span>
+    <span class="n">s_r</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="n">r</span><span class="p">]</span>
+    <span class="n">S_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">s_r</span><span class="p">)</span>
+    <span class="n">Vh_r</span> <span class="o">=</span> <span class="n">vh</span><span class="p">[:</span><span class="n">r</span><span class="p">]</span>
+    <span class="n">rank_r_approximation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U_r</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S_r</span><span class="p">,</span> <span class="n">Vh_r</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">rank_r_approximation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the value of the matrix A&#39;</span><span class="p">)</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the value of the matrix A
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.08291428, 0.98729285, 0.84893215, 0.34497082, 0.27107758],
+       [0.72025968, 0.27473624, 0.94858185, 0.30113568, 0.52775644],
+       [0.08657511, 0.91816589, 0.22726504, 0.15815159, 0.12030347],
+       [0.19116116, 0.41834172, 0.6594646 , 0.99075799, 0.03332705],
+       [0.50392567, 0.52915604, 0.93205475, 0.99883681, 0.80058729]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <strong>rank-1</strong> approximation is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd_reconstruct</span><span class="p">(</span><span class="n">A</span> <span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.34346026, 0.58389326, 0.76543884, 0.60629911, 0.39990934],
+       [0.33367246, 0.56725369, 0.74362565, 0.58902102, 0.38851287],
+       [0.19305915, 0.32820663, 0.43025347, 0.34080097, 0.2247892 ],
+       [0.31209365, 0.53056903, 0.6955349 , 0.55092865, 0.3633875 ],
+       [0.46336674, 0.78773806, 1.03266358, 0.81796608, 0.53952294]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <strong>rank-2</strong> approximation is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd_reconstruct</span><span class="p">(</span><span class="n">A</span> <span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.14308311,  1.02394567,  0.69360024,  0.48016824,  0.25822483],
+       [ 0.4825862 ,  0.24022114,  0.79701375,  0.68275735,  0.49380816],
+       [-0.04990372,  0.86178241,  0.34314717,  0.18786379,  0.05299279],
+       [ 0.33488623,  0.48051376,  0.70370643,  0.56527584,  0.37950389],
+       [ 0.5905359 ,  0.50845925,  1.07825588,  0.89801491,  0.62944287]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <strong>rank-3</strong> approximation is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd_reconstruct</span><span class="p">(</span><span class="n">A</span> <span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.18875431,  1.03510447,  0.7201474 ,  0.37961013,  0.30435096],
+       [ 0.64895505,  0.28086986,  0.89371847,  0.31644916,  0.66183418],
+       [-0.02013299,  0.86905626,  0.36045191,  0.12231508,  0.08306006],
+       [ 0.13241032,  0.43104305,  0.58601387,  1.01108395,  0.17501115],
+       [ 0.56085096,  0.50120636,  1.061001  ,  0.96337472,  0.59946224]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <strong>rank-4</strong> approximation is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd_reconstruct</span><span class="p">(</span><span class="n">A</span> <span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.19684374,  1.01795564,  0.78714102,  0.36128871,  0.22199087],
+       [ 0.65955528,  0.25839836,  0.98150567,  0.29244111,  0.55391104],
+       [-0.02866794,  0.88714956,  0.28976862,  0.14164556,  0.16995614],
+       [ 0.1443454 ,  0.4057418 ,  0.68485574,  0.98405266,  0.05349771],
+       [ 0.54273893,  0.53960217,  0.91100387,  1.00439596,  0.78386453]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <strong>rank-5</strong> approximation is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd_reconstruct</span><span class="p">(</span><span class="n">A</span> <span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.08291428, 0.98729285, 0.84893215, 0.34497082, 0.27107758],
+       [0.72025968, 0.27473624, 0.94858185, 0.30113568, 0.52775644],
+       [0.08657511, 0.91816589, 0.22726504, 0.15815159, 0.12030347],
+       [0.19116116, 0.41834172, 0.6594646 , 0.99075799, 0.03332705],
+       [0.50392567, 0.52915604, 0.93205475, 0.99883681, 0.80058729]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U_matrix</span><span class="p">,</span> <span class="n">Sigma_matrix</span><span class="p">,</span> <span class="n">Vt_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r = &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">gray_image_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_cv_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_RGB2GRAY</span><span class="p">)</span>
+<span class="c1"># Displaying the original and grayscale images side by side</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">r_labels</span><span class="p">,</span><span class="n">Sigma_matrix</span> <span class="p">,</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r_labels</span><span class="p">,</span><span class="n">Sigma_matrix</span> <span class="p">,</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;red&#39;</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;singular values&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">r_labels</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">Sigma_matrix</span><span class="p">)</span> <span class="p">,</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r_labels</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">Sigma_matrix</span><span class="p">)</span> <span class="p">,</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;red&#39;</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;cumulated sum of singular values&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8d40aac7bbf58df33f03bbe51f78603f772d41dd945b421502c664cd43fd8c91.png" src="../_images/8d40aac7bbf58df33f03bbe51f78603f772d41dd945b421502c664cd43fd8c91.png" />
+</div>
+</div>
+<p>If you look closely at the different rank-r approximations, you will notice that the full-rank is almost perfect approximation of the random data matrix A.  It’s more elegant with data images.</p>
+</div>
+<div class="section" id="svd-for-an-image-data-matrix">
+<h3>SVD for an image data matrix<a class="headerlink" href="#svd-for-an-image-data-matrix" title="Permalink to this heading">#</a></h3>
+<p>For an image represented as a matrix  <span class="math notranslate nohighlight">\(A\)</span>, SVD breaks it down into three matrices: <span class="math notranslate nohighlight">\(U\)</span> , <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(V^T\)</span>.
+Each matrix carries specific properties and information about the original image.</p>
+<p>An example of matrix approximation is image compression. A recurring idea among folks is that large data sets
+often contain underlying patterns that facilitate <strong>low-rank representations</strong>. Natural images present a simple and intuitive example of this inherent compressibility.</p>
+<p>A grayscale image may be thought of as a real-valued matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> , where <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(m\)</span> are the number of pixels in the vertical and horizontal directions, respectively. 4 Depending on the basis of representation (pixel space, Fourier frequency domain, SVD transform coordinates), images may have very compact approximations.</p>
+<p>Consider the image of this Ugandan Woman, in her farm, with her baby at her back.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">image_path_1</span> <span class="o">=</span><span class="s1">&#39;data/womanfarmer_andbaby.jpg&#39;</span>
+
+<span class="n">image_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image_path_1</span><span class="p">)</span>
+<span class="n">image_cv_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_cv</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_cv_rgb</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;original image &quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/de07eb2affef52af373791e0ca3e9202d35aacc932ff24fc813361a058295379.png" src="../_images/de07eb2affef52af373791e0ca3e9202d35aacc932ff24fc813361a058295379.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">image_cv_rgb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2662, 3999, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This image has <strong>2662 x  3999 pixels</strong> on each channel, which means each channel is <span class="math notranslate nohighlight">\(\mathbb{R}^{2662 \times  3999}\)</span> matrix. It is possible to take the SVD of this image and plot the diagonal singular values.  Lets grayscale the original image to ease on the SVD computation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gray_image_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_cv_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_RGB2GRAY</span><span class="p">)</span>
+
+<span class="c1"># Displaying the original and grayscale images side by side</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_cv_rgb</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;original image &quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gray_image_cv</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;grayscale image&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6da85e2e4d0b64a845f3edb31e9a06c81b76f8cab706782febaa0e73db8316fb.png" src="../_images/6da85e2e4d0b64a845f3edb31e9a06c81b76f8cab706782febaa0e73db8316fb.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gray_image_cv</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2662, 3999)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: It’s common to work with grayscale images when dealing with SVD, as it simplifies the matrix operations. Because it is an expensive matrix  multiplication here, it may take a while to produce an output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">gray_image_cv</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2662,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you could see, the image above has  <span class="math notranslate nohighlight">\(2662\)</span> singular values. A powerful aspect of SVD is to allow a representation of the original image with a smaller set of values, or using fewer singular values.</p>
+<p>This can be seen as compressing the image, as it preserves useful features of the original image. In particular, singular values represent brightness of an image and a corresponding singular vector describes the geometric characteristics of the image.</p>
+</div>
+<div class="section" id="image-reconstruction-with-reduced-dimensions">
+<h3>Image Reconstruction with Reduced Dimensions:<a class="headerlink" href="#image-reconstruction-with-reduced-dimensions" title="Permalink to this heading">#</a></h3>
+<p>Let’s randomly choose a set of values for a rank-r approximation of the image matrix or a svd reconstruction of the original image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span> <span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">r_values</span><span class="p">:</span>
+    <span class="n">reconstructed_image</span> <span class="o">=</span> <span class="n">svd_reconstruct</span><span class="p">(</span><span class="n">gray_image_cv</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reconstructed_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Reconstructed Image with </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1"> Singular Values&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f4217a18edbe73ef1570447f6eb4bb1c58e7b389920ea4600c11f7855d4d02de.png" src="../_images/f4217a18edbe73ef1570447f6eb4bb1c58e7b389920ea4600c11f7855d4d02de.png" />
+<img alt="../_images/8d4f4a6f194271245db7ba0473c8ef3e9e0b79352887da9d6cc6a1ece5fce7cd.png" src="../_images/8d4f4a6f194271245db7ba0473c8ef3e9e0b79352887da9d6cc6a1ece5fce7cd.png" />
+<img alt="../_images/54573262697610eacbf021a485ccb44ae5c9d66efeccdd9e308b4a355878613d.png" src="../_images/54573262697610eacbf021a485ccb44ae5c9d66efeccdd9e308b4a355878613d.png" />
+<img alt="../_images/48f132c89d50b577880b5df477d9ab98995065fbb18d67f5aaef6cc8f335de07.png" src="../_images/48f132c89d50b577880b5df477d9ab98995065fbb18d67f5aaef6cc8f335de07.png" />
+<img alt="../_images/b22a33b055216d6b31d2fd19f7c6caab40108ba914e44f52c6b0adc8bbf53972.png" src="../_images/b22a33b055216d6b31d2fd19f7c6caab40108ba914e44f52c6b0adc8bbf53972.png" />
+<img alt="../_images/a7e795dbc01829cec43f591adeb3c1b020a561bf9525c31e8491f795b57f2873.png" src="../_images/a7e795dbc01829cec43f591adeb3c1b020a561bf9525c31e8491f795b57f2873.png" />
+</div>
+</div>
+<p><strong>Explanation:</strong>
+By using only a fraction of the singular values (the top-r values given they are sorted in descending order), we can approximate the original image. As <span class="math notranslate nohighlight">\(r\)</span> increases, the approximation gets better, but it also requires more data.</p>
+<p><strong>Additional Insights:</strong>
+Compression Ratio: The compression ratio can be calculated by comparing the number of singular values used for the reconstruction to the original size of the image.</p>
+<p><strong>Feature Extraction: The columns of the matrix</strong></p>
+<p><span class="math notranslate nohighlight">\(U\)</span> (called left singular vectors) can be considered as features extracted from the image. These features can be used in various machine learning tasks.</p>
+<p><strong>Noise Reduction:</strong> SVD can also be employed for noise reduction. Noisy pixels usually correspond to the smaller singular values. So, by using only the top-r singular values, one can often retain the main structure of the image while leaving out the noise.</p>
+<div class="section" id="font-color-800080-task-6-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 6:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-6-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>Consider this bank cheque image. Repeat the same process as above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ChekBank_</span> <span class="o">=</span> <span class="s1">&#39;data/cheque_bank_01.jpg&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p>Load the image and visualize it.</p></li>
+<li><p>Convert it to grayscale</p></li>
+<li><p>Perform the singular value decomposition and report on the singular values</p></li>
+<li><p>Provide some low-rank reconstruction of the image, up to to 10% of singular values</p></li>
+<li><p>What is the reconstruction error using 25% of the singular values</p></li>
+</ol>
+<p>The top 10% of singular values should allow to reconstruct a good approximation of the image.</p>
+<div class="section" id="font-color-800080-task-7-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 7:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-7-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+</div>
+</div>
+<div class="section" id="bank-cheque-authentication">
+<h2>Bank Cheque Authentication<a class="headerlink" href="#bank-cheque-authentication" title="Permalink to this heading">#</a></h2>
+<p>In many parts of Africa, paper cheques are still an essential form of transaction, especially for business payments. However, with the rise of banking fraud, there’s a need to develop systems that can quickly authenticate cheques based on their features and detect any anomalies.</p>
+<p>Imagine you’re a data scientist at the <code class="docutils literal notranslate"><span class="pre">Banque</span> <span class="pre">Sahélo-Saharienne</span> <span class="pre">pour</span> <span class="pre">l'Investissement</span> <span class="pre">et</span> <span class="pre">le</span> <span class="pre">Commerce</span> <span class="pre">(BSSIC)</span></code> Bank in Niger. The bank receives millions of cheques each day. They want to employ an automated system that uses the singular value decomposition technique to detect potential tampering or forgery in cheques. The goal is to compress the image of the cheque using SVD and compare its low-rank approximation with the original. Any significant discrepancy might indicate tampering.</p>
+<ol class="arabic simple">
+<li><p>Load a dataset of cheque images.</p></li>
+</ol>
+<p>For each cheque image:</p>
+<ol class="arabic simple" start="2">
+<li><p>Convert the image into a grayscale matrix.</p></li>
+<li><p>Compute the singular value decomposition of the image matrix using NumPy.</p></li>
+<li><p>Create a low-rank approximation of the image by retaining only the 60% of singular values. How many singular values does that represent?</p></li>
+<li><p>Measure the difference between the original image and its approximation. Use this to flag potential anomalies considering the mean square reconstruction error threshold at <strong>1.2</strong>.</p></li>
+<li><p>Display and Report the cheques with anomalies for further verification.</p></li>
+</ol>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-8-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Task 8:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-8-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="personalizing-digital-advertisements">
+<h2>Personalizing Digital Advertisements<a class="headerlink" href="#personalizing-digital-advertisements" title="Permalink to this heading">#</a></h2>
+<p>The digital marketing landscape in Africa is rapidly evolving with businesses aiming to offer personalized content to users. To achieve this, companies are looking into advanced image processing techniques to tailor visual ads to individual preferences and historical interactions.</p>
+<p>You’re working at <strong>AfriAds</strong>, a leading digital marketing agency. The company believes that the most effective advertisements are the simplest, and using SVD can help determine the most prominent features of an advertisement image. By creating low-rank approximations, they hope to generate simpler versions of ads that retain their core essence and message.</p>
+<ol class="arabic simple">
+<li><p>Load a dataset of advertisement images that have had various levels of user engagement.</p></li>
+</ol>
+<p>For each advertisement image:</p>
+<ol class="arabic simple" start="2">
+<li><p>Convert the image into a grayscale matrix.</p></li>
+<li><p>Provide an efficient resize of the actual image.</p></li>
+<li><p>Compute the singular value decomposition of the image matrix using NumPy.</p></li>
+<li><p>Generate low-rank approximations of the ad image by keeping varying numbers of top singular values (e.g., 5%, 10%, 20% of singular values).</p></li>
+<li><p><strong>Store, Render</strong> and <strong>visually inspect</strong> these approximations to determine which version retains the advertisement’s main features while being simpler.</p></li>
+<li><p>Analyze user engagement metrics for these simpler ads, comparing them with the original versions to determine if simpler ads (via low-rank approximations) perform better in user engagement.</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_Advanced%20Image%20Pre-processing%20operations.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 3: Advanced Image Pre-processing operations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_Preparing%20Images%20Data%20for%20Model%20Training.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 5: Preparing Image Data for Model Training</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#singular-value-decomposition-with-images">Singular Value Decomposition with Images</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">Mathematical Formulation:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-for-a-random-data-matrix">SVD for a random data matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-approximation">Matrix Approximation:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-for-an-image-data-matrix">SVD for an image data matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-reconstruction-with-reduced-dimensions">Image Reconstruction with Reduced Dimensions:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-6-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 6:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-7-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 7:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bank-cheque-authentication">Bank Cheque Authentication</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-8-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 8:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#personalizing-digital-advertisements">Personalizing Digital Advertisements</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

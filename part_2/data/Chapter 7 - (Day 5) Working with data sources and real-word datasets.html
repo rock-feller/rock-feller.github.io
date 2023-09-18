@@ -1,0 +1,3562 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Read and Write CSV Files &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_2/data/Chapter 7 - (Day 5) Working with data sources and real-word datasets';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_2/data/Chapter 7 - (Day 5) Working with data sources and real-word datasets.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/part_2/data/Chapter 7 - (Day 5) Working with data sources and real-word datasets.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Read and Write CSV Files</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Read and Write CSV Files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-write-microsoft-excel-files">Read and Write Microsoft Excel Files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data-from-html-pages-on-the-web">Read data from HTML pages on the web</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-write-data-from-xml-files">Read and write data from XML files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-write-data-in-json">Read and Write data in JSON</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#write-and-read-data-in-binary-format">Write and read data in binary format</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interact-with-databases-for-data-exchange">Interact with databases for data exchange</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-time-data">Working with Time Data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-text-data">Working with Text Data</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="read-and-write-csv-files">
+<h1>Read and Write CSV Files<a class="headerlink" href="#read-and-write-csv-files" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral     25-Apr-2018
+1  023125B         Controlled mind   Robert Greens     28-Aug-2016
+2  005556E       Only love remains  Greta Blooming     17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s1">&#39;books2.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral     25-Apr-2018
+1  023125B         Controlled mind   Robert Greens     28-Aug-2016
+2  005556E       Only love remains  Greta Blooming     17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>25-Apr-2018</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>28-Aug-2016</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;books_saved.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>,ID,Title,Author,PublicationDate
+0,001276A,The Rise of the Falcon,John Admiral,25-Apr-2018
+1,023125B,Controlled mind,Robert Greens,28-Aug-2016
+2,005556E,Only love remains,Greta Blooming,17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>001276A,The Rise of the Falcon,John Admiral,25-Apr-2018
+023125B,Controlled mind,Robert Greens,28-Aug-2016
+005556E,Only love remains,Greta Blooming,17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">,</span><span class="s1">&#39;Author&#39;</span><span class="p">],</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Title,Author
+The Rise of the Falcon,John Admiral
+Controlled mind,Robert Greens
+Only love remains,Greta Blooming
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>,ID,Title,Author,PublicationDate
+1,023125B,Controlled mind,Robert Greens,28-Aug-2016
+2,005556E,Only love remains,Greta Blooming,17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="read-and-write-microsoft-excel-files">
+<h1>Read and Write Microsoft Excel Files<a class="headerlink" href="#read-and-write-microsoft-excel-files" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xlssource</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">(</span><span class="s1">&#39;books.xlsx&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">xlssource</span><span class="p">,</span> <span class="s1">&#39;Sheet1&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="n">d3aa16aa49d8</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">xlssource</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">(</span><span class="s1">&#39;books.xlsx&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">xlssource</span><span class="p">,</span> <span class="s1">&#39;Sheet1&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">df</span>
+
+<span class="nn">~/.local/lib/python3.9/site-packages/pandas/io/excel/_base.py</span> in <span class="ni">__init__</span><span class="nt">(self, path_or_buffer, engine, storage_options)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1511</span>         <span class="bp">self</span><span class="o">.</span><span class="n">storage_options</span> <span class="o">=</span> <span class="n">storage_options</span>
+<span class="g g-Whitespace">   </span><span class="mi">1512</span> 
+<span class="ne">-&gt; </span><span class="mi">1513</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engines</span><span class="p">[</span><span class="n">engine</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">_io</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1514</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1515</span>     <span class="k">def</span> <span class="nf">__fspath__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">~/.local/lib/python3.9/site-packages/pandas/io/excel/_openpyxl.py</span> in <span class="ni">__init__</span><span class="nt">(self, filepath_or_buffer, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">546</span>         <span class="p">{</span><span class="n">storage_options</span><span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">547</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">548</span><span class="s2">         import_optional_dependency(&quot;openpyxl&quot;)</span>
+<span class="g g-Whitespace">    </span><span class="mi">549</span><span class="s2">         super().__init__(filepath_or_buffer, storage_options=storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">550</span><span class="s2"> </span>
+
+<span class="nn">~/.local/lib/python3.9/site-packages/pandas/compat/_optional.py</span> in <span class="ni">import_optional_dependency</span><span class="nt">(name, extra, errors, min_version)</span>
+<span class="g g-Whitespace">    </span><span class="mi">169</span><span class="s2">                 return None</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span><span class="s2">             elif errors == &quot;raise&quot;:</span>
+<span class="ne">--&gt; </span><span class="mi">171</span><span class="s2">                 raise ImportError(msg)</span>
+<span class="g g-Whitespace">    </span><span class="mi">172</span><span class="s2"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">173</span><span class="s2">     return module</span>
+
+<span class="ne">ImportError</span>: Pandas requires version &#39;3.0.7&#39; or newer of &#39;openpyxl&#39; (version &#39;3.0.0&#39; currently installed).
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">XLSWriter</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">(</span><span class="s1">&#39;newbooks.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">XLSWriter</span><span class="p">,</span> <span class="s1">&#39;Sheet1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">XLSWriter</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="read-data-from-html-pages-on-the-web">
+<h1>Read data from HTML pages on the web<a class="headerlink" href="#read-data-from-html-pages-on-the-web" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://en.wikipedia.org/wiki/Rome&#39;</span>
+<span class="n">dfs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>48
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;Climate data&#39;</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="14" halign="left">Climate data for Rome Urbe Airport (altitude: 24 m sl, 7 km north from Colosseum satellite view)</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Month</th>
+      <th>Jan</th>
+      <th>Feb</th>
+      <th>Mar</th>
+      <th>Apr</th>
+      <th>May</th>
+      <th>Jun</th>
+      <th>Jul</th>
+      <th>Aug</th>
+      <th>Sep</th>
+      <th>Oct</th>
+      <th>Nov</th>
+      <th>Dec</th>
+      <th>Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Record high °C (°F)</td>
+      <td>20.2(68.4)</td>
+      <td>23.6(74.5)</td>
+      <td>27.0(80.6)</td>
+      <td>28.3(82.9)</td>
+      <td>33.1(91.6)</td>
+      <td>36.8(98.2)</td>
+      <td>40.0(104.0)</td>
+      <td>39.6(103.3)</td>
+      <td>37.6(99.7)</td>
+      <td>31.4(88.5)</td>
+      <td>26.0(78.8)</td>
+      <td>22.8(73.0)</td>
+      <td>40.0(104.0)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Average high °C (°F)</td>
+      <td>12.6(54.7)</td>
+      <td>14.0(57.2)</td>
+      <td>16.5(61.7)</td>
+      <td>18.9(66.0)</td>
+      <td>23.9(75.0)</td>
+      <td>28.1(82.6)</td>
+      <td>31.5(88.7)</td>
+      <td>31.7(89.1)</td>
+      <td>27.5(81.5)</td>
+      <td>22.4(72.3)</td>
+      <td>16.5(61.7)</td>
+      <td>13.2(55.8)</td>
+      <td>21.4(70.5)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Daily mean °C (°F)</td>
+      <td>7.4(45.3)</td>
+      <td>8.4(47.1)</td>
+      <td>10.4(50.7)</td>
+      <td>12.9(55.2)</td>
+      <td>17.3(63.1)</td>
+      <td>21.2(70.2)</td>
+      <td>24.2(75.6)</td>
+      <td>24.5(76.1)</td>
+      <td>20.9(69.6)</td>
+      <td>16.4(61.5)</td>
+      <td>11.2(52.2)</td>
+      <td>8.2(46.8)</td>
+      <td>15.3(59.5)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Average low °C (°F)</td>
+      <td>2.1(35.8)</td>
+      <td>2.7(36.9)</td>
+      <td>4.3(39.7)</td>
+      <td>6.8(44.2)</td>
+      <td>10.8(51.4)</td>
+      <td>14.3(57.7)</td>
+      <td>16.9(62.4)</td>
+      <td>17.3(63.1)</td>
+      <td>14.3(57.7)</td>
+      <td>10.5(50.9)</td>
+      <td>5.8(42.4)</td>
+      <td>3.1(37.6)</td>
+      <td>9.1(48.4)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Record low °C (°F)</td>
+      <td>−9.8(14.4)</td>
+      <td>−6.0(21.2)</td>
+      <td>−9.0(15.8)</td>
+      <td>−2.5(27.5)</td>
+      <td>3.7(38.7)</td>
+      <td>6.2(43.2)</td>
+      <td>9.8(49.6)</td>
+      <td>8.6(47.5)</td>
+      <td>5.4(41.7)</td>
+      <td>0.0(32.0)</td>
+      <td>−7.2(19.0)</td>
+      <td>−5.4(22.3)</td>
+      <td>−9.8(14.4)</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Average precipitation mm (inches)</td>
+      <td>69.5(2.74)</td>
+      <td>75.8(2.98)</td>
+      <td>59.0(2.32)</td>
+      <td>76.2(3.00)</td>
+      <td>49.1(1.93)</td>
+      <td>40.7(1.60)</td>
+      <td>21.0(0.83)</td>
+      <td>34.1(1.34)</td>
+      <td>71.8(2.83)</td>
+      <td>107.0(4.21)</td>
+      <td>109.9(4.33)</td>
+      <td>84.4(3.32)</td>
+      <td>798.5(31.44)</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Average precipitation days (≥ 1 mm)</td>
+      <td>7.6</td>
+      <td>7.4</td>
+      <td>7.8</td>
+      <td>8.8</td>
+      <td>5.6</td>
+      <td>4.1</td>
+      <td>2.3</td>
+      <td>3.2</td>
+      <td>5.6</td>
+      <td>7.7</td>
+      <td>9.1</td>
+      <td>8.5</td>
+      <td>77.7</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Mean monthly sunshine hours</td>
+      <td>120.9</td>
+      <td>132.8</td>
+      <td>167.4</td>
+      <td>201.0</td>
+      <td>263.5</td>
+      <td>285.0</td>
+      <td>331.7</td>
+      <td>297.6</td>
+      <td>237.0</td>
+      <td>195.3</td>
+      <td>129.0</td>
+      <td>111.6</td>
+      <td>2473</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+      <td>Source: Servizio Meteorologico[79] (1971–2000)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>25-Apr-2018</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>28-Aug-2016</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>17-Feb-2015</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="s1">&#39;books.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="read-and-write-data-from-xml-files">
+<h1>Read and write data from XML files<a class="headerlink" href="#read-and-write-data-from-xml-files" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lxml</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">(</span><span class="s1">&#39;library.xml&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>category</th>
+      <th>title</th>
+      <th>author</th>
+      <th>year</th>
+      <th>country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>crime</td>
+      <td>Death on the Nile</td>
+      <td>Agatha Christie</td>
+      <td>1937</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>crime</td>
+      <td>The Hound of the Baskervilles</td>
+      <td>Arthur Conan Doyle</td>
+      <td>1902</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>psichology</td>
+      <td>Psychology and Alchemy</td>
+      <td>Carl Gustav Jung</td>
+      <td>1944</td>
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>novel</td>
+      <td>The Castel</td>
+      <td>Franz Kafka</td>
+      <td>1926</td>
+      <td>Germany</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">PublicationDate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">PublicationDate</span><span class="p">)</span> 
+<span class="n">df2</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="s1">&#39;newbooks.xml&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">(</span><span class="s1">&#39;newbooks.xml&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>2018-04-25 00:00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>2016-08-28 00:00:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>2015-02-17 00:00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xml</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="s2">&lt;library&gt;</span>
+<span class="s2">  &lt;floor val=&#39;1&#39;&gt;</span>
+<span class="s2">      &lt;book category=&quot;crime&quot;&gt;</span>
+<span class="s2">        &lt;title&gt;Death on the Nile&lt;/title&gt;</span>
+<span class="s2">        &lt;author&gt;Agatha Christie&lt;/author&gt;</span>
+<span class="s2">        &lt;year&gt;1937&lt;/year&gt;</span>
+<span class="s2">        &lt;country&gt;United Kingdom&lt;/country&gt;</span>
+<span class="s2">      &lt;/book&gt;</span>
+<span class="s2">      &lt;book category=&quot;crime&quot;&gt;</span>
+<span class="s2">        &lt;title&gt;The Hound of the Baskervilles&lt;/title&gt;</span>
+<span class="s2">        &lt;author&gt;Arthur Conan Doyle&lt;/author&gt;</span>
+<span class="s2">        &lt;year&gt;1902&lt;/year&gt;</span>
+<span class="s2">        &lt;country&gt;United Kingdom&lt;/country&gt;</span>
+<span class="s2">      &lt;/book&gt;</span>
+<span class="s2">  &lt;/floor&gt;</span>
+<span class="s2">  &lt;floor val=&#39;2&#39;&gt;</span>
+<span class="s2">      &lt;book category=&quot;psichology&quot;&gt;</span>
+<span class="s2">        &lt;title&gt;Psychology and Alchemy&lt;/title&gt;</span>
+<span class="s2">        &lt;author&gt;Carl Gustav Jung&lt;/author&gt;</span>
+<span class="s2">        &lt;year&gt;1944&lt;/year&gt;</span>
+<span class="s2">        &lt;country&gt;Germany&lt;/country&gt;</span>
+<span class="s2">      &lt;/book&gt;</span>
+<span class="s2">      &lt;book category=&quot;novel&quot;&gt;</span>
+<span class="s2">        &lt;title&gt;The Castel&lt;/title&gt;</span>
+<span class="s2">        &lt;author&gt;Franz Kafka&lt;/author&gt;</span>
+<span class="s2">        &lt;year&gt;1926&lt;/year&gt;</span>
+<span class="s2">        &lt;country&gt;Germany&lt;/country&gt;</span>
+<span class="s2">      &lt;/book&gt;</span>
+<span class="s2">  &lt;/floor&gt;</span>
+<span class="s2">&lt;/library&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>val</th>
+      <th>book</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xsl</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;</span>
+<span class="s2">   &lt;xsl:output method=&quot;xml&quot; omit-xml-declaration=&quot;no&quot; indent=&quot;yes&quot;/&gt;</span>
+<span class="s2">   &lt;xsl:strip-space elements=&quot;*&quot;/&gt;</span>
+<span class="s2">   &lt;xsl:template match=&quot;/library&quot;&gt;</span>
+<span class="s2">      &lt;xsl:copy&gt;</span>
+<span class="s2">        &lt;xsl:apply-templates select=&quot;floor&quot;/&gt;</span>
+<span class="s2">      &lt;/xsl:copy&gt;</span>
+<span class="s2">   &lt;/xsl:template&gt;</span>
+<span class="s2">   &lt;xsl:template match=&quot;floor&quot;&gt;</span>
+<span class="s2">      &lt;xsl:apply-templates select=&quot;book&quot;/&gt;   </span>
+<span class="s2">   &lt;/xsl:template&gt;</span>
+<span class="s2">   &lt;xsl:template match=&quot;book&quot;&gt;</span>
+<span class="s2">      &lt;xsl:copy&gt;</span>
+<span class="s2">         &lt;category&gt;&lt;xsl:value-of select=&quot;@category&quot;/&gt;&lt;/category&gt;</span>
+<span class="s2">         &lt;title&gt;&lt;xsl:value-of select=&quot;title&quot;/&gt;&lt;/title&gt;</span>
+<span class="s2">         &lt;author&gt;&lt;xsl:value-of select=&quot;author&quot;/&gt;&lt;/author&gt;</span>
+<span class="s2">         &lt;year&gt;&lt;xsl:value-of select=&quot;year&quot;/&gt;&lt;/year&gt;</span>
+<span class="s2">         &lt;country&gt;&lt;xsl:value-of select=&quot;country&quot;/&gt;&lt;/country&gt;</span>
+<span class="s2">      &lt;/xsl:copy&gt;</span>
+<span class="s2">   &lt;/xsl:template&gt;</span>
+<span class="s2"> &lt;/xsl:stylesheet&gt;</span>
+<span class="s2"> &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">stylesheet</span><span class="o">=</span><span class="n">xsl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>category</th>
+      <th>title</th>
+      <th>author</th>
+      <th>year</th>
+      <th>country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>crime</td>
+      <td>Death on the Nile</td>
+      <td>Agatha Christie</td>
+      <td>1937</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>crime</td>
+      <td>The Hound of the Baskervilles</td>
+      <td>Arthur Conan Doyle</td>
+      <td>1902</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>psichology</td>
+      <td>Psychology and Alchemy</td>
+      <td>Carl Gustav Jung</td>
+      <td>1944</td>
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>novel</td>
+      <td>The Castel</td>
+      <td>Franz Kafka</td>
+      <td>1926</td>
+      <td>Germany</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="read-and-write-data-in-json">
+<h1>Read and Write data in JSON<a class="headerlink" href="#read-and-write-data-in-json" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>25-Apr-2018</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>28-Aug-2016</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>17-Feb-2015</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;books.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&quot;ID&quot;:{&quot;0&quot;:&quot;001276A&quot;,&quot;1&quot;:&quot;023125B&quot;,&quot;2&quot;:&quot;005556E&quot;},&quot;Title&quot;:{&quot;0&quot;:&quot;The Rise of the Falcon&quot;,&quot;1&quot;:&quot;Controlled mind&quot;,&quot;2&quot;:&quot;Only love remains&quot;},&quot;Author&quot;:{&quot;0&quot;:&quot;John Admiral&quot;,&quot;1&quot;:&quot;Robert Greens&quot;,&quot;2&quot;:&quot;Greta Blooming&quot;},&quot;PublicationDate&quot;:{&quot;0&quot;:&quot;25-Apr-2018&quot;,&quot;1&quot;:&quot;28-Aug-2016&quot;,&quot;2&quot;:&quot;17-Feb-2015&quot;}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s1">&#39;books.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>25-Apr-2018</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>28-Aug-2016</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>17-Feb-2015</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jsondata</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s2">&quot;company&quot;</span><span class="p">:</span> <span class="s2">&quot;BMW&quot;</span><span class="p">,</span>
+<span class="s2">&quot;site&quot;</span><span class="p">:</span> <span class="s2">&quot;Munchen, Germany&quot;</span><span class="p">,</span>
+<span class="s2">&quot;production&quot;</span><span class="p">:</span> <span class="s2">&quot;Motor Vehicles&quot;</span><span class="p">,</span>
+<span class="s2">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="p">{</span>
+<span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;Series 1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot; 116d 5-Door Sport Pack&quot;</span>
+<span class="p">},</span>
+<span class="p">{</span>
+<span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;Series 3&quot;</span><span class="p">,</span>
+<span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot; 330E xDrive Sport Aut&quot;</span>
+<span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">jsondata</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">15</span><span class="o">-</span><span class="n">b5da3d626ef2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">jsondata</span><span class="p">)</span>
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\util\_decorators.py</span> in <span class="ni">wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">205</span>                 <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">206</span>                     <span class="n">kwargs</span><span class="p">[</span><span class="n">new_arg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_arg_value</span>
+<span class="ne">--&gt; </span><span class="mi">207</span>             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">208</span> 
+<span class="g g-Whitespace">    </span><span class="mi">209</span>         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span>
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\util\_decorators.py</span> in <span class="ni">wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span>                     <span class="n">stacklevel</span><span class="o">=</span><span class="n">stacklevel</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">310</span>                 <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">311</span>             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">312</span> 
+<span class="g g-Whitespace">    </span><span class="mi">313</span>         <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\io\json\_json.py</span> in <span class="ni">read_json</span><span class="nt">(path_or_buf, orient, typ, dtype, convert_axes, convert_dates, keep_default_dates, numpy, precise_float, date_unit, encoding, encoding_errors, lines, chunksize, compression, nrows, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">588</span>         <span class="n">convert_axes</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">589</span> 
+<span class="ne">--&gt; </span><span class="mi">590</span>     <span class="n">json_reader</span> <span class="o">=</span> <span class="n">JsonReader</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">591</span>         <span class="n">path_or_buf</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">592</span>         <span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span>
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\io\json\_json.py</span> in <span class="ni">__init__</span><span class="nt">(self, filepath_or_buffer, orient, typ, dtype, convert_axes, convert_dates, keep_default_dates, numpy, precise_float, date_unit, encoding, lines, chunksize, compression, nrows, storage_options, encoding_errors)</span>
+<span class="g g-Whitespace">    </span><span class="mi">673</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nrows can only be passed if lines=True&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">674</span> 
+<span class="ne">--&gt; </span><span class="mi">675</span>         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_from_filepath</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">676</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">677</span> 
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\io\json\_json.py</span> in <span class="ni">_get_data_from_filepath</span><span class="nt">(self, filepath_or_buffer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>             <span class="ow">or</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span>         <span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>             <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">713</span>                 <span class="n">filepath_or_buffer</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span>                 <span class="s2">&quot;r&quot;</span><span class="p">,</span>
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\io\common.py</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">606</span> 
+<span class="g g-Whitespace">    </span><span class="mi">607</span>     <span class="c1"># open URLs</span>
+<span class="ne">--&gt; </span><span class="mi">608</span>     <span class="n">ioargs</span> <span class="o">=</span> <span class="n">_get_filepath_or_buffer</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">609</span>         <span class="n">path_or_buf</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">610</span>         <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
+
+<span class="nn">~\anaconda3\envs\mypandas\lib\site-packages\pandas\io\common.py</span> in <span class="ni">_get_filepath_or_buffer</span><span class="nt">(filepath_or_buffer, encoding, compression, mode, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">393</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_file_like</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">394</span>         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid file path or buffer object type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">395</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">396</span> 
+<span class="g g-Whitespace">    </span><span class="mi">397</span>     <span class="k">return</span> <span class="n">IOArgs</span><span class="p">(</span>
+
+<span class="ne">ValueError</span>: Invalid file path or buffer object type: &lt;class &#39;dict&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">jsondata</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>company</th>
+      <th>site</th>
+      <th>production</th>
+      <th>products</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>BMW</td>
+      <td>Munchen, Germany</td>
+      <td>Motor Vehicles</td>
+      <td>[{'product': 'Series 1', 'model': ' 116d 5-Doo...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">jsondata</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;company&quot;</span><span class="p">,</span><span class="s2">&quot;site&quot;</span><span class="p">,</span><span class="s2">&quot;production&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>product</th>
+      <th>model</th>
+      <th>company</th>
+      <th>site</th>
+      <th>production</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Series 1</td>
+      <td>116d 5-Door Sport Pack</td>
+      <td>BMW</td>
+      <td>Munchen, Germany</td>
+      <td>Motor Vehicles</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Series 3</td>
+      <td>330E xDrive Sport Aut</td>
+      <td>BMW</td>
+      <td>Munchen, Germany</td>
+      <td>Motor Vehicles</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="write-and-read-data-in-binary-format">
+<h1>Write and read data in binary format<a class="headerlink" href="#write-and-read-data-in-binary-format" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>25-Apr-2018</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>28-Aug-2016</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>17-Feb-2015</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="s1">&#39;newbooks.dat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;newbooks.dat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>25-Apr-2018</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>28-Aug-2016</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>17-Feb-2015</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="interact-with-databases-for-data-exchange">
+<h1>Interact with databases for data exchange<a class="headerlink" href="#interact-with-databases-for-data-exchange" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">     CREATE TABLE Fruits</span>
+<span class="s2">     (fruit VARCHAR(20),</span>
+<span class="s2">      weight REAL(20),</span>
+<span class="s2">      amount INTEGER,</span>
+<span class="s2">      price REAL,</span>
+<span class="s2">      origin VARCHAR(20)</span>
+<span class="s2">     );&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;mydata.sqlite&#39;</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Apples&#39;</span><span class="p">,</span><span class="mf">12.5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mf">100.23</span><span class="p">,</span><span class="s1">&#39;Germany&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Cherries&#39;</span><span class="p">,</span><span class="mf">4.5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">200.50</span><span class="p">,</span><span class="s1">&#39;Turkey&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Ananas&#39;</span><span class="p">,</span><span class="mf">19.4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">300.85</span><span class="p">,</span><span class="s1">&#39;Madagascar&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;Strawberries&#39;</span><span class="p">,</span><span class="mf">7.8</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mf">250.33</span><span class="p">,</span><span class="s1">&#39;Italy&#39;</span><span class="p">),</span>
+       <span class="p">]</span>
+
+<span class="n">stmt</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Fruits VALUES (?,?,?,?,?)&quot;</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM Fruits&#39;</span><span class="p">)</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">rows</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Apples&#39;, 12.5, 6, 100.23, &#39;Germany&#39;),
+ (&#39;Cherries&#39;, 4.5, 3, 200.5, &#39;Turkey&#39;),
+ (&#39;Ananas&#39;, 19.4, 4, 300.85, &#39;Madagascar&#39;),
+ (&#39;Strawberries&#39;, 7.8, 12, 250.33, &#39;Italy&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fruit</th>
+      <th>weight</th>
+      <th>amount</th>
+      <th>price</th>
+      <th>origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Apples</td>
+      <td>12.5</td>
+      <td>6</td>
+      <td>100.23</td>
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Cherries</td>
+      <td>4.5</td>
+      <td>3</td>
+      <td>200.50</td>
+      <td>Turkey</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ananas</td>
+      <td>19.4</td>
+      <td>4</td>
+      <td>300.85</td>
+      <td>Madagascar</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Strawberries</td>
+      <td>7.8</td>
+      <td>12</td>
+      <td>250.33</td>
+      <td>Italy</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="working-with-time-data">
+<h1>Working with Time Data<a class="headerlink" href="#working-with-time-data" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-11-30&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-30&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021/11/30&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">],</span>
+                   <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+                   <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   year  month  day
+0  2019     10   15
+1  2020      6   10
+2  2021      4   20
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ts</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   2019-10-15
+1   2020-06-10
+2   2021-04-20
+dtype: datetime64[ns]
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2021 USA 31--12&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y USA </span><span class="si">%d</span><span class="s1">--%m&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-12-31 00:00:00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;2019 USA 31--12&#39;</span><span class="p">,</span><span class="s1">&#39;2020 ITA 20--11&#39;</span><span class="p">,</span><span class="s1">&#39;2021 USA 10--10&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2019 USA 31--12
+1    2020 ITA 20--11
+2    2021 USA 10--10
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y USA </span><span class="si">%d</span><span class="s1">--%m&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2019 USA 31--12
+1    2020 ITA 20--11
+2    2021 USA 10--10
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-30 11:40&#39;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;UTC&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 11:40:00+0000&#39;, tz=&#39;UTC&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-30 11:40&#39;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Stockholm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 11:40:00+0100&#39;, tz=&#39;Europe/Stockholm&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-30 11:40PM&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="s1">&#39;America/Sao_Paulo&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-30 23:40:00
+2021-11-30 23:40:00-03:00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t2</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s1">&#39;US/Eastern&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-30 21:40:00-05:00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">second</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021
+11
+30
+23
+40
+0
+America/Sao_Paulo
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="mi">12</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">64</span><span class="o">-</span><span class="mi">689</span><span class="n">cad0b503f</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="ne">AttributeError</span>: attribute &#39;hour&#39; of &#39;datetime.datetime&#39; objects is not writable
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;1 Day&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;1 days 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-16 10:30AM&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;1 Hour&#39;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">dt</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-16 10:30:00
+2021-11-16 11:30:00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-16 10:30AM&#39;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;1 Hour&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-16 11:30:00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;1 days 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="mi">150045</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;1 days 17:40:45&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;3 days 05:34:23&#39;</span><span class="p">)</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;3D 5:34:23&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;3 days 05:34:23&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Jan-01 11:30AM&#39;</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Mar-13 4:15PM&#39;</span><span class="p">)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>71 days 04:45:00
+&lt;class &#39;pandas._libs.tslibs.timedeltas.Timedelta&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;00:22:33&#39;</span><span class="p">,</span><span class="s1">&#39;00:13:12&#39;</span><span class="p">,</span><span class="s1">&#39;00:24:14&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    00:22:33
+1    00:13:12
+2    00:24:14
+dtype: object
+0   0 days 00:22:33
+1   0 days 00:13:12
+2   0 days 00:24:14
+dtype: timedelta64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2021/01/01&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01&#39;, &#39;2021-01-02&#39;, &#39;2021-01-03&#39;, &#39;2021-01-04&#39;,
+               &#39;2021-01-05&#39;, &#39;2021-01-06&#39;, &#39;2021-01-07&#39;, &#39;2021-01-08&#39;,
+               &#39;2021-01-09&#39;, &#39;2021-01-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2021/01/10&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01&#39;, &#39;2021-01-02&#39;, &#39;2021-01-03&#39;, &#39;2021-01-04&#39;,
+               &#39;2021-01-05&#39;, &#39;2021-01-06&#39;, &#39;2021-01-07&#39;, &#39;2021-01-08&#39;,
+               &#39;2021-01-09&#39;, &#39;2021-01-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">,</span><span class="s2">&quot;2021/01/01 10:00&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;5T&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01 08:00:00&#39;, &#39;2021-01-01 08:05:00&#39;,
+               &#39;2021-01-01 08:10:00&#39;, &#39;2021-01-01 08:15:00&#39;,
+               &#39;2021-01-01 08:20:00&#39;, &#39;2021-01-01 08:25:00&#39;,
+               &#39;2021-01-01 08:30:00&#39;, &#39;2021-01-01 08:35:00&#39;,
+               &#39;2021-01-01 08:40:00&#39;, &#39;2021-01-01 08:45:00&#39;,
+               &#39;2021-01-01 08:50:00&#39;, &#39;2021-01-01 08:55:00&#39;,
+               &#39;2021-01-01 09:00:00&#39;, &#39;2021-01-01 09:05:00&#39;,
+               &#39;2021-01-01 09:10:00&#39;, &#39;2021-01-01 09:15:00&#39;,
+               &#39;2021-01-01 09:20:00&#39;, &#39;2021-01-01 09:25:00&#39;,
+               &#39;2021-01-01 09:30:00&#39;, &#39;2021-01-01 09:35:00&#39;,
+               &#39;2021-01-01 09:40:00&#39;, &#39;2021-01-01 09:45:00&#39;,
+               &#39;2021-01-01 09:50:00&#39;, &#39;2021-01-01 09:55:00&#39;,
+               &#39;2021-01-01 10:00:00&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;5T&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">,</span><span class="s2">&quot;2021/01/01 10:00&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01 08:00:00&#39;, &#39;2021-01-01 08:13:20&#39;,
+               &#39;2021-01-01 08:26:40&#39;, &#39;2021-01-01 08:40:00&#39;,
+               &#39;2021-01-01 08:53:20&#39;, &#39;2021-01-01 09:06:40&#39;,
+               &#39;2021-01-01 09:20:00&#39;, &#39;2021-01-01 09:33:20&#39;,
+               &#39;2021-01-01 09:46:40&#39;, &#39;2021-01-01 10:00:00&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=None)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">,</span><span class="s2">&quot;2021/01/01 10:00&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">tsi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">range</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tsi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-01-01 08:00:00    1.479959
+2021-01-01 08:13:20    0.408933
+2021-01-01 08:26:40    0.106165
+2021-01-01 08:40:00   -1.198836
+2021-01-01 08:53:20    0.378987
+2021-01-01 09:06:40    0.275445
+2021-01-01 09:20:00   -1.735805
+2021-01-01 09:33:20    0.076814
+2021-01-01 09:46:40   -0.830684
+2021-01-01 10:00:00    0.804353
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   2021-01-01 08:00:00
+1   2021-01-01 08:13:20
+2   2021-01-01 08:26:40
+3   2021-01-01 08:40:00
+4   2021-01-01 08:53:20
+5   2021-01-01 09:06:40
+6   2021-01-01 09:20:00
+7   2021-01-01 09:33:20
+8   2021-01-01 09:46:40
+9   2021-01-01 10:00:00
+dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsi</span><span class="p">[</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">:</span><span class="s2">&quot;2021/01/01 8:30&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-01-01 08:00:00    1.479959
+2021-01-01 08:13:20    0.408933
+2021-01-01 08:26:40    0.106165
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral     25-Apr-2018
+1  023125B         Controlled mind   Robert Greens     28-Aug-2016
+2  005556E       Only love remains  Greta Blooming     17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    25-Apr-2018
+1    28-Aug-2016
+2    17-Feb-2015
+Name: PublicationDate, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PublicationDate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral      2018-04-25
+1  023125B         Controlled mind   Robert Greens      2016-08-28
+2  005556E       Only love remains  Greta Blooming      2015-02-17
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   2018-04-25
+1   2016-08-28
+2   2015-02-17
+Name: PublicationDate, dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral      2018-04-25
+1  023125B         Controlled mind   Robert Greens      2016-08-28
+2  005556E       Only love remains  Greta Blooming      2015-02-17
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="working-with-text-data">
+<h1>Working with Text Data<a class="headerlink" href="#working-with-text-data" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral     25-Apr-2018
+1  023125B         Controlled mind   Robert Greens     28-Aug-2016
+2  005556E       Only love remains  Greta Blooming     17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    001276A
+1    023125B
+2    005556E
+Name: ID, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    The Rise of the Falcon
+1           Controlled mind
+2         Only love remains
+Name: Title, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      John Admiral
+1     Robert Greens
+2    Greta Blooming
+Name: Author, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;books.csv&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;string&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate
+0  001276A  The Rise of the Falcon    John Admiral     25-Apr-2018
+1  023125B         Controlled mind   Robert Greens     28-Aug-2016
+2  005556E       Only love remains  Greta Blooming     17-Feb-2015
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    25-Apr-2018
+1    28-Aug-2016
+2    17-Feb-2015
+Name: PublicationDate, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">PublicationDate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   2018-04-25
+1   2016-08-28
+2   2015-02-17
+Name: PublicationDate, dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Title</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">Title</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    The Rise of the Falcon
+1           Controlled mind
+2         Only love remains
+Name: Title, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    THE RISE OF THE FALCON
+1           CONTROLLED MIND
+2         ONLY LOVE REMAINS
+Name: Title, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    the rise of the falcon
+1           controlled mind
+2         only love remains
+Name: Title, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Comment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; Too long for a child   &#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;Interesting     book  &#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;   Very Impressive&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        ID                   Title          Author PublicationDate  \
+0  001276A  The Rise of the Falcon    John Admiral      2018-04-25   
+1  023125B         Controlled mind   Robert Greens      2016-08-28   
+2  005556E       Only love remains  Greta Blooming      2015-02-17   
+
+                    Comment  
+0   Too long for a child     
+1    Interesting     book    
+2           Very Impressive  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Comment</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    24
+1    22
+2    18
+Name: Comment, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Comment</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Comment</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    Too long for a child
+1    Interesting     book
+2         Very Impressive
+Name: Comment, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Comment</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    20
+1    20
+2    15
+Name: Comment, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Comment</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    Too long for a child
+1        Interesting book
+2         Very Impressive
+Name: Comment, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>John Admiral</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>Robert Greens</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>Greta Blooming</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Author</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      John,Admiral
+1     Robert,Greens
+2    Greta,Blooming
+Name: Author, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Comment</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;book&#39;</span><span class="p">,</span><span class="s1">&#39;novel&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0     Too long for a child
+1    Interesting     novel
+2          Very Impressive
+Name: Comment, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    [The, Rise, of, the, Falcon]
+1              [Controlled, mind]
+2           [Only, love, remains]
+Name: Title, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      [John, Admiral]
+1     [Robert, Greens]
+2    [Greta, Blooming]
+Name: Author, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfw</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dfw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        0         1
+0    John   Admiral
+1  Robert    Greens
+2   Greta  Blooming
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">dfw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.frame.DataFrame
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Author_name&#39;</span><span class="p">,</span><span class="s1">&#39;Author_surname&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Author&#39;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+      <th>Author_name</th>
+      <th>Author_surname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+      <td>John</td>
+      <td>Admiral</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+      <td>Robert</td>
+      <td>Greens</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+      <td>Greta</td>
+      <td>Blooming</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Author_name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Author_surname&#39;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+      <th>Author_name</th>
+      <th>Author_surname</th>
+      <th>Author</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+      <td>John</td>
+      <td>Admiral</td>
+      <td>John Admiral</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+      <td>Robert</td>
+      <td>Greens</td>
+      <td>Robert Greens</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+      <td>Greta</td>
+      <td>Blooming</td>
+      <td>Greta Blooming</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Author_name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Author_surname</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      John Admiral
+1     Robert Greens
+2    Greta Blooming
+Name: Author_name, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Author_surname&#39;</span><span class="p">]</span>
+<span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Author_name&#39;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Title</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+      <th>Author</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276A</td>
+      <td>The Rise of the Falcon</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+      <td>John Admiral</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125B</td>
+      <td>Controlled mind</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+      <td>Robert Greens</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556E</td>
+      <td>Only love remains</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+      <td>Greta Blooming</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ID</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;([A-Z]+)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ID1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    001276
+1    023125
+2    005556
+Name: ID1, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ID</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;([0-9]+)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ID2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    A
+1    B
+2    E
+Name: ID2, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+      <th>Author</th>
+      <th>ID1</th>
+      <th>ID2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The Rise of the Falcon</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+      <td>John Admiral</td>
+      <td>001276</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Controlled mind</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+      <td>Robert Greens</td>
+      <td>023125</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Only love remains</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+      <td>Greta Blooming</td>
+      <td>005556</td>
+      <td>E</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ID1</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ID2</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">ID</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;([0-9]+)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001276</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>023125</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005556</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">ID</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;([A-Z]+)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>E</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+      <th>Author</th>
+      <th>ID1</th>
+      <th>ID2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The Rise of the Falcon</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+      <td>John Admiral</td>
+      <td>001276</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Controlled mind</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+      <td>Robert Greens</td>
+      <td>023125</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Only love remains</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+      <td>Greta Blooming</td>
+      <td>005556</td>
+      <td>E</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">ID2</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="s1">&#39;USA&#39;</span><span class="p">,</span><span class="s1">&#39;ITA&#39;</span><span class="p">,</span><span class="s1">&#39;FRA&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    A-USA
+1    B-ITA
+2    E-FRA
+Name: ID2, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;USA&#39;</span>
+<span class="n">df</span><span class="o">.</span><span class="n">ID2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ID2</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ID2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    A-USA
+1    B-USA
+2    E-USA
+Name: ID2, dtype: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+      <th>PublicationDate</th>
+      <th>Comment</th>
+      <th>Author</th>
+      <th>ID1</th>
+      <th>ID2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The Rise of the Falcon</td>
+      <td>2018-04-25</td>
+      <td>Too long for a child</td>
+      <td>John Admiral</td>
+      <td>001276</td>
+      <td>A-USA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Controlled mind</td>
+      <td>2016-08-28</td>
+      <td>Interesting     book</td>
+      <td>Robert Greens</td>
+      <td>023125</td>
+      <td>B-USA</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Only love remains</td>
+      <td>2015-02-17</td>
+      <td>Very Impressive</td>
+      <td>Greta Blooming</td>
+      <td>005556</td>
+      <td>E-USA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">ID1</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    True
+1    True
+2    True
+Name: ID1, dtype: boolean
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">ID2</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">isalnum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    False
+1    False
+2    False
+Name: ID2, dtype: boolean
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;love&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    -1
+1    -1
+2     5
+Name: Title, dtype: Int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;love&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    False
+1    False
+2     True
+Name: Title, dtype: boolean
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_2/data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Read and Write CSV Files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-write-microsoft-excel-files">Read and Write Microsoft Excel Files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data-from-html-pages-on-the-web">Read data from HTML pages on the web</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-write-data-from-xml-files">Read and write data from XML files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-write-data-in-json">Read and Write data in JSON</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#write-and-read-data-in-binary-format">Write and read data in binary format</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interact-with-databases-for-data-exchange">Interact with databases for data exchange</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-time-data">Working with Time Data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-text-data">Working with Text Data</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

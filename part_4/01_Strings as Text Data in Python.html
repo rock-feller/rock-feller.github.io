@@ -1,0 +1,978 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 1: Introduction to Text Data &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_4/01_Strings as Text Data in Python';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 2: Text Mining Operations" href="02_Text%20Mining%20Operations.html" />
+    <link rel="prev" title="Chapter 5: Preparing Image Data for Model Training" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_4/01_Strings as Text Data in Python.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_4/01_Strings as Text Data in Python.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 1: Introduction to Text Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-text-data">What is Text Data?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-strings-in-python">Introduction to Strings in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-string-operations">Common String Operations:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-split-function">The <code class="docutils literal notranslate"><span class="pre">.split()</span></code>  function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-join-function">The <code class="docutils literal notranslate"><span class="pre">.join()</span> <span class="pre">function</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-replace-function">The <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-startswith-endswith-functions">The <code class="docutils literal notranslate"><span class="pre">.startswith()</span> <span class="pre">&amp;</span> <span class="pre">.endswith()</span></code> functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-find-rfind-functions">The <code class="docutils literal notranslate"><span class="pre">.find()</span> <span class="pre">&amp;</span> <span class="pre">.rfind()</span></code> functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lower-upper-functions">The <code class="docutils literal notranslate"><span class="pre">.lower()</span> <span class="pre">&amp;</span> <span class="pre">.upper()</span></code> functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-strip-rstrip-lstrip-functions">The <code class="docutils literal notranslate"> <span class="pre">.strip(),</span> <span class="pre">.rstrip(),</span> <span class="pre">&amp;</span> <span class="pre">.lstrip()</span></code> functions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization-methods-from-scratch">Tokenization Methods from Scratch</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentence-tokenization">Sentence Tokenization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-regex-operations">Basic Regex Operations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-patterns">Searching for Patterns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-sets">Character Sets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wildcard-characters">Wildcard Characters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-text">Replacing Text</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-1-introduction-to-text-data">
+<h1>Chapter 1: Introduction to Text Data<a class="headerlink" href="#chapter-1-introduction-to-text-data" title="Permalink to this heading">#</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction:<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>In today’s digital age, vast amounts of data are produced daily from blogs, social platforms, and web pages. This data holds significant insights, but there’s a challenge in converting it into actionable information. Natural Language Processing (NLP) offers a solution. As a subset of artificial intelligence, NLP focuses on enabling machines to comprehend languages, allowing them to interpret human speech.</p>
+<p>Many companies accumulate massive amounts of data, often in gigabytes or more. Analyzing this manually is almost impossible. Yet, with NLP tecniques, we can train computers to interpret and extract valuable insights from this text. This includes identifying parts of speech, such as nouns, verbs, and adjectives. Moreover, NLP can gauge the sentiment behind a piece of writing, determining whether it conveys a positive or negative tone. This capability has empowered businesses to better understand customer opinions about their products by analyzing their feedback.<br />
+Let’s start fron the basic: <strong>Understanding Textual Data.</strong></p>
+<p><strong>Learning Objectives:</strong></p>
+<ol class="arabic simple">
+<li><p>Grasp the essence of text data and its significance in real-world scenarios.</p></li>
+<li><p>Explore the power and functionality of Python string operations.</p></li>
+<li><p>Understand the importance of tokenization and how to implement it from scratch.</p></li>
+<li><p>Discover the world of regex for searching and modifying text data.</p></li>
+</ol>
+</div>
+<div class="section" id="what-is-text-data">
+<h2>What is Text Data?<a class="headerlink" href="#what-is-text-data" title="Permalink to this heading">#</a></h2>
+<p>Text data, in its simplest form, is information conveyed in a written format. This could range from a single word to extensive documents.</p>
+<p><strong>Real-world Applications of Text Data:</strong></p>
+<ul class="simple">
+<li><p><strong>Sentiment Analysis</strong>: Evaluating feedback on local e-commerce platforms in African countries to enhance customer satisfaction. Imagine being able to gauge user reactions to a product launch in Nairobi using reviews posted online.</p></li>
+<li><p><strong>Information Retrieval</strong>: Consider the importance of having a specialized search engine for African academic papers to promote research within the continent.</p></li>
+<li><p><strong>Machine Translation</strong>: Think about breaking language barriers, like translating real-time news from Afrikaans to Igbo, from Wolof to Chichewa, enabling more widespread information dissemination.</p></li>
+</ul>
+<div class="section" id="introduction-to-strings-in-python">
+<h3>Introduction to Strings in Python<a class="headerlink" href="#introduction-to-strings-in-python" title="Permalink to this heading">#</a></h3>
+<p>In the coding world, strings are how we represent and manipulate text. Python, being a versatile language, provides a suite of tools to handle strings effectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_string</span> <span class="o">=</span> <span class="s2">&quot;African proverbs carry wisdom and depth, like &#39;Only a fool tests the depth of a river with both feet.&#39;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="common-string-operations">
+<h3>Common String Operations:<a class="headerlink" href="#common-string-operations" title="Permalink to this heading">#</a></h3>
+<p>Strings in Python come equipped with a set of built-in methods that allow for efficient manipulation and evaluation. Understanding these methods, especially in the context of textual data analysis, is essential for any  data scientist.</p>
+</div>
+<div class="section" id="the-split-function">
+<h3>The <code class="docutils literal notranslate"><span class="pre">.split()</span></code>  function<a class="headerlink" href="#the-split-function" title="Permalink to this heading">#</a></h3>
+<p>This method will dissect a string into a list, usually based on spaces, but we can specify other delimiters as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proverb</span> <span class="o">=</span> <span class="s2">&quot;Unity is strength, division is weakness.&quot;</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">proverb</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Unity&#39;, &#39;is&#39;, &#39;strength,&#39;, &#39;division&#39;, &#39;is&#39;, &#39;weakness.&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using a different delimiter</span>
+<span class="n">phrases</span> <span class="o">=</span> <span class="n">proverb</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">phrases</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Unity is strength&#39;, &#39;division is weakness.&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-join-function">
+<h3>The <code class="docutils literal notranslate"><span class="pre">.join()</span> <span class="pre">function</span></code><a class="headerlink" href="#the-join-function" title="Permalink to this heading">#</a></h3>
+<p>The opposite of <code class="docutils literal notranslate"><span class="pre">.split()</span></code>, <code class="docutils literal notranslate"><span class="pre">.join()</span></code> allows you to combine a list of strings into a single string using a specified delimiter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">african_countries</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nigeria&quot;</span><span class="p">,</span> <span class="s2">&quot;Kenya&quot;</span><span class="p">,</span> <span class="s2">&quot;Tanzania&quot;</span><span class="p">]</span>
+<span class="n">sentence</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">african_countries</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Nigeria, Kenya, Tanzania
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.join()</span></code> is fairly used to navigate through files in our computer by join paths. For instance, we can access the path to the current working directory and it is rendered as a string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/home/rockefeller/Desktop/Teachings_n_Talks/Teachings/AIMSCmr_2324/course_content/sample_rock_book/rock1_book/part_4&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use that path to navigate to a specific folder by a concatenation operation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_folder</span> <span class="o">=</span> <span class="s1">&#39;data/&#39;</span>
+
+<span class="n">path_to_data</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="p">,</span> <span class="n">data_folder</span><span class="p">])</span>
+<span class="n">path_to_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/home/rockefeller/Desktop/Teachings_n_Talks/Teachings/AIMSCmr_2324/course_content/sample_rock_book/rock1_book/part_4/data/&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-replace-function">
+<h3>The <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> function<a class="headerlink" href="#the-replace-function" title="Permalink to this heading">#</a></h3>
+<p>This method is handy when you need to replace a substring with another substring.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">swahili_greeting</span> <span class="o">=</span> <span class="s2">&quot;Habari gani!&quot;</span>
+
+<span class="n">english_translation</span> <span class="o">=</span> <span class="n">swahili_greeting</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Habari gani&quot;</span><span class="p">,</span> <span class="s2">&quot;How are you&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">english_translation</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>How are you!
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-startswith-endswith-functions">
+<h3>The <code class="docutils literal notranslate"><span class="pre">.startswith()</span> <span class="pre">&amp;</span> <span class="pre">.endswith()</span></code> functions<a class="headerlink" href="#the-startswith-endswith-functions" title="Permalink to this heading">#</a></h3>
+<p>These methods allow for checking if a string starts or ends with a specified substring.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">song</span> <span class="o">=</span> <span class="s2">&quot;Jaraba Africa !&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">song</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">))</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">song</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">))</span>       
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-find-rfind-functions">
+<h3>The <code class="docutils literal notranslate"><span class="pre">.find()</span> <span class="pre">&amp;</span> <span class="pre">.rfind()</span></code> functions<a class="headerlink" href="#the-find-rfind-functions" title="Permalink to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">.find()</span></code> to locate the position of a substring in a string. If the substring isn’t found, it returns -1. <code class="docutils literal notranslate"><span class="pre">.rfind()</span></code> does the same, but starts from the end of the string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rhyme</span> <span class="o">=</span> <span class="s2">&quot;African sunsets are a sight to behold.&quot;</span>
+<span class="n">position</span> <span class="o">=</span> <span class="n">rhyme</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;sunsets&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">last_occurrence</span> <span class="o">=</span> <span class="n">rhyme</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">last_occurrence</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-lower-upper-functions">
+<h3>The <code class="docutils literal notranslate"><span class="pre">.lower()</span> <span class="pre">&amp;</span> <span class="pre">.upper()</span></code> functions<a class="headerlink" href="#the-lower-upper-functions" title="Permalink to this heading">#</a></h3>
+<p>These are used for changing the case of the string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phrase</span> <span class="o">=</span> <span class="s2">&quot;African Rhythms&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phrase</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>african rhythms
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">phrase</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AFRICAN RHYTHMS
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-strip-rstrip-lstrip-functions">
+<h3>The <code class="docutils literal notranslate"> <span class="pre">.strip(),</span> <span class="pre">.rstrip(),</span> <span class="pre">&amp;</span> <span class="pre">.lstrip()</span></code> functions<a class="headerlink" href="#the-strip-rstrip-lstrip-functions" title="Permalink to this heading">#</a></h3>
+<p>These methods are used to trim whitespace or specified characters from the beginning, end, or both sides of a string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_entry</span> <span class="o">=</span> <span class="s2">&quot;    Timbuktu   &quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_entry</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timbuktu
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extra_chars</span> <span class="o">=</span> <span class="s2">&quot;XYZThis is an exampleXYZ&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">extra_chars</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>This is an example
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="tokenization-methods-from-scratch">
+<h2>Tokenization Methods from Scratch<a class="headerlink" href="#tokenization-methods-from-scratch" title="Permalink to this heading">#</a></h2>
+<p>Tokenization is the process of splitting a large paragraph into sentences or words. Essentially, it involves breaking up text into units, known as tokens.</p>
+<ul class="simple">
+<li><p><strong>Why Tokenization?</strong>
+In languages and dialects across Africa, from Swahili in Tanzania to Zulu in South Africa or Yoruba in Nigeria, words often carry a lot of weight. They can represent culture, traditions, and histories. Thus, when analyzing text data from such rich languages, it’s crucial to break it down accurately to understand the essence of each token.</p></li>
+<li><p><strong>Word Tokenization</strong>
+The most basic form of tokenization is word tokenization where we break paragraphs into individual words.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># Splitting by space</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+
+<span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;Habari yako rafiki?&quot;</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Habari&#39;, &#39;yako&#39;, &#39;rafiki?&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sentence-tokenization">
+<h3>Sentence Tokenization<a class="headerlink" href="#sentence-tokenization" title="Permalink to this heading">#</a></h3>
+<p>Here, instead of words, we aim to split the paragraphs into individual sentences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="k">def</span> <span class="nf">sentence_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># Splitting by full stop, question mark, and exclamation mark</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">sent</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;[.!?]&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">sent</span><span class="p">]</span>
+
+
+<span class="n">paragraph</span> <span class="o">=</span> <span class="s2">&quot;Karibu Tanzania! Je, unapenda safari? Ndiyo, napenda sana.&quot;</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">sentence_tokenize</span><span class="p">(</span><span class="n">paragraph</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Karibu Tanzania&#39;, &#39;Je, unapenda safari&#39;, &#39;Ndiyo, napenda sana&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="basic-regex-operations">
+<h2>Basic Regex Operations<a class="headerlink" href="#basic-regex-operations" title="Permalink to this heading">#</a></h2>
+<p>Regular expressions allow us to perform complex searches in a text, making them indispensable in text processing tasks. Let’s discuss its basic operations, especially contextualized in the African setting.</p>
+<div class="section" id="searching-for-patterns">
+<h3>Searching for Patterns<a class="headerlink" href="#searching-for-patterns" title="Permalink to this heading">#</a></h3>
+<p>Regex can help search for specific patterns or words in a text.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">find_pattern</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Nairobi is the capital of Kenya. Kampala is the capital of Uganda.&quot;</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;capital&quot;</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_pattern</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;capital&#39;, &#39;capital&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="character-sets">
+<h3>Character Sets<a class="headerlink" href="#character-sets" title="Permalink to this heading">#</a></h3>
+<p>You can search for any character from a specific set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;[NK]ampala&quot;</span> 
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_pattern</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Kampala&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">[NK]ampala</span></code> will match strings that start with either <code class="docutils literal notranslate"><span class="pre">'N'</span></code> or <code class="docutils literal notranslate"><span class="pre">'K'</span></code> followed by <code class="docutils literal notranslate"><span class="pre">'ampala'</span></code>.</p>
+</div>
+<div class="section" id="wildcard-characters">
+<h3>Wildcard Characters<a class="headerlink" href="#wildcard-characters" title="Permalink to this heading">#</a></h3>
+<p>The dot <code class="docutils literal notranslate"><span class="pre">.</span></code> is a wildcard character that matches any character (except for a newline).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;.ampala&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_pattern</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Kampala&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="replacing-text">
+<h3>Replacing Text<a class="headerlink" href="#replacing-text" title="Permalink to this heading">#</a></h3>
+<p>Regex can also be used to replace specific patterns in a string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">replace_pattern</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="n">new_text</span> <span class="o">=</span> <span class="n">replace_pattern</span><span class="p">(</span><span class="s2">&quot;capital&quot;</span><span class="p">,</span> <span class="s2">&quot;hub&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new_text</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Nairobi is the hub of Kenya. Kampala is the hub of Uganda.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 5: Preparing Image Data for Model Training</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_Text%20Mining%20Operations.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 2: Text Mining Operations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-text-data">What is Text Data?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-strings-in-python">Introduction to Strings in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-string-operations">Common String Operations:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-split-function">The <code class="docutils literal notranslate"><span class="pre">.split()</span></code>  function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-join-function">The <code class="docutils literal notranslate"><span class="pre">.join()</span> <span class="pre">function</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-replace-function">The <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-startswith-endswith-functions">The <code class="docutils literal notranslate"><span class="pre">.startswith()</span> <span class="pre">&amp;</span> <span class="pre">.endswith()</span></code> functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-find-rfind-functions">The <code class="docutils literal notranslate"><span class="pre">.find()</span> <span class="pre">&amp;</span> <span class="pre">.rfind()</span></code> functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lower-upper-functions">The <code class="docutils literal notranslate"><span class="pre">.lower()</span> <span class="pre">&amp;</span> <span class="pre">.upper()</span></code> functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-strip-rstrip-lstrip-functions">The <code class="docutils literal notranslate"> <span class="pre">.strip(),</span> <span class="pre">.rstrip(),</span> <span class="pre">&amp;</span> <span class="pre">.lstrip()</span></code> functions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization-methods-from-scratch">Tokenization Methods from Scratch</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentence-tokenization">Sentence Tokenization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-regex-operations">Basic Regex Operations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-for-patterns">Searching for Patterns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-sets">Character Sets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wildcard-characters">Wildcard Characters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-text">Replacing Text</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

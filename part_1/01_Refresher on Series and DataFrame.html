@@ -1,0 +1,1443 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 1: Working with Series and DataFrames &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_1/01_Refresher on Series and DataFrame';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 2: Data Reading Methods" href="02_Data_Reading_Methods.html" />
+    <link rel="prev" title="Chapter 3: Introduction to Python for Data Science" href="../part_0/02_Python_for_Data_Science.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_1/01_Refresher on Series and DataFrame.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_1/01_Refresher on Series and DataFrame.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 1: Working with Series and DataFrames</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-tabular-data-and-iid-data">The concept of Tabular data and iid data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-pandas">Introduction to Pandas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-series">Pandas Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#series">Series</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-tuple">From a tuple</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-numpy-array">From a numpy array</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-python-dictionary">From a python dictionary</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-statistics">Basic Statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summing-over-items">summing over items</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#averaging-over-items">averaging over items</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-dataframe">Pandas Dataframe</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-1-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 1:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-1-working-with-series-and-dataframes">
+<h1>Chapter 1: Working with Series and DataFrames<a class="headerlink" href="#chapter-1-working-with-series-and-dataframes" title="Permalink to this heading">#</a></h1>
+<p><strong>Learning Objectives:</strong></p>
+<ul class="simple">
+<li><p>Getting familiar with the concept of tabular data and iid data.</p></li>
+<li><p>Getting familiar with the concept of <code class="docutils literal notranslate"><span class="pre">Series</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code>.</p></li>
+<li><p>Developing the ability to query dataframes to answer practical questions.</p></li>
+<li><p>Updating dataframes based on useful insights.</p></li>
+</ul>
+<div class="section" id="the-concept-of-tabular-data-and-iid-data">
+<h2>The concept of Tabular data and iid data<a class="headerlink" href="#the-concept-of-tabular-data-and-iid-data" title="Permalink to this heading">#</a></h2>
+<p><strong>Tabular data</strong> refers to structured data that is organized into <code class="docutils literal notranslate"><span class="pre">rows</span></code> and <code class="docutils literal notranslate"><span class="pre">columns</span></code>, similar to what you might find in a spreadsheet or a database table. Each row typically represents an individual observation or record, while each column signifies a particular attribute or feature of the data.</p>
+<p>For instance, in the African context, a table might list various agricultural products (rows) and <strong>their respective prices, production quantities,</strong> and <strong>export destinations</strong> (columns). This structured format of tabular data enables easy querying, visualization, and statistical analysis. Whether it’s used for monitoring rainfall patterns across various regions in Africa or tracking the spread of diseases like Malaria, tabular data plays a pivotal role in decision-making processes across the continent.</p>
+<p><strong>IID data</strong>, or Independent and Identically Distributed data, refers to a collection of random variables where each variable has the same probability distribution as the others and all are mutually independent. In layman’s terms, it means that each data point is generated in the same way and does not depend on previous data points.</p>
+<p>For example, if one were to conduct a survey across various African nations about a particular product’s preference, the responses from one country or individual would not influence the responses from another. However, it’s essential to note that real-life data, especially in complex environments like Africa with its diverse cultures, economies, and ecosystems, might not always strictly adhere to the IID assumption. Recognizing when this assumption holds and when it doesn’t is crucial for accurate data analysis and modeling.</p>
+<p>Building on the concept of tabular data, modern data science tools have provided versatile structures to handle and manipulate such data with ease. In the Python programming language, the pandas library stands out as a principal tool for this purpose. At the heart of pandas are two primary data structures: Series and DataFrames which is the focus of this chapter.</p>
+</div>
+<div class="section" id="introduction-to-pandas">
+<h2>Introduction to Pandas<a class="headerlink" href="#introduction-to-pandas" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Pandas</span></code> is an open source library providing high-performance, easy-to-use data structures and data analysis tools for the Python programming language.</p>
+<ul class="simple">
+<li><p>Certainly among the most important tools for data analysts and data scientists.</p></li>
+<li><p>The most popular library for working with tabular data in Python</p></li>
+</ul>
+<p>To import it, simply do:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To check the version of Pandas you are running, do:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2.0.3&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pandas-series">
+<h3>Pandas Series<a class="headerlink" href="#pandas-series" title="Permalink to this heading">#</a></h3>
+<p>To get started with pandas, you will need to get comfortable with its two data structures:  <strong>Series</strong> and <strong>Dataframe.</strong> They provide a solid, easy-to-use basis for most applications. Every object successfully returned by  Pandas is either  <strong>Series</strong> or <strong>DataFrame</strong>.</p>
+<p><strong>DataFrames</strong> and <strong>Series</strong> are not simply storage containers. Since Pandas treat them similarly, they have built-in support for a variety of data-wrangling operations, such as:</p>
+<ul class="simple">
+<li><p>Single-level and hierarchical indexing</p></li>
+<li><p>Handling missing data</p></li>
+<li><p>Arithmetic and Boolean operations on entire columns and tables</p></li>
+<li><p>Database-type operations (such as merging and aggregation)</p></li>
+<li><p>Plotting individual columns and whole tables</p></li>
+<li><p>Reading data from files and writing data to files</p></li>
+</ul>
+<div class="section" id="series">
+<h4>Series<a class="headerlink" href="#series" title="Permalink to this heading">#</a></h4>
+<p>A Series is a one-dimensional array-like object containing an array of data (of any NumPy data type) and an associated array of data labels, called its index. You can create a simple series from any sequence: <strong>a list, a tuple, or a numpy array</strong> or even <strong>a python dictionary</strong>.</p>
+<p><strong>From a list of numbers</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">baby_ages</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span> <span class="p">[</span><span class="mi">2</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">,</span> <span class="mi">12</span><span class="p">]</span>  <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">baby_ages</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0     2
+1    10
+2    12
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>From a list of strings</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">countries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span> <span class="p">[</span><span class="s1">&#39;Uganda&#39;</span> <span class="p">,</span> <span class="s1">&#39;Mali&#39;</span> <span class="p">,</span> <span class="s1">&#39;Chad&#39;</span> <span class="p">,</span> <span class="s1">&#39;Niger&#39;</span><span class="p">]</span>   <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">countries</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    Uganda
+1      Mali
+2      Chad
+3     Niger
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>From a list of objects (data of different types)</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">travel_infos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>  <span class="p">[</span> <span class="s2">&quot;£12&quot;</span> <span class="p">,</span> <span class="mi">25</span> <span class="p">,</span> <span class="s2">&quot;Banjul&quot;</span><span class="p">,</span> <span class="s2">&quot;50km&quot;</span>  <span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">travel_infos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       £12
+1        25
+2    Banjul
+3      50km
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-a-tuple">
+<h4>From a tuple<a class="headerlink" href="#from-a-tuple" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diseases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span> <span class="p">(</span><span class="s2">&quot;malaria&quot;</span> <span class="p">,</span> <span class="s2">&quot;tuberculosis&quot;</span><span class="p">,</span> <span class="s2">&quot;influenza&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">diseases</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0         malaria
+1    tuberculosis
+2       influenza
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-a-numpy-array">
+<h4>From a numpy array<a class="headerlink" href="#from-a-numpy-array" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Let&#39;s import the numpy library first</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index_poverty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">index_poverty</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 2, 4, 6, 8])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index_poverty_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index_poverty</span><span class="p">)</span>
+<span class="n">index_poverty_series</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0
+1    2
+2    4
+3    6
+4    8
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-a-python-dictionary">
+<h4>From a python dictionary<a class="headerlink" href="#from-a-python-dictionary" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_infos</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Outbreak&quot;</span><span class="p">:</span> <span class="s1">&#39;Ebola&#39;</span> <span class="p">,</span> <span class="s2">&quot;City&quot;</span><span class="p">:</span> <span class="s1">&#39;Goma&#39;</span> <span class="p">,</span> 
+                  <span class="s2">&quot;Country&quot;</span><span class="p">:</span> <span class="s1">&#39;DRC&#39;</span> <span class="p">,</span><span class="s2">&quot;Continent&quot;</span><span class="p">:</span> <span class="s1">&#39;Africa&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_infos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Outbreak&#39;: &#39;Ebola&#39;, &#39;City&#39;: &#39;Goma&#39;, &#39;Country&#39;: &#39;DRC&#39;, &#39;Continent&#39;: &#39;Africa&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_infos_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ebola_infos</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_infos_series</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Outbreak      Ebola
+City           Goma
+Country         DRC
+Continent    Africa
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can notice, there is column on the left always appearing when printing a series. It’s a <code class="docutils literal notranslate"><span class="pre">column</span> <span class="pre">index</span></code> which, by default run from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(n-1\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the length of the series. In the case of a dictionary, it is automatically replaced by <strong>the key</strong> of the dictionary. And the <strong>values</strong> of the dictionary are the actual content of the Pandas Series.You can verify it by typing the command below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_infos_series</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Outbreak&#39;, &#39;City&#39;, &#39;Country&#39;, &#39;Continent&#39;], dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_infos_series</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Ebola&#39;, &#39;Goma&#39;, &#39;DRC&#39;, &#39;Africa&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Series can also be created along with its indices</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An information recorded from a patient during a survey in a Hospital in Mbour, Senegal.</span>
+<span class="n">patient_senegal_infos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span> <span class="p">[</span><span class="s2">&quot;Traore&quot;</span> <span class="p">,</span> <span class="s2">&quot;Senegalese&quot;</span> <span class="p">,</span> <span class="s2">&quot;Single&quot;</span> <span class="p">,</span> <span class="s2">&quot;Wolof&quot;</span><span class="p">],</span>
+              <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Name&quot;</span> <span class="p">,</span> <span class="s2">&quot;Nationality&quot;</span> <span class="p">,</span> <span class="s2">&quot;Status&quot;</span> <span class="p">,</span> <span class="s2">&quot;Language&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">patient_senegal_infos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Name               Traore
+Nationality    Senegalese
+Status             Single
+Language            Wolof
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#The age of 4 siblings members of a family in Bouake, Ivory Coast as  recorded during a survey</span>
+<span class="n">bouake_kids</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">12</span> <span class="p">,</span> <span class="mi">25</span> <span class="p">,</span> <span class="mi">7</span> <span class="p">,</span> <span class="mi">58</span> <span class="p">,</span> <span class="mi">39</span><span class="p">],</span>
+               <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yao&quot;</span> <span class="p">,</span> <span class="s2">&quot;Kouassi&quot;</span> <span class="p">,</span> <span class="s2">&quot;Senan&quot;</span><span class="p">,</span> <span class="s2">&quot;Bony&quot;</span> <span class="p">,</span> <span class="s2">&quot;Marguerite&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Yao           12
+Kouassi       25
+Senan          7
+Bony          58
+Marguerite    39
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can get to each of the terms easily, by using the index operators, which is the open and close square brackets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="p">[</span><span class="s1">&#39;Yao&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="p">[</span><span class="s1">&#39;Bony&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>58
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can check the number of people <strong>below the age of 20</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Yao           12
+Kouassi       25
+Senan          7
+Bony          58
+Marguerite    39
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span> <span class="o">&lt;</span> <span class="mi">20</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Yao            True
+Kouassi       False
+Senan          True
+Bony          False
+Marguerite    False
+dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<p>Technically speaking, <code class="docutils literal notranslate"><span class="pre">bouake_kids</span> <span class="pre">&lt;</span> <span class="pre">20</span></code> is a boolean expression, which means it is an expressions that returns Boolean values: <code class="docutils literal notranslate"><span class="pre">True</span></code> where there is a match and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise. But, what if we want to get the actual values, we need to use the index operator and passing the boolean expression as argument. and we will get sliced pandas series with only the matching rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="p">[</span><span class="n">bouake_kids</span><span class="o">&lt;</span><span class="mi">45</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Yao           12
+Kouassi       25
+Senan          7
+Marguerite    39
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also enlarge the scope of our query buy feeding the index operator with a more sophisticated expression or collection of expressions as you see below. For instance, we are interesred in kids between the age of 12 and 45.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="p">[(</span><span class="n">bouake_kids</span><span class="o">&lt;</span><span class="mi">45</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bouake_kids</span><span class="o">&gt;</span><span class="mi">12</span><span class="p">)</span>  <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kouassi       25
+Marguerite    39
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="basic-statistics">
+<h3>Basic Statistics<a class="headerlink" href="#basic-statistics" title="Permalink to this heading">#</a></h3>
+<p>Basic statistical operations could be performed on pandas series. Let’s explore a few.</p>
+<p><strong>The sum of all the elements</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#### A summary of the series</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">describe()</span></code> method is used for calculating some statistical data like percentile, mean and std of the numerical values of the Series. Lets look at the <code class="docutils literal notranslate"><span class="pre">bouake_kids</span></code> again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count     5.000000
+mean     28.200000
+std      20.777392
+min       7.000000
+25%      12.000000
+50%      25.000000
+75%      39.000000
+max      58.000000
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="summing-over-items">
+<h4>summing over items<a class="headerlink" href="#summing-over-items" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>141
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="averaging-over-items">
+<h4>averaging over items<a class="headerlink" href="#averaging-over-items" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>28.2
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>The lowest value</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>The largest value</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>58
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>The variance</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>431.70000000000005
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>The standard deviation</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bouake_kids</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20.777391559096152
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="pandas-dataframe">
+<h3>Pandas Dataframe<a class="headerlink" href="#pandas-dataframe" title="Permalink to this heading">#</a></h3>
+<p>A DataFrame represents a tabular, spreadsheet-like data structure containing an ordered collection of columns, each of which can be a different value type (numeric, string, boolean, etc.). It can also simply be viewed as a collection of Series. There are numerous ways to construct a DataFrame, though one of the most common is from a dict of equal-length lists or NumPy arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Some temperature values recorded across African cities last rainy season</span>
+<span class="n">temp_african_cities</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;City&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Gao&#39;</span> <span class="p">,</span> <span class="s1">&#39;Thies&#39;</span> <span class="p">,</span> <span class="s1">&#39;Abeche&#39;</span><span class="p">,</span><span class="s1">&#39;Bobo-Dioulasso&#39;</span><span class="p">,</span> <span class="s1">&#39;Port Harcourt&#39;</span><span class="p">],</span>
+      
+                          <span class="s2">&quot;Temperature(°C)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">29</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">35</span><span class="p">]</span>     <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_temp_afr_cities</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">temp_african_cities</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_temp_afr_cities</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>City</th>
+      <th>Temperature(°C)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Gao</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Thies</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Abeche</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Bobo-Dioulasso</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Port Harcourt</td>
+      <td>35</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#The birth rate from several hospitals in Togo, Benin on a specific week in 2003</span>
+<span class="n">togo_birth_rate</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Hospital&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Hopital General de Dapaong&quot;</span> <span class="p">,</span> <span class="s2">&quot;Deutsche Hospital Apaong&quot;</span> <span class="p">,</span> 
+                   <span class="s2">&quot;Clinique Notre-Dame de Lomé&quot;</span><span class="p">,</span> <span class="s2">&quot;hôpital Nachtigal d’aného&quot;</span><span class="p">,</span> 
+                   <span class="s2">&quot;hôpital Germanique de kpalimé&quot;</span><span class="p">,</span> <span class="s2">&quot;Liberty Klinic&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Birth_Rate&quot;</span> <span class="p">:[</span> <span class="mf">0.4</span> <span class="p">,</span> <span class="mf">0.25</span> <span class="p">,</span> <span class="mf">0.98</span> <span class="p">,</span> <span class="mf">0.18</span> <span class="p">,</span> <span class="mf">0.62</span> <span class="p">,</span> <span class="mf">0.16</span><span class="p">]</span>
+     <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_togo_birth_rate</span>   <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">togo_birth_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_togo_birth_rate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hospital</th>
+      <th>Birth_Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Hopital General de Dapaong</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Deutsche Hospital Apaong</td>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Clinique Notre-Dame de Lomé</td>
+      <td>0.98</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>hôpital Nachtigal d’aného</td>
+      <td>0.18</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>hôpital Germanique de kpalimé</td>
+      <td>0.62</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Liberty Klinic</td>
+      <td>0.16</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To query the content of a dataframe, we can call the different series using the index operator and passing in the name of a column as a string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_togo_birth_rate</span><span class="p">[</span><span class="s1">&#39;Hospital&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       Hopital General de Dapaong
+1         Deutsche Hospital Apaong
+2      Clinique Notre-Dame de Lomé
+3        hôpital Nachtigal d’aného
+4    hôpital Germanique de kpalimé
+5                   Liberty Klinic
+Name: Hospital, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_togo_birth_rate</span><span class="p">[</span><span class="s1">&#39;Birth_Rate&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.40
+1    0.25
+2    0.98
+3    0.18
+4    0.62
+5    0.16
+Name: Birth_Rate, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We might decide to add another column. For instance, we want to add information related to the electricity outage in those hospitals during that week.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_togo_birth_rate</span><span class="p">[</span><span class="s1">&#39;Light&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yes&quot;</span> <span class="p">,</span> <span class="s2">&quot;Yes&quot;</span> <span class="p">,</span> <span class="s2">&quot;No&quot;</span> <span class="p">,</span> <span class="s2">&quot;Yes&quot;</span> <span class="p">,</span> <span class="s2">&quot;No&quot;</span> <span class="p">,</span> <span class="s2">&quot;No&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_togo_birth_rate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hospital</th>
+      <th>Birth_Rate</th>
+      <th>Light</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Hopital General de Dapaong</td>
+      <td>0.40</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Deutsche Hospital Apaong</td>
+      <td>0.25</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Clinique Notre-Dame de Lomé</td>
+      <td>0.98</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>hôpital Nachtigal d’aného</td>
+      <td>0.18</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>hôpital Germanique de kpalimé</td>
+      <td>0.62</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Liberty Klinic</td>
+      <td>0.16</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can get a subset of dataframe based on some conditions. Let’s find out from the task below.</p>
+<div class="section" id="font-color-800080-task-1-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 1:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-1-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>In our quest to understand the interplay between health metrics and infrastructural development in Togo, we have obtained information from various hospitals across Togo. The data is provided below.</p>
+<ol class="arabic simple">
+<li><p>Take a look at the data and think of some practical questions that can be answered from querying that dataframe</p></li>
+<li><p>Phrase them on a piece of paper.</p></li>
+<li><p>Write the Python codes that solve them</p></li>
+<li><p>Think of a recommendation you can make out of your answers.</p></li>
+<li><p>Answer the following questions:</p>
+<ul class="simple">
+<li><p>What are the hospitals where the birth rate is less than <code class="docutils literal notranslate"><span class="pre">0.50</span></code>?</p></li>
+<li><p>What are the hospitals which had electricity supplied on that day?</p></li>
+<li><p>Are the Germans Hospitals in Togo always supplied with electricity?</p></li>
+</ul>
+</li>
+<li><p>Siemens, under the auspices of the German-Togo Collaboration, has committed to equipping selected hospitals with backup power generators to mitigate service disruptions during power outages, ensuring continuous patient care. Siemens has judiciously scheduled the delivery of these generators to each beneficiary hospital. Below, you will find the scheduled delivery dates stored in the <code class="docutils literal notranslate"><span class="pre">scheduled_dates</span></code> variable. Use <code class="docutils literal notranslate"><span class="pre">pd.to_datetime</span></code> to convert these dates, ensuring they are in the appropriate datetime format for further analysis.</p></li>
+<li><p>In light of directives from His Excellency Mr. Fore Yassingbe, the Togolese Minister of Health and his team will be present for the generator handover ceremonies. Given his tight schedule, his secretary informed that he can only attend events scheduled between the 20th and 40th weeks of the year. Based on this timeframe, how many ceremonies can he attend in person?</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">togo_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Hospital Name&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Lomé Central Hospital&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;Kara Regional Hospital&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;Sokodé District Hospital&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;Dapaong Clinic&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;Atakpamé Health Center&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;Bassar Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Tsevie Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Aného Medical Clinic&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Kpalimé Health Center&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Mango District Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Lomé-Berlin Partnership Clinic&#39;</span><span class="p">,</span>  
+        <span class="s1">&#39;Deutsche Togo Hospital&#39;</span><span class="p">,</span>          
+        <span class="s1">&#39;Badou Health Center&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Notse Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Sotouboua Medical Facility&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;German-Togolese Medical Institute&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;Vogan Health Clinic&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Tabligbo Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Kande Medical Center&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;German Heart Clinic of Lomé&#39;</span>       
+    <span class="p">],</span>
+    <span class="s1">&#39;Birth rate&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">0.152</span><span class="p">,</span> <span class="mf">0.124</span><span class="p">,</span> <span class="mf">0.147</span><span class="p">,</span> <span class="mf">0.108</span><span class="p">,</span> <span class="mf">0.135</span><span class="p">,</span> 
+        <span class="mf">0.119</span><span class="p">,</span> <span class="mf">0.141</span><span class="p">,</span> <span class="mf">0.130</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.148</span><span class="p">,</span>
+        <span class="mf">0.151</span><span class="p">,</span> <span class="mf">0.133</span><span class="p">,</span> <span class="mf">0.137</span><span class="p">,</span> <span class="mf">0.128</span><span class="p">,</span> <span class="mf">0.122</span><span class="p">,</span>
+        <span class="mf">0.144</span><span class="p">,</span> <span class="mf">0.136</span><span class="p">,</span> <span class="mf">0.139</span><span class="p">,</span> <span class="mf">0.115</span><span class="p">,</span> <span class="mf">0.155</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Access to Electricity&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scheduled_dates</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;2024-06-12&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-08-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-04-11&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-09-23&#39;</span><span class="p">,</span> 
+         <span class="s1">&#39;2024-05-30&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-09-14&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-07-04&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-06-26&#39;</span><span class="p">,</span> 
+         <span class="s1">&#39;2024-08-15&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-04-25&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-09-10&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-06-30&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;2024-12-15&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-05-17&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-05-13&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-05-15&#39;</span><span class="p">,</span> 
+         <span class="s1">&#39;2024-10-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-10-04&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-10-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-10-02&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../part_0/02_Python_for_Data_Science.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 3: Introduction to Python for Data Science</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_Data_Reading_Methods.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 2: Data Reading Methods</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-tabular-data-and-iid-data">The concept of Tabular data and iid data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-pandas">Introduction to Pandas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-series">Pandas Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#series">Series</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-tuple">From a tuple</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-numpy-array">From a numpy array</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-python-dictionary">From a python dictionary</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-statistics">Basic Statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summing-over-items">summing over items</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#averaging-over-items">averaging over items</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-dataframe">Pandas Dataframe</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-1-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 1:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

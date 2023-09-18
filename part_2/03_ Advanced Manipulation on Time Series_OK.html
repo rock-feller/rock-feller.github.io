@@ -1,0 +1,2328 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 3: Advanced Manipulation on Time Series &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_2/03_ Advanced Manipulation on Time Series_OK';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 4: Framing Time Series" href="04_Framing%20TimeSeries%20_OK.html" />
+    <link rel="prev" title="Chapter 2: Basic Data Manipulation on Time Series" href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_2/03_ Advanced Manipulation on Time Series_OK.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_2/03_ Advanced Manipulation on Time Series_OK.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 3: Advanced Manipulation on Time Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-of-time-series">Components of Time Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080"> Example: </font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differencing-time-series">Differencing time series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulating-time-series">Cumulating  time series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-mean">Rolling Mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling-the-time-series">Resampling the Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downsampling-the-time-series">Downsampling the Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upsampling-the-time-series">Upsampling the Time Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-4-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 4:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-3-advanced-manipulation-on-time-series">
+<h1>Chapter 3: Advanced Manipulation on Time Series<a class="headerlink" href="#chapter-3-advanced-manipulation-on-time-series" title="Permalink to this heading">#</a></h1>
+<p>Time series data captures sequential information over consistent time intervals. However, for an effective analysis and modeling, further preprocessing techniques and special type of operations are often applied. Some of the insights one can gain from those operations include  stabilizing the mean of a series,  smoothening the dynamics of the series, reducing noise and highlighting underlying trends just to name a few.</p>
+<p>Practical use cases for these operations are critical when working on forecasting stock prices for instance, analyzing weather patterns, predicting customer demand, and detecting anomalies in sensor data. By mastering these operations, you can gain valuable insights into temporal patterns, identify meaningful trends, and make informed decisions based on historical data.</p>
+<p><strong>Learning Objectives:</strong></p>
+<p>In this section, you will gain a comprehensive understanding of time series preprocessing techniques including:</p>
+<ol class="arabic simple">
+<li><p>Stabilizing the mean of a series through Differentiation operations</p></li>
+<li><p>Smoothening the series or reducing the noise through rolling mean or moving average</p></li>
+<li><p>Enriching signal clarity or isolating cyclic patterns within a series through filtering techniques</p></li>
+<li><p>Reducing the computational complexity through downsampling mechanisms</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="components-of-time-series">
+<h2>Components of Time Series<a class="headerlink" href="#components-of-time-series" title="Permalink to this heading">#</a></h2>
+<p>Time series analysis provides a body of techniques to better understand a dataset. Perhaps the
+most useful of these is the decomposition of a time series into 4 constituent parts:</p>
+<ul class="simple">
+<li><p><strong>Level.</strong> The baseline value for the series if it were a straight line.</p></li>
+<li><p><strong>Trend.</strong> The optional and often linear increasing or decreasing behavior of the series over time.</p></li>
+<li><p><strong>Seasonality.</strong> The optional repeating patterns or cycles of behavior over time.</p></li>
+<li><p><strong>Noise.</strong> The optional variability in the observations that cannot be explained by the model.</p></li>
+</ul>
+<p>These constituent components can be thought to combine in some way to provide the
+observed time series. Assumptions can be made about these components both in behavior
+and in how they are combined, which allows them to be modeled using traditional statistical
+methods. These components may also be the most effective way to make predictions about
+future values, but not always. In cases where these classical methods do not result in effective
+performance, these components may still be useful concepts, and even input to alternate methods.</p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-example-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080> Example: </font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<p>Arusha is a city up north in Tanzania, widely recognized for its several distinctive attributes and significant contributions to both Tanzania and East Africa. Specifically, it holds the distinguished reputation of being Tanzania’s safari capital city and a popular stopover for adventurers who are preparing for a Kilimanjaro expedition. Given the impact of climate change, The Tanzania Tourist Board, which is the national tourism organization, seeks your expertise in examining climate patterns spanning the past three months, from 01 May 2023 to 31st July 2023. This assessment will inform their promotion of tourism activities while considering weather conditions.</p>
+<ol class="arabic simple">
+<li><p>What is Arusha sadly known for? Hint: …”Rwanda, August 1993”.</p></li>
+</ol>
+<p>The weather data has been provided by the Tanzania Meteorological Authority(TMA). On an hourly basis, several variables have been measured:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>* The Wind Direction at 50 Meters (Degrees)  
+* The Wind Speed at 50 Meters (m/s) 
+* The Temperature at 2 Meters (Dregrees Celsius)
+* The Precipitation Corrected (mm/hour)  
+* Specific Humidity at 2 Meters (g/kg)
+</pre></div>
+</div>
+<p>The data has been shared with you as a csv file called <code class="docutils literal notranslate"><span class="pre">arusha_hourlyseries.csv</span></code> .</p>
+<ol class="arabic simple" start="2">
+<li><p>Load it and tell us what you observe just from looking at the column headers.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#if you open the data within a spreadsheet, you will understand why we had to include the skiprows parameter.</span>
+<span class="n">arusha_data</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/arusha_hourlyseries.csv&#39;</span> <span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">arusha_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>YEAR</th>
+      <th>MO</th>
+      <th>DY</th>
+      <th>HR</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>101.39</td>
+      <td>15.52</td>
+      <td>3.28</td>
+      <td>0.01</td>
+      <td>12.63</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>3</td>
+      <td>102.74</td>
+      <td>15.33</td>
+      <td>3.26</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>4</td>
+      <td>108.43</td>
+      <td>15.32</td>
+      <td>3.11</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>5</td>
+      <td>114.32</td>
+      <td>15.38</td>
+      <td>3.21</td>
+      <td>0.01</td>
+      <td>12.63</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>6</td>
+      <td>117.97</td>
+      <td>17.37</td>
+      <td>3.41</td>
+      <td>0.01</td>
+      <td>13.37</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 2208 entries, 0 to 2207
+Data columns (total 9 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   YEAR         2208 non-null   int64  
+ 1   MO           2208 non-null   int64  
+ 2   DY           2208 non-null   int64  
+ 3   HR           2208 non-null   int64  
+ 4   WD50M        2208 non-null   float64
+ 5   T2M          2208 non-null   float64
+ 6   WS50M        2208 non-null   float64
+ 7   PRECTOTCORR  2208 non-null   float64
+ 8   QV2M         2208 non-null   float64
+dtypes: float64(5), int64(4)
+memory usage: 155.4 KB
+</pre></div>
+</div>
+</div>
+</div>
+<p>We noticed that the <strong>YEAR</strong>, <strong>MONTH</strong> and <strong>DAY</strong> column are all displayed separately. We might to re-assemble them into a date column with the correspond data type. Prior to do that, let’s rename those columbs appropriately.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span> <span class="p">,</span> <span class="s1">&#39;month&#39;</span> <span class="p">,</span> <span class="s1">&#39;day&#39;</span> <span class="p">,</span> <span class="s1">&#39;hour&#39;</span> <span class="p">,</span>
+                       <span class="s1">&#39;WD50M&#39;</span><span class="p">,</span> <span class="s1">&#39;T2M&#39;</span><span class="p">,</span> <span class="s1">&#39;WS50M&#39;</span><span class="p">,</span> <span class="s1">&#39;PRECTOTCORR&#39;</span><span class="p">,</span><span class="s1">&#39;QV2M&#39;</span> <span class="p">]</span>
+<span class="n">arusha_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>101.39</td>
+      <td>15.52</td>
+      <td>3.28</td>
+      <td>0.01</td>
+      <td>12.63</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>3</td>
+      <td>102.74</td>
+      <td>15.33</td>
+      <td>3.26</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>4</td>
+      <td>108.43</td>
+      <td>15.32</td>
+      <td>3.11</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]])</span>
+<span class="n">arusha_data</span> <span class="o">=</span>  <span class="n">arusha_data</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">arusha_data</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">arusha_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>101.39</td>
+      <td>15.52</td>
+      <td>3.28</td>
+      <td>0.01</td>
+      <td>12.63</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>3</td>
+      <td>102.74</td>
+      <td>15.33</td>
+      <td>3.26</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>4</td>
+      <td>108.43</td>
+      <td>15.32</td>
+      <td>3.11</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>5</td>
+      <td>114.32</td>
+      <td>15.38</td>
+      <td>3.21</td>
+      <td>0.01</td>
+      <td>12.63</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>6</td>
+      <td>117.97</td>
+      <td>17.37</td>
+      <td>3.41</td>
+      <td>0.01</td>
+      <td>13.37</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The same applies to the <strong>hours</strong> column. But here, we convert the integer representation into an hour column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">time</span>
+<span class="n">arusha_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>02:00:00</td>
+      <td>101.39</td>
+      <td>15.52</td>
+      <td>3.28</td>
+      <td>0.01</td>
+      <td>12.63</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>03:00:00</td>
+      <td>102.74</td>
+      <td>15.33</td>
+      <td>3.26</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>04:00:00</td>
+      <td>108.43</td>
+      <td>15.32</td>
+      <td>3.11</td>
+      <td>0.01</td>
+      <td>12.57</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 2208 entries, 0 to 2207
+Data columns (total 10 columns):
+ #   Column       Non-Null Count  Dtype         
+---  ------       --------------  -----         
+ 0   Date         2208 non-null   datetime64[ns]
+ 1   year         2208 non-null   int64         
+ 2   month        2208 non-null   int64         
+ 3   day          2208 non-null   int64         
+ 4   hour         2208 non-null   object        
+ 5   WD50M        2208 non-null   float64       
+ 6   T2M          2208 non-null   float64       
+ 7   WS50M        2208 non-null   float64       
+ 8   PRECTOTCORR  2208 non-null   float64       
+ 9   QV2M         2208 non-null   float64       
+dtypes: datetime64[ns](1), float64(5), int64(3), object(1)
+memory usage: 172.6+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the tendancy for each of the variables</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span> <span class="p">,</span> <span class="s1">&#39;g&#39;</span> <span class="p">,</span> <span class="s1">&#39;b&#39;</span> <span class="p">,</span> <span class="s1">&#39;k&#39;</span> <span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">var</span> <span class="p">,</span> <span class="n">col</span>  <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arusha_data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span> <span class="p">,</span><span class="n">colors</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/24cb9c735156afe732e903631c1481cae89578e47095cfb5ebd6a3686858b600.png" src="../_images/24cb9c735156afe732e903631c1481cae89578e47095cfb5ebd6a3686858b600.png" />
+<img alt="../_images/307a2466eb0b07d46735102c2c71d0a14181c93cd8158053fddcf65f964883da.png" src="../_images/307a2466eb0b07d46735102c2c71d0a14181c93cd8158053fddcf65f964883da.png" />
+<img alt="../_images/5cfeb70096b10f139de074f526c54ac432472ae095a4c0d84200103b5351072a.png" src="../_images/5cfeb70096b10f139de074f526c54ac432472ae095a4c0d84200103b5351072a.png" />
+<img alt="../_images/d0363f456be1b85445733decb2f510673dd2816db7dbd4d98a67c3395d27cc01.png" src="../_images/d0363f456be1b85445733decb2f510673dd2816db7dbd4d98a67c3395d27cc01.png" />
+<img alt="../_images/753513def5692f07b97bfc9e2fb5c29d2d83ca8f52a5da37f5f82e27a8444dc8.png" src="../_images/753513def5692f07b97bfc9e2fb5c29d2d83ca8f52a5da37f5f82e27a8444dc8.png" />
+</div>
+</div>
+<p>To get the flavour of the series, we might also want to investigate the start date and the end data of the series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2023-05-01 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2023-08-01 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We could see that the data collection started on <strong>01st May 2023</strong> and ended on <strong>01st August 2023</strong> at midnight.</p>
+<div class="section" id="differencing-time-series">
+<h3>Differencing time series<a class="headerlink" href="#differencing-time-series" title="Permalink to this heading">#</a></h3>
+<p>Differencing is a method of transforming a time series dataset. It can be used to remove the series dependence on time, so-called temporal dependence. This includes structures like trends and seasonality. Taking the difference between consecutive observations is called a lag-1 difference. The lag difference can be adjusted to suit the specific temporal structure. you can use the <code class="docutils literal notranslate"><span class="pre">.diff()</span></code> method to perform that.</p>
+<p>Let’s say we are interested in knowing the temperature difference between two consecutive days within the series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;T2M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    15.52
+1    15.33
+2    15.32
+3    15.38
+4    17.37
+Name: T2M, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;Temp_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;T2M&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+<span class="n">arusha_data</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span> <span class="p">,</span> <span class="s1">&#39;T2M&#39;</span><span class="p">,</span> <span class="s1">&#39;Temp_diff&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>T2M</th>
+      <th>Temp_diff</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-05-01</td>
+      <td>15.52</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-05-01</td>
+      <td>15.33</td>
+      <td>-0.19</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-05-01</td>
+      <td>15.32</td>
+      <td>-0.01</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-05-01</td>
+      <td>15.38</td>
+      <td>0.06</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-05-01</td>
+      <td>17.37</td>
+      <td>1.99</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-05-01</td>
+      <td>18.80</td>
+      <td>1.43</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2023-05-01</td>
+      <td>20.22</td>
+      <td>1.42</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2023-05-01</td>
+      <td>21.46</td>
+      <td>1.24</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2023-05-01</td>
+      <td>22.47</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2023-05-01</td>
+      <td>23.12</td>
+      <td>0.65</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As you could notice, the first entry of the <code class="docutils literal notranslate"><span class="pre">Temperature</span> <span class="pre">difference</span></code> column has <code class="docutils literal notranslate"><span class="pre">NaN</span></code> as a placeholder as it refers the starting date, which means there is no value to differentiate against.</p>
+<p>The differentiation becomes useful when we are concerned about removing the linear trend from the dynamics of the series. Let’s see how the temperature difference looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;Temp_diff&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fa88be12340&gt;]
+</pre></div>
+</div>
+<img alt="../_images/08ae8358e32a3379b2d81171392a82a6cd10d49f0a94e0a95ba8b744ad87892b.png" src="../_images/08ae8358e32a3379b2d81171392a82a6cd10d49f0a94e0a95ba8b744ad87892b.png" />
+</div>
+</div>
+<p>One could also change the lag difference in order to adress a specific temporal structure. By passing an integer parameter to the <code class="docutils literal notranslate"><span class="pre">.diff()</span></code> method, we can compute the difference between two timely distant observations of the variable. For instance, the temperature difference every two hours, will be computed the following way:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;T2M&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        NaN
+1        NaN
+2      -0.20
+3       0.05
+4       2.05
+        ... 
+2203   -1.90
+2204   -1.58
+2205   -1.37
+2206   -1.35
+2207   -1.29
+Name: T2M, Length: 2208, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cumulating-time-series">
+<h3>Cumulating  time series<a class="headerlink" href="#cumulating-time-series" title="Permalink to this heading">#</a></h3>
+<p>As opposed to differencing, we might be concerned with tracking the accumulated total of a variable over time, in order to understand the growth patterns, comparing year-to-date figures or observing the accumulation rate of a particular metric.</p>
+<p>For the case in hand, it won’t make a lot of sense to compute the accumulated temperature over hours/days, as temperature is an intensive physical property of matter that is not additive. However, computing the accumulated precipitation over some time period could tell us about the pluviometry of that location or the total amount of rainfall within a specific time frame within that location.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;Prec_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arusha_data</span><span class="p">[</span><span class="s2">&quot;PRECTOTCORR&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<span class="n">arusha_data</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span> <span class="p">,</span> <span class="s1">&#39;PRECTOTCORR&#39;</span><span class="p">,</span> <span class="s1">&#39;Prec_cum&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">arusha_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+      <th>Temp_diff</th>
+      <th>Prec_cum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>02:00:00</td>
+      <td>101.39</td>
+      <td>15.52</td>
+      <td>3.28</td>
+      <td>0.01</td>
+      <td>12.63</td>
+      <td>NaN</td>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>03:00:00</td>
+      <td>102.74</td>
+      <td>15.33</td>
+      <td>3.26</td>
+      <td>0.01</td>
+      <td>12.57</td>
+      <td>-0.19</td>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>04:00:00</td>
+      <td>108.43</td>
+      <td>15.32</td>
+      <td>3.11</td>
+      <td>0.01</td>
+      <td>12.57</td>
+      <td>-0.01</td>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>05:00:00</td>
+      <td>114.32</td>
+      <td>15.38</td>
+      <td>3.21</td>
+      <td>0.01</td>
+      <td>12.63</td>
+      <td>0.06</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-05-01</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>06:00:00</td>
+      <td>117.97</td>
+      <td>17.37</td>
+      <td>3.41</td>
+      <td>0.01</td>
+      <td>13.37</td>
+      <td>1.99</td>
+      <td>0.05</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;Prec_cum&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fa889e0c2e0&gt;]
+</pre></div>
+</div>
+<img alt="../_images/43013fd6c4a5106040195eab8ec91b52518fc07db1bddbeee978d373abecc707.png" src="../_images/43013fd6c4a5106040195eab8ec91b52518fc07db1bddbeee978d373abecc707.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+      <th>Temp_diff</th>
+      <th>Prec_cum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>737</th>
+      <td>2023-05-31</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>31</td>
+      <td>19:00:00</td>
+      <td>131.80</td>
+      <td>18.79</td>
+      <td>7.23</td>
+      <td>0.01</td>
+      <td>13.49</td>
+      <td>-0.47</td>
+      <td>123.61</td>
+    </tr>
+    <tr>
+      <th>738</th>
+      <td>2023-05-31</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>31</td>
+      <td>20:00:00</td>
+      <td>132.09</td>
+      <td>18.33</td>
+      <td>7.07</td>
+      <td>0.01</td>
+      <td>13.49</td>
+      <td>-0.46</td>
+      <td>123.62</td>
+    </tr>
+    <tr>
+      <th>739</th>
+      <td>2023-05-31</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>31</td>
+      <td>21:00:00</td>
+      <td>134.02</td>
+      <td>17.80</td>
+      <td>6.43</td>
+      <td>0.03</td>
+      <td>13.61</td>
+      <td>-0.53</td>
+      <td>123.65</td>
+    </tr>
+    <tr>
+      <th>740</th>
+      <td>2023-05-31</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>31</td>
+      <td>22:00:00</td>
+      <td>135.38</td>
+      <td>17.39</td>
+      <td>5.80</td>
+      <td>0.15</td>
+      <td>13.79</td>
+      <td>-0.41</td>
+      <td>123.80</td>
+    </tr>
+    <tr>
+      <th>741</th>
+      <td>2023-05-31</td>
+      <td>2023</td>
+      <td>5</td>
+      <td>31</td>
+      <td>23:00:00</td>
+      <td>137.22</td>
+      <td>17.30</td>
+      <td>5.43</td>
+      <td>0.22</td>
+      <td>13.85</td>
+      <td>-0.09</td>
+      <td>124.02</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This could in turn answer questions related to the monthly total amount of rainfall in arusha and we could also observe its dynamics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">monthly_Tot_rfall</span> <span class="o">=</span> <span class="n">arusha_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)[</span><span class="s1">&#39;Prec_cum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
+<span class="n">monthly_Tot_rfall</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>month
+5    124.02
+6    211.12
+7    273.85
+8    273.85
+Name: Prec_cum, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">&#39;May&#39;</span> <span class="p">,</span> <span class="s1">&#39;June&#39;</span><span class="p">,</span> <span class="s1">&#39;July&#39;</span> <span class="p">,</span> <span class="s1">&#39;August&#39;</span><span class="p">]</span> <span class="p">,</span> <span class="n">monthly_Tot_rfall</span> <span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;precipitation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)</span>
+<span class="c1"># plt.title(&#39;Monthly Total amount of rainfall&#39;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;month&#39;)
+</pre></div>
+</div>
+<img alt="../_images/36979ea75d38c906dcd976a4fe5eecabab76c364945acda822ecc7006fde4264.png" src="../_images/36979ea75d38c906dcd976a4fe5eecabab76c364945acda822ecc7006fde4264.png" />
+</div>
+</div>
+</div>
+<div class="section" id="rolling-mean">
+<h3>Rolling Mean<a class="headerlink" href="#rolling-mean" title="Permalink to this heading">#</a></h3>
+<p>While the daily or hourly temperature fluctuations can be quite erratic due to various transient factors, we might be interested in identifying any longer-term trends or anomalies that might suggest broader climatic shifts. The rolling mean (often referred to as the moving average) is a powerful tool to tackle that issue.</p>
+<p>By applying a rolling mean with a fixed window size, we can smooth out the day-to-day fluctuations and clearly see monthly patterns. For instance, let’s look at the moving average given a windown of fixed size 12, in order to tell how the data behaves on a 12hours basis.</p>
+<p>We can use the <code class="docutils literal notranslate"><span class="pre">.rolling()</span></code> method, which takes a parameter of the number of values to consider in the rolling window. In the example below, we take the mean of six values, in order to have the moving average every six consecutive hours of the day.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;rolling_6h_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;T2M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span> <span class="n">window</span><span class="o">=</span> <span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">arusha_data</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span> <span class="p">,</span> <span class="s1">&#39;T2M&#39;</span> <span class="p">,</span> <span class="s1">&#39;rolling_6h_mean&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>T2M</th>
+      <th>rolling_6h_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-05-01</td>
+      <td>15.52</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-05-01</td>
+      <td>15.33</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-05-01</td>
+      <td>15.32</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-05-01</td>
+      <td>15.38</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-05-01</td>
+      <td>17.37</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2203</th>
+      <td>2023-07-31</td>
+      <td>15.89</td>
+      <td>19.021667</td>
+    </tr>
+    <tr>
+      <th>2204</th>
+      <td>2023-07-31</td>
+      <td>15.18</td>
+      <td>17.485000</td>
+    </tr>
+    <tr>
+      <th>2205</th>
+      <td>2023-07-31</td>
+      <td>14.52</td>
+      <td>16.498333</td>
+    </tr>
+    <tr>
+      <th>2206</th>
+      <td>2023-08-01</td>
+      <td>13.83</td>
+      <td>15.661667</td>
+    </tr>
+    <tr>
+      <th>2207</th>
+      <td>2023-08-01</td>
+      <td>13.23</td>
+      <td>14.901667</td>
+    </tr>
+  </tbody>
+</table>
+<p>2208 rows × 3 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="resampling-the-time-series">
+<h3>Resampling the Time Series<a class="headerlink" href="#resampling-the-time-series" title="Permalink to this heading">#</a></h3>
+<p>There are several scenarios where one might need to resample the time series, which is a fundamental step in time series analysis. Resampling time series data refers to the process of changing the time-frequency or granularity of the data points. This can be either <strong>an increase in frequency (upsampling)</strong> or <strong>a reduction (downsampling)</strong>. By adapting the frequency, analysts can align datasets with different intervals for consistent comparisons or analyses.</p>
+</div>
+<div class="section" id="downsampling-the-time-series">
+<h3>Downsampling the Time Series<a class="headerlink" href="#downsampling-the-time-series" title="Permalink to this heading">#</a></h3>
+<p>Downsampling the series, which involves reducing the data’s granularity, is particularly useful in improving computational efficiency, reducing noise and providing a higher-level view of patterns or trends.</p>
+<ol class="arabic simple">
+<li><p>Improving Computation Efficiency:</p></li>
+</ol>
+<p>For very large datasets, computation can become resource-intensive and time-consuming. Downsampling can make data processing and modeling more manageable.</p>
+<ol class="arabic simple" start="2">
+<li><p>Noise Reduction:</p></li>
+</ol>
+<p>High-frequency data can sometimes introduce a lot of noise. Downsampling, when combined with aggregation (like taking the mean), can help in smoothening the data and removing short-term fluctuations or noise, revealing longer-term trends or cycles.</p>
+<ol class="arabic simple" start="3">
+<li><p>Visualizations:</p></li>
+</ol>
+<p>Too many data points can make visualizations cluttered and less informative. Downsampling can make plots and charts clearer and easier to understand.</p>
+<p>A practical example would be to convert hourly data to daily data or daily data to monthtly or to any frequency that is dictated by the problem. For instance, let’s look at the distribution of the wind speed on a day to day basis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">day</span>   <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span>  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;WS50M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">24</span><span class="o">*</span><span class="n">day</span><span class="p">:</span><span class="mi">24</span><span class="o">*</span><span class="p">(</span><span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="c1">#plt.xlabel(&#39;hour&#39;)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;wind speed&#39;</span><span class="p">)</span>
+        <span class="c1">#plt.title(&#39;day &#39; +str(day+1))</span>
+        
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1018712da8b3ca8c55c30fa66f5c9700dd75fefd3482156a0cdb582d5a111576.png" src="../_images/1018712da8b3ca8c55c30fa66f5c9700dd75fefd3482156a0cdb582d5a111576.png" />
+</div>
+</div>
+<p>Despite the wind’s overall daily fluctuations, there may not be a significant change within two consecutive hours. This suggests that if we encounter one of the aforementioned situations, we could downsample the wind speed signal by recording it every two hours. Consequently, there would be twelve data points in a day instead of twenty-four.</p>
+<p>It is achieving by doing the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_per2h</span> <span class="o">=</span> <span class="n">arusha_data</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is the resulting daily plots of wind speed</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">day</span>   <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span>  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_per2h</span><span class="p">[</span><span class="s1">&#39;WS50M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">12</span><span class="o">*</span><span class="n">day</span><span class="p">:</span><span class="mi">12</span><span class="o">*</span><span class="p">(</span><span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="c1">#plt.xlabel(&#39;hour&#39;)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;wind speed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/df3769907e5f522e71569c0bb3df150b9347d68bd9ec22f8cc79b750bc8e4967.png" src="../_images/df3769907e5f522e71569c0bb3df150b9347d68bd9ec22f8cc79b750bc8e4967.png" />
+</div>
+</div>
+<p>Another downsampling strategy involves reducing the frequency of data points, by computing an aggregate of a certain time interval. For instance, in case of low variation of the signals, we might consider only working with daily averages, which means that the 24 data points available within a day are therefore represented by their average value. To work that out effectively with dataframes, we would have to set the date column as dataframe index.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_indexed</span><span class="o">=</span> <span class="n">arusha_data</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;Date&quot;</span><span class="p">])</span>
+<span class="n">arusha_indexed</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>WD50M</th>
+      <th>T2M</th>
+      <th>WS50M</th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+      <th>Temp_diff</th>
+      <th>Prec_cum</th>
+      <th>rolling_6h_mean</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-05-01</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>02:00:00</td>
+      <td>101.39</td>
+      <td>15.52</td>
+      <td>3.28</td>
+      <td>0.01</td>
+      <td>12.63</td>
+      <td>NaN</td>
+      <td>0.01</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-05-01</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>03:00:00</td>
+      <td>102.74</td>
+      <td>15.33</td>
+      <td>3.26</td>
+      <td>0.01</td>
+      <td>12.57</td>
+      <td>-0.19</td>
+      <td>0.02</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-05-01</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>04:00:00</td>
+      <td>108.43</td>
+      <td>15.32</td>
+      <td>3.11</td>
+      <td>0.01</td>
+      <td>12.57</td>
+      <td>-0.01</td>
+      <td>0.03</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-05-01</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>05:00:00</td>
+      <td>114.32</td>
+      <td>15.38</td>
+      <td>3.21</td>
+      <td>0.01</td>
+      <td>12.63</td>
+      <td>0.06</td>
+      <td>0.04</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-05-01</th>
+      <td>2023</td>
+      <td>5</td>
+      <td>1</td>
+      <td>06:00:00</td>
+      <td>117.97</td>
+      <td>17.37</td>
+      <td>3.41</td>
+      <td>0.01</td>
+      <td>13.37</td>
+      <td>1.99</td>
+      <td>0.05</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>And then, we can take the daily mean of the observations and see the corresponding plot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_dsp1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">arusha_indexed</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)[</span><span class="s1">&#39;T2M&#39;</span><span class="p">,</span><span class="s1">&#39;WS50M&#39;</span> <span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="c1">#.reset_index()</span>
+<span class="n">arusha_dsp1</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>T2M</th>
+      <th>WS50M</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-05-01</th>
+      <td>18.923636</td>
+      <td>4.167273</td>
+    </tr>
+    <tr>
+      <th>2023-05-02</th>
+      <td>19.774167</td>
+      <td>4.715833</td>
+    </tr>
+    <tr>
+      <th>2023-05-03</th>
+      <td>20.421250</td>
+      <td>5.811250</td>
+    </tr>
+    <tr>
+      <th>2023-05-04</th>
+      <td>19.747917</td>
+      <td>5.817917</td>
+    </tr>
+    <tr>
+      <th>2023-05-05</th>
+      <td>19.861667</td>
+      <td>4.783750</td>
+    </tr>
+    <tr>
+      <th>2023-05-06</th>
+      <td>20.297917</td>
+      <td>5.357500</td>
+    </tr>
+    <tr>
+      <th>2023-05-07</th>
+      <td>20.902917</td>
+      <td>5.846250</td>
+    </tr>
+    <tr>
+      <th>2023-05-08</th>
+      <td>20.593333</td>
+      <td>6.253333</td>
+    </tr>
+    <tr>
+      <th>2023-05-09</th>
+      <td>20.295417</td>
+      <td>7.083750</td>
+    </tr>
+    <tr>
+      <th>2023-05-10</th>
+      <td>19.993750</td>
+      <td>6.689167</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Below we have the daily average of temperature over the course of a month.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">days</span> <span class="o">=</span>  <span class="p">[</span><span class="s1">&#39;day&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="n">arusha_dsp1</span><span class="p">[</span><span class="s1">&#39;T2M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+<span class="n">locator</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">StrMethodFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{x:.0f}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3481c98ff81363383bcb1dec08b4cc3f7357cd98818c6e3a05698ba83e365a5f.png" src="../_images/3481c98ff81363383bcb1dec08b4cc3f7357cd98818c6e3a05698ba83e365a5f.png" />
+</div>
+</div>
+<p>Below we have the daily sum of precipitation over the course of a month.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_dsp2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">arusha_indexed</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)[</span><span class="s1">&#39;PRECTOTCORR&#39;</span><span class="p">,</span><span class="s1">&#39;QV2M&#39;</span> <span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="c1">#.reset_index()</span>
+<span class="n">arusha_dsp2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PRECTOTCORR</th>
+      <th>QV2M</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-05-01</th>
+      <td>0.15</td>
+      <td>283.68</td>
+    </tr>
+    <tr>
+      <th>2023-05-02</th>
+      <td>5.40</td>
+      <td>338.50</td>
+    </tr>
+    <tr>
+      <th>2023-05-03</th>
+      <td>6.25</td>
+      <td>349.43</td>
+    </tr>
+    <tr>
+      <th>2023-05-04</th>
+      <td>2.23</td>
+      <td>325.38</td>
+    </tr>
+    <tr>
+      <th>2023-05-05</th>
+      <td>0.50</td>
+      <td>312.78</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2023-07-28</th>
+      <td>2.85</td>
+      <td>274.87</td>
+    </tr>
+    <tr>
+      <th>2023-07-29</th>
+      <td>1.17</td>
+      <td>275.32</td>
+    </tr>
+    <tr>
+      <th>2023-07-30</th>
+      <td>2.71</td>
+      <td>291.69</td>
+    </tr>
+    <tr>
+      <th>2023-07-31</th>
+      <td>1.85</td>
+      <td>278.02</td>
+    </tr>
+    <tr>
+      <th>2023-08-01</th>
+      <td>0.00</td>
+      <td>22.46</td>
+    </tr>
+  </tbody>
+</table>
+<p>93 rows × 2 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">days</span> <span class="o">=</span>  <span class="p">[</span><span class="s1">&#39;day&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="n">arusha_dsp2</span><span class="p">[</span><span class="s1">&#39;PRECTOTCORR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;precipitation&#39;</span><span class="p">)</span>
+<span class="n">locator</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">StrMethodFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{x:.0f}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f07e0d48283154d609966dd8d6b02a5bda36f5f50e58a0b4804340ae7f9f0011.png" src="../_images/f07e0d48283154d609966dd8d6b02a5bda36f5f50e58a0b4804340ae7f9f0011.png" />
+</div>
+</div>
+</div>
+<div class="section" id="upsampling-the-time-series">
+<h3>Upsampling the Time Series<a class="headerlink" href="#upsampling-the-time-series" title="Permalink to this heading">#</a></h3>
+<p>On the other hand, upsampling increases the granularity, which can be beneficial for filling gaps in data or preparing data for certain models or applications that require a specific frequency. When resampling, the choice of method for filling or aggregating values—such as linear interpolation, mean, or sum—is crucial to ensure meaningful and accurate representation.</p>
+<p>Upsampling is when the frequency of samples is increased (e.g., months to days).
+Again, you can use the
+<code class="docutils literal notranslate"><span class="pre">.resample()</span></code>
+method.</p>
+<p>Let’s consider the downsamples, we could choose the downsampled temperature data that we performed earlier and try and resample it using the linear interpolation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_dsp1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>T2M</th>
+      <th>WS50M</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-05-01</th>
+      <td>18.923636</td>
+      <td>4.167273</td>
+    </tr>
+    <tr>
+      <th>2023-05-02</th>
+      <td>19.774167</td>
+      <td>4.715833</td>
+    </tr>
+    <tr>
+      <th>2023-05-03</th>
+      <td>20.421250</td>
+      <td>5.811250</td>
+    </tr>
+    <tr>
+      <th>2023-05-04</th>
+      <td>19.747917</td>
+      <td>5.817917</td>
+    </tr>
+    <tr>
+      <th>2023-05-05</th>
+      <td>19.861667</td>
+      <td>4.783750</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2023-07-28</th>
+      <td>18.828750</td>
+      <td>6.531250</td>
+    </tr>
+    <tr>
+      <th>2023-07-29</th>
+      <td>18.892500</td>
+      <td>5.645833</td>
+    </tr>
+    <tr>
+      <th>2023-07-30</th>
+      <td>19.415000</td>
+      <td>4.417500</td>
+    </tr>
+    <tr>
+      <th>2023-07-31</th>
+      <td>19.561250</td>
+      <td>5.175000</td>
+    </tr>
+    <tr>
+      <th>2023-08-01</th>
+      <td>13.530000</td>
+      <td>3.935000</td>
+    </tr>
+  </tbody>
+</table>
+<p>93 rows × 2 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arusha_intdaily</span> <span class="o">=</span> <span class="n">arusha_dsp1</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+<span class="n">arusha_intdaily</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>T2M</th>
+      <th>WS50M</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-05-01 00:00:00</th>
+      <td>18.923636</td>
+      <td>4.167273</td>
+    </tr>
+    <tr>
+      <th>2023-05-01 01:00:00</th>
+      <td>18.959075</td>
+      <td>4.190129</td>
+    </tr>
+    <tr>
+      <th>2023-05-01 02:00:00</th>
+      <td>18.994514</td>
+      <td>4.212986</td>
+    </tr>
+    <tr>
+      <th>2023-05-01 03:00:00</th>
+      <td>19.029953</td>
+      <td>4.235843</td>
+    </tr>
+    <tr>
+      <th>2023-05-01 04:00:00</th>
+      <td>19.065391</td>
+      <td>4.258699</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2023-07-31 20:00:00</th>
+      <td>14.535208</td>
+      <td>4.141667</td>
+    </tr>
+    <tr>
+      <th>2023-07-31 21:00:00</th>
+      <td>14.283906</td>
+      <td>4.090000</td>
+    </tr>
+    <tr>
+      <th>2023-07-31 22:00:00</th>
+      <td>14.032604</td>
+      <td>4.038333</td>
+    </tr>
+    <tr>
+      <th>2023-07-31 23:00:00</th>
+      <td>13.781302</td>
+      <td>3.986667</td>
+    </tr>
+    <tr>
+      <th>2023-08-01 00:00:00</th>
+      <td>13.530000</td>
+      <td>3.935000</td>
+    </tr>
+  </tbody>
+</table>
+<p>2209 rows × 2 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">day</span>   <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span>  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_data</span><span class="p">[</span><span class="s1">&#39;WS50M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">24</span><span class="o">*</span><span class="n">day</span><span class="p">:</span><span class="mi">24</span><span class="o">*</span><span class="p">(</span><span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;true data&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">arusha_intdaily</span><span class="p">[</span><span class="s1">&#39;WS50M&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">24</span><span class="o">*</span><span class="n">day</span><span class="p">:</span><span class="mi">24</span><span class="o">*</span><span class="p">(</span><span class="n">day</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;intpd data&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;wind speed&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cf00d890e2ac21706ad245f767e78dc87ea71246cacdbe6cd0aef4b986862e2d.png" src="../_images/cf00d890e2ac21706ad245f767e78dc87ea71246cacdbe6cd0aef4b986862e2d.png" />
+</div>
+</div>
+<p>We can see that the linear interpolation is not the best representation of our observations. One should probably think of an polynomial interpolation and choose an convenient degree for the polynomial.</p>
+<div class="section" id="font-color-800080-task-4-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 4:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-4-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p><strong>SahelPower Co.</strong> is an energy company located in Moundou,  the second largest city in Chad. They primarily relies on wind farms to generate electricity. The company understands that electricity demand is influenced by various factors, including ambient temperature as in hot weather, households tend to consume more energy.</p>
+<p>However, their wind power generation platform is ran by a subisidiary start-up specialized in wind powerplants constructions called SaoWind. SaoWind provide wind-related data, and SahelPower Co. has the technology to convert it into wind energy for electricity usage.</p>
+<p>Their overall goal is to optimize their electricity production, manage demand-supply gaps, and improve overall efficiency through analyzing closely the  datasets they have received from both SNE (Societe Nationale d’Electricite du Tchad) and SaoWind (wind speed and direction).</p>
+<p>Here are a few additional information regarding the data files they have received:</p>
+<ul class="simple">
+<li><p>SaoWind:</p>
+<ol class="arabic simple">
+<li><p>Variables: Wind speed at 50M  , Wind Direction at 50M</p></li>
+<li><p>Resolution: hourly observations</p></li>
+<li><p>Date range: 01 Jan 2004 at 10AM  - 26 Feb 2004  at 9AM</p></li>
+<li><p>file name:  <code class="docutils literal notranslate"><span class="pre">saowind_data.csv</span></code></p></li>
+</ol>
+</li>
+<li><p>SNE</p>
+<ol class="arabic simple">
+<li><p>Variables: Electricity demand, Ambiant Temperature</p></li>
+<li><p>Resolution: hourly observations</p></li>
+<li><p>Date range: 01 Jan 2004 at 00AM  - 26 Feb 2004  at 11PM</p></li>
+<li><p>file name:  <code class="docutils literal notranslate"><span class="pre">snelec_data.csv</span></code></p></li>
+</ol>
+</li>
+</ul>
+<ol class="arabic simple">
+<li><p>Wind is often considered as one of the cleanest form of renewable energy? What are the pros and cons  of it?</p></li>
+<li><p>You have noticed that data came from two different sheets. Merge them and report on the different steps you used to achieve that.</p></li>
+<li><p>Plot the temperature and demand  seperately and comment on the plots</p></li>
+<li><p>How do the average electricity demand and the ambient temperature vary across different weeks? Commenton  your findings.</p></li>
+<li><p>On days when the ambient temperature was above 25°C, was the electricity demand significantly higher than on days when it was below 25°C?</p></li>
+<li><p>Plot the temperature differences between Saturday withing the observations.</p></li>
+<li><p>How does the average electricity generation during daytime hours (e.g., 6 am to 6 pm) compare to the average generation during nighttime hours (e.g., 6 pm to 6 am)?</p></li>
+<li><p>The WD50M measure the direction of the wind towards the North Direction. However, for  wind power calculation, due to the singularity around  0 and 360 degrees, it was decided to convert the wind speed and direction into wind vector (x and y components) using the formula below:</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(w_x = v \cdot \cos(\phi)\)</span></p>
+<p><span class="math notranslate nohighlight">\( w_y = v  \cdot \sin(\phi)\)</span></p>
+<p>where  <span class="math notranslate nohighlight">\(v\)</span> is the wind velocity and <span class="math notranslate nohighlight">\(\phi\)</span> is the wind angle. Compute the x and y computer components of the wind vector and plot the corresponding graphs.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 2: Basic Data Manipulation  on Time Series</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_Framing%20TimeSeries%20_OK.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 4: Framing Time Series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-of-time-series">Components of Time Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080"> Example: </font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differencing-time-series">Differencing time series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulating-time-series">Cumulating  time series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-mean">Rolling Mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling-the-time-series">Resampling the Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downsampling-the-time-series">Downsampling the Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upsampling-the-time-series">Upsampling the Time Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-4-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 4:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

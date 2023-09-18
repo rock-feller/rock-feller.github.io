@@ -1,0 +1,1601 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 4: Framing Time Series &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_2/04_Framing TimeSeries _OK';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 1: Introduction to Image Data" href="../part_3/01_Introduction%20to%20Image%20Data.html" />
+    <link rel="prev" title="Chapter 3: Advanced Manipulation on Time Series" href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_2/04_Framing TimeSeries _OK.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_2/04_Framing TimeSeries _OK.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 4: Framing Time Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-machine-learning">Supervised Machine Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window">Sliding Window</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080">Example:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lags-feature">Lags Feature</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-5-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 5:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-4-framing-time-series">
+<h1>Chapter 4: Framing Time Series<a class="headerlink" href="#chapter-4-framing-time-series" title="Permalink to this heading">#</a></h1>
+<p>Time Series data must be reframed as a supervised learning dataset before we can start using machine learning algorithms. There is no concept of input and output features in time series. Instead, we must choose the variable to be predicted and use feature engineering to construct all of the inputs that will be used to make predictions for future time steps.
+In this chapter, you will discover how to perform feature engineering on time series data with Python to model
+your time series problem with machine learning algorithms.</p>
+<p><strong>Learning outcomes:</strong></p>
+<p>After completing this session, you will know:</p>
+<ol class="arabic simple">
+<li><p>What supervised learning is and how it is the foundation for all predictive modeling machine learning algorithms.</p></li>
+<li><p>The sliding window method for framing a time series dataset and how to use it.</p></li>
+<li><p>How to use the sliding window for multivariate data and multi-step forecasting.</p></li>
+</ol>
+<p>Let’s dive in.</p>
+<div class="section" id="supervised-machine-learning">
+<h2>Supervised Machine Learning<a class="headerlink" href="#supervised-machine-learning" title="Permalink to this heading">#</a></h2>
+<p>The majority of practical machine learning uses supervised learning. Supervised learning is
+where you have input variables (X) and an output variable (y) and you use an algorithm to
+learn the mapping function from the input to the output.</p>
+<div class="math notranslate nohighlight">
+\[Y = f(X)\]</div>
+<p>The goal is to approximate the real underlying mapping so well that when you have new
+input data <span class="math notranslate nohighlight">\((X)\)</span>, you can predict the output variables <span class="math notranslate nohighlight">\((y)\)</span> for that data. Below is a contrived
+example of a supervised learning dataset where each row is an observation comprised of one
+input variable <span class="math notranslate nohighlight">\((X)\)</span> and one output variable to be predicted <span class="math notranslate nohighlight">\((y)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+<span class="mi">5</span><span class="p">,</span> <span class="mf">0.9</span>
+<span class="mi">4</span><span class="p">,</span> <span class="mf">0.8</span>
+<span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span>
+<span class="mi">3</span><span class="p">,</span> <span class="mf">0.7</span>
+<span class="mi">4</span><span class="p">,</span> <span class="mf">0.9</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">f69bb942dcd6</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.9</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.8</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.7</span>
+
+<span class="ne">NameError</span>: name &#39;X&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is called supervised learning because the process of an algorithm learning from the training
+dataset can be thought of as a teacher supervising the learning process. We know the correct
+answers; the algorithm iteratively makes predictions on the training data and is corrected by
+making updates.</p>
+<p>Learning stops when the algorithm achieves an acceptable level of performance.
+Supervised learning problems can be further grouped into regression and classification problems.</p>
+<ul class="simple">
+<li><p><strong>Classification:</strong> A classification problem is when the output variable is a category, such
+as red and blue or disease and no disease.</p></li>
+<li><p><strong>Regression:</strong> A regression problem is when the output variable is a real value, such as
+dollars or weight. The contrived example above is a regression problem.</p></li>
+</ul>
+<p>However, a time series dataset looks this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="mi">1</span><span class="p">,</span> <span class="n">value</span> <span class="mi">1</span>
+
+<span class="n">time</span> <span class="mi">2</span><span class="p">,</span> <span class="n">value</span> <span class="mi">2</span>
+
+<span class="n">time</span> <span class="mi">3</span><span class="p">,</span> <span class="n">value</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to use it for Machine Learning purpose, it must be transformed or reframed to something that looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="mi">1</span><span class="p">,</span> <span class="n">output</span> <span class="mi">1</span>
+<span class="nb">input</span> <span class="mi">2</span><span class="p">,</span> <span class="n">output</span> <span class="mi">2</span>
+<span class="nb">input</span> <span class="mi">3</span><span class="p">,</span> <span class="n">output</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>So that we can train a supervised learning algorithm. Input variables are also called features
+in the field of machine learning, and the task before us is to create or invent new input features
+from our time series dataset. Ideally, we only want input features that best help the learning methods model the relationship between the inputs <span class="math notranslate nohighlight">\((X)\)</span> and the outputs <span class="math notranslate nohighlight">\((y)\)</span> that we would like
+to predict. In this tutorial, we will look at three classes of features that we can create from our
+time series dataset:</p>
+<ul class="simple">
+<li><p>Date Time Features: these are components of the time step itself for each observation.</p></li>
+<li><p>Lag Features: these are values at prior time steps.</p></li>
+<li><p>Window Features: these are a summary of values over a fixed window of prior time steps.</p></li>
+</ul>
+<div class="section" id="sliding-window">
+<h3>Sliding Window<a class="headerlink" href="#sliding-window" title="Permalink to this heading">#</a></h3>
+<p>Time series data can be phrased as supervised learning. Given a sequence of numbers for a time
+series dataset, we can restructure the data to look like a supervised learning problem. We can
+do this by using previous time steps as input variables and use the next time step as the output
+variable. Let’s make this concrete with an example. Imagine we have a time series as follows, which represents daily steps made  by a patient:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time</span><span class="p">,</span> <span class="n">measure</span>
+<span class="mi">1</span><span class="p">,</span>    <span class="mi">100</span>
+<span class="mi">2</span><span class="p">,</span>    <span class="mi">110</span>
+<span class="mi">3</span><span class="p">,</span>    <span class="mi">108</span>
+<span class="mi">4</span><span class="p">,</span>    <span class="mi">115</span>
+<span class="mi">5</span><span class="p">,</span>    <span class="mi">120</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can restructure this time series dataset as a supervised learning problem by using the
+value at the previous time step to predict the value at the next time-step. Re-organizing the
+time series dataset this way, the data would look as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span>    <span class="n">y</span>
+<span class="o">?</span><span class="p">,</span>   <span class="mi">100</span>
+<span class="mi">100</span><span class="p">,</span> <span class="mi">110</span>
+<span class="mi">110</span><span class="p">,</span> <span class="mi">108</span>
+<span class="mi">108</span><span class="p">,</span> <span class="mi">115</span>
+<span class="mi">115</span><span class="p">,</span> <span class="mi">120</span>
+<span class="mi">120</span><span class="p">,</span>  <span class="o">?</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Take a look at the above transformed dataset and compare it to the original time series.
+Here are some observations:</p>
+<ul class="simple">
+<li><p>We can see that the previous time step is the input (X) and the next time step is the output (y) in our supervised learning problem.</p></li>
+<li><p>We can see that the order between the observations is preserved, and must continue to be preserved when using this dataset to train a supervised model.</p></li>
+<li><p>We can see that we have no previous value that we can use to predict the first value in the sequence. We will delete this row as we cannot use it.</p></li>
+</ul>
+<div class="section" id="font-color-800080-example-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Example:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>With the intense heat experienced in Dira Dawe, a city located in the Eastern Part of Ethiopia, the government has initiated a project to analyze the overall sky surface radiation in the area. This study aims to establish a solar power facility that will convert the radiant energy into electricity for residential use.</p>
+<p>The all-sky surface radiation is calculated by accounting for the influences of the clear-sky atmosphere, clouds, and the multiple reflections between cloud and land surface. The Solar Ultraviolet Radiation (UVR) UVR is divided into three wavebands: UV-C (100–280 nm), UV-B (280–315 nm), and UV-A (315–400 nm).</p>
+<p>UV-C is absorbed in the stratosphere, whereas both the UV-A and the UV-B bands reach ground level in amounts that depend on several factors. The first goal is to get a forecast the UVA using the historical data that was delivered by the EEP(Ethiopian Electric Power) Company.</p>
+<p>The data comprises UVA and dew/frost at 2meters from 1st January 2021 to 31st March 2021.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">diradawe_data</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/Dire_Dawa_data.csv&#39;</span> <span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">diradawe_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>YEAR</th>
+      <th>MO</th>
+      <th>DY</th>
+      <th>ALLSKY_SFC_UVA</th>
+      <th>T2MDEW</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>1</td>
+      <td>15.64</td>
+      <td>8.24</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>2</td>
+      <td>15.73</td>
+      <td>8.89</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>3</td>
+      <td>15.65</td>
+      <td>8.05</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>4</td>
+      <td>15.87</td>
+      <td>3.81</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>5</td>
+      <td>15.87</td>
+      <td>5.65</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diradawe_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span><span class="s1">&#39;ALLSKY_SFC_UVA&#39;</span><span class="p">,</span> <span class="s1">&#39;T2MDEW&#39;</span> <span class="p">]</span>
+<span class="n">diradawe_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>ALLSKY_SFC_UVA</th>
+      <th>T2MDEW</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>1</td>
+      <td>15.64</td>
+      <td>8.24</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>2</td>
+      <td>15.73</td>
+      <td>8.89</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>3</td>
+      <td>15.65</td>
+      <td>8.05</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>4</td>
+      <td>15.87</td>
+      <td>3.81</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021</td>
+      <td>1</td>
+      <td>5</td>
+      <td>15.87</td>
+      <td>5.65</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diradawe_data</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">diradawe_data</span><span class="p">[[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;month&#39;</span><span class="p">,</span><span class="s1">&#39;day&#39;</span><span class="p">]])</span>
+<span class="n">diradawe_data</span> <span class="o">=</span> <span class="n">diradawe_data</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;month&#39;</span><span class="p">,</span><span class="s1">&#39;day&#39;</span> <span class="p">,</span> <span class="s1">&#39;ALLSKY_SFC_UVA&#39;</span><span class="p">,</span> <span class="s1">&#39;T2MDEW&#39;</span><span class="p">]</span> <span class="p">]</span>
+<span class="n">diradawe_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>ALLSKY_SFC_UVA</th>
+      <th>T2MDEW</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-01-01</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>1</td>
+      <td>15.64</td>
+      <td>8.24</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>2</td>
+      <td>15.73</td>
+      <td>8.89</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>3</td>
+      <td>15.65</td>
+      <td>8.05</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>4</td>
+      <td>15.87</td>
+      <td>3.81</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>5</td>
+      <td>15.87</td>
+      <td>5.65</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="lags-feature">
+<h3>Lags Feature<a class="headerlink" href="#lags-feature" title="Permalink to this heading">#</a></h3>
+<p><strong>Univariate forecast</strong></p>
+<p>Lag features are the classical way that time series forecasting problems are transformed into
+supervised learning problems. The simplest approach is to predict the value at the next time
+<span class="math notranslate nohighlight">\((t+1)\)</span> given the value at the current time <span class="math notranslate nohighlight">\((t)\)</span>. The Pandas library provides the <strong>shift()</strong> function to help create these shifted or lag features from a time series dataset.</p>
+<p>Shifting the dataset by 1 creates the t column, adding a NaN
+(unknown) value for the first row. The time series dataset without a shift represents the <span class="math notranslate nohighlight">\(t+1.\)</span>
+Let’s make this concrete with an example. Let’s focus on the UVA column only.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_data</span> <span class="o">=</span>  <span class="n">diradawe_data</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;ALLSKY_SFC_UVA&#39;</span><span class="p">]]</span>
+<span class="n">uva_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>ALLSKY_SFC_UVA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-01-01</td>
+      <td>15.64</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>15.73</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.87</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_shift1</span> <span class="o">=</span> <span class="n">uva_data</span><span class="p">[</span><span class="s1">&#39;ALLSKY_SFC_UVA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uva_shift1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       NaN
+1     15.64
+2     15.73
+3     15.65
+4     15.87
+      ...  
+85    19.84
+86    19.60
+87    19.38
+88    18.81
+89    17.12
+Name: ALLSKY_SFC_UVA, Length: 90, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The value passed in the shift function determines the length by which the Series is shifted. We can concatenate the shifted columns together into a new DataFrame using the <strong>concat()</strong> function along the column axis (axis=1).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_new1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">uva_data</span><span class="p">,</span>  <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">uva_shift1</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#uva_new1 [&#39;Date&#39;, &#39;ALLSKY_SFC_UVA&#39;]</span>
+<span class="n">uva_new1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>ALLSKY_SFC_UVA</th>
+      <th>ALLSKY_SFC_UVA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-01-01</td>
+      <td>15.64</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>15.73</td>
+      <td>15.64</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.65</td>
+      <td>15.73</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.87</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.87</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>2021-03-27</td>
+      <td>19.60</td>
+      <td>19.84</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>2021-03-28</td>
+      <td>19.38</td>
+      <td>19.60</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>2021-03-29</td>
+      <td>18.81</td>
+      <td>19.38</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>2021-03-30</td>
+      <td>17.12</td>
+      <td>18.81</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>2021-03-31</td>
+      <td>16.53</td>
+      <td>17.12</td>
+    </tr>
+  </tbody>
+</table>
+<p>90 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>For clarity purpose, we can rename the column with the corresponding lag attributes, taking into account the chronoligical order of the observations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_new1</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;uva_t&#39;</span> <span class="p">,</span> <span class="s1">&#39;uva_t-1&#39;</span><span class="p">]</span>
+<span class="n">uva_new1</span> <span class="o">=</span>  <span class="n">uva_new1</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>  <span class="s1">&#39;uva_t-1&#39;</span><span class="p">,</span> <span class="s1">&#39;uva_t&#39;</span><span class="p">]]</span>
+<span class="n">uva_new1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>uva_t-1</th>
+      <th>uva_t</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>15.73</td>
+      <td>15.64</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.65</td>
+      <td>15.73</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.87</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.87</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2021-01-06</td>
+      <td>15.80</td>
+      <td>15.87</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You can see that we would have to discard the first row to use the dataset to train a
+supervised learning model, as it does not contain enough data to work with. The addition of
+lag features is called the <strong>sliding window method</strong>, in this case with a window width of 1. The next step is to clear the rows with missing values, which is done using the .dropna() function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_new1</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uva_new1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-22-bdf46e7312ec&gt;:1: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  uva_new1.dropna(how = &#39;any&#39;, inplace=True)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>uva_t-1</th>
+      <th>uva_t</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>15.64</td>
+      <td>15.73</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.73</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.65</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.87</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2021-01-06</td>
+      <td>15.87</td>
+      <td>15.80</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>2021-03-27</td>
+      <td>19.84</td>
+      <td>19.60</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>2021-03-28</td>
+      <td>19.60</td>
+      <td>19.38</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>2021-03-29</td>
+      <td>19.38</td>
+      <td>18.81</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>2021-03-30</td>
+      <td>18.81</td>
+      <td>17.12</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>2021-03-31</td>
+      <td>17.12</td>
+      <td>16.53</td>
+    </tr>
+  </tbody>
+</table>
+<p>89 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>The supervised learning problem to solve here would be using the past day to predict current day.</p>
+<p>For a reframing with 2 lag features, which means using the past 2 days to predict the current day, we can work it out the same way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">All</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">that</span> <span class="n">were</span> <span class="n">carried</span> <span class="n">out</span> <span class="n">above</span> <span class="n">could</span> <span class="n">be</span> <span class="n">summarized</span> <span class="ow">in</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_shift1</span> <span class="o">=</span> <span class="n">uva_data</span><span class="p">[</span><span class="s1">&#39;ALLSKY_SFC_UVA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uva_shift2</span> <span class="o">=</span> <span class="n">uva_data</span><span class="p">[</span><span class="s1">&#39;ALLSKY_SFC_UVA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">uva_new2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">uva_data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">uva_shift1</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">uva_shift2</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uva_new2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>ALLSKY_SFC_UVA</th>
+      <th>ALLSKY_SFC_UVA</th>
+      <th>ALLSKY_SFC_UVA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-01-01</td>
+      <td>15.64</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>15.73</td>
+      <td>15.64</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.65</td>
+      <td>15.73</td>
+      <td>15.64</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.87</td>
+      <td>15.65</td>
+      <td>15.73</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.87</td>
+      <td>15.87</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>2021-03-27</td>
+      <td>19.60</td>
+      <td>19.84</td>
+      <td>19.80</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>2021-03-28</td>
+      <td>19.38</td>
+      <td>19.60</td>
+      <td>19.84</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>2021-03-29</td>
+      <td>18.81</td>
+      <td>19.38</td>
+      <td>19.60</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>2021-03-30</td>
+      <td>17.12</td>
+      <td>18.81</td>
+      <td>19.38</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>2021-03-31</td>
+      <td>16.53</td>
+      <td>17.12</td>
+      <td>18.81</td>
+    </tr>
+  </tbody>
+</table>
+<p>90 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_new2</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;uva_t&#39;</span> <span class="p">,</span> <span class="s1">&#39;uva_t-1&#39;</span><span class="p">,</span><span class="s1">&#39;uva_t-2&#39;</span><span class="p">]</span>
+<span class="n">uva_new2</span><span class="o">=</span>  <span class="n">uva_new2</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;uva_t-2&#39;</span><span class="p">,</span> <span class="s1">&#39;uva_t-1&#39;</span><span class="p">,</span> <span class="s1">&#39;uva_t&#39;</span><span class="p">]]</span>
+<span class="n">uva_new2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>uva_t-2</th>
+      <th>uva_t-1</th>
+      <th>uva_t</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-01-01</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>15.64</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-01-02</td>
+      <td>NaN</td>
+      <td>15.64</td>
+      <td>15.73</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.64</td>
+      <td>15.73</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.73</td>
+      <td>15.65</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.65</td>
+      <td>15.87</td>
+      <td>15.87</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uva_new2</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uva_new2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-28-684f4a75755a&gt;:1: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  uva_new2.dropna(how = &#39;any&#39;, inplace=True)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>uva_t-2</th>
+      <th>uva_t-1</th>
+      <th>uva_t</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>2021-01-03</td>
+      <td>15.64</td>
+      <td>15.73</td>
+      <td>15.65</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-04</td>
+      <td>15.73</td>
+      <td>15.65</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-01-05</td>
+      <td>15.65</td>
+      <td>15.87</td>
+      <td>15.87</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2021-01-06</td>
+      <td>15.87</td>
+      <td>15.87</td>
+      <td>15.80</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2021-01-07</td>
+      <td>15.87</td>
+      <td>15.80</td>
+      <td>15.75</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="font-color-800080-task-5-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 5:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-5-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<ol class="arabic simple">
+<li><p>Reframe the data for a lag-3 feature problem</p></li>
+<li><p>Write a function that could summarize the above process. The function should only take the lag -number as argument and return the corresponding dataframe.</p></li>
+<li><p>Considering a bivariate forecast problem now (using the history of 2 features to perhaps only predict the dynamics of one feauture). Make use the function that was written above to build that scenario.</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 3: Advanced Manipulation on Time Series</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../part_3/01_Introduction%20to%20Image%20Data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 1: Introduction to Image Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-machine-learning">Supervised Machine Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window">Sliding Window</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080">Example:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lags-feature">Lags Feature</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-5-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 5:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

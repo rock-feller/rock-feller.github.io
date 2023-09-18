@@ -1,0 +1,1114 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 1: Working with Time Data &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_2/01_Working with Time Data';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 2: Basic Data Manipulation on Time Series" href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html" />
+    <link rel="prev" title="Chapter 8: Customizing Functions" href="../part_1/08_Customizing%20functions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_2/01_Working with Time Data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_2/01_Working with Time Data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 1: Working with Time Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-time-in-pandas">Working with Time in Pandas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#date-times">Date Times</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-deltas">Time Deltas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-arrays-of-time-values">Creating Arrays of Time Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-1-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 1:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-2-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 2:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-1-working-with-time-data">
+<h1>Chapter 1: Working with Time Data<a class="headerlink" href="#chapter-1-working-with-time-data" title="Permalink to this heading">#</a></h1>
+<p>Time series data lies at the heart of numerous practical applications across various fields, underlining its immense importance. By capturing data points at successive time intervals, time series analysis enables us to uncover valuable insights, observe patterns, and make accurate forecasts. It finds practical application in diverse domains such as <strong>finance, economics, weather forecasting, stock market analysis, demand forecasting, anomaly detection, and predictive maintenance</strong>.</p>
+<p>Whether we aim to</p>
+<ul class="simple">
+<li><p>Predict future stock prices in <strong>Douala Stock Exchange</strong> in Cameroon,</p></li>
+<li><p>Understand consumer behavior over time on the  <strong><a class="reference external" href="http://Takealot.com">Takealot.com</a></strong> E-commence website in Zimbabwe,</p></li>
+<li><p>Monitor sensor readings for spotting anomalies in the Engineering Division of <strong>DAL Group</strong> in Sudan,</p></li>
+<li><p>Forecast seasonal trends of fashion accessories designed by <strong>LE Creation</strong> in Ivory Coast,</p></li>
+</ul>
+<p>a solid grasp of time series analysis proves indispensable. So, let’s delve into the fascinating world of time series and explore the tools and techniques that enable us to extract meaningful information from temporal data.</p>
+<p><strong>Learning Objectives:</strong></p>
+<ul class="simple">
+<li><p>Get the standard definitions of time series,</p></li>
+<li><p>Perform time series analysis,</p></li>
+<li><p>Identify the important components to consider in time series data.</p></li>
+<li><p>And the Examples of time series to make your understanding concrete.</p></li>
+</ul>
+<div class="section" id="working-with-time-in-pandas">
+<h2>Working with Time in Pandas<a class="headerlink" href="#working-with-time-in-pandas" title="Permalink to this heading">#</a></h2>
+<p>One of the best reasons to use Pandas is its capability to identify and handle <strong>time</strong> and <strong>date</strong> variables in the data values we work on. In the previous chapters, we saw some simple cases where the data was nothing more than string labels and numeric values.</p>
+<p>In reality, data can have many formats, and dates and times are almost omnipresent. In fact, in the collection of
+data, in their sampling, dates and times are introduced.</p>
+<p>It is this type of value that is indispensable for carrying out significant statistics and,
+therefore, in the analysis of the data, it is essential that the tools are able to
+recognize and use them. The Pandas library manages this type of data based on the following two
+specific concepts:</p>
+<ol class="arabic simple">
+<li><p>Date Times</p></li>
+<li><p>Time deltas</p></li>
+</ol>
+<div class="section" id="date-times">
+<h3>Date Times<a class="headerlink" href="#date-times" title="Permalink to this heading">#</a></h3>
+<p>Date Times represent the concept of date and time, typically indicated as a certain instant. Working with data, we often encounter dates and times expressed as strings in various formats. For example, the order of years, months, and days (and sometimes hours, minutes, and seconds) can differ significantly based on the country of origin.</p>
+<p>The  African Continent for instance, has six time zones which are (and can vary)</p>
+<ul class="simple">
+<li><p>Mauritius and Seychelles Time (UTC/GMT+4),</p></li>
+<li><p>East Africa Time (UTC/GMT+3),</p></li>
+<li><p>Central Africa Time (UTC/GMT+2),</p></li>
+<li><p>West Africa Time (UTC/GMT+1),</p></li>
+<li><p>Greenwich Mean Time (UTC/GMT),</p></li>
+<li><p>Cape Verde Time (UTC-1).</p></li>
+</ul>
+<p>Different specificaitions could apply to the way time series are represented:</p>
+<ul class="simple">
+<li><p>These values can be numeric (e.g., <strong>11</strong> for November) or literal (e.g., <strong>Nov</strong>).</p></li>
+<li><p>Years can have four or two digits (e.g., <strong>2021</strong> or <strong>21</strong>).</p></li>
+<li><p>The separator character between values varies widely (<code class="docutils literal notranslate"><span class="pre">'-',</span> <span class="pre">'/',</span> <span class="pre">or</span> <span class="pre">':'</span></code>, etc.).</p></li>
+</ul>
+<p>Parsing these values accurately is challenging, hence the need of a powerful library, to simplify those processes for data analysts. It uses the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module and provides the <code class="docutils literal notranslate"><span class="pre">Timestamp</span></code> class, which efficiently handles Date Time. Its constructor accepts a string and converts it to <code class="docutils literal notranslate"><span class="pre">datetime64</span></code>, a specific Pandas data type representing the corresponding nanosecond value. This precise value is ideal for scientific applications involving short time spans.</p>
+<p>Let’s write a series of examples on recognizing and converting dates with
+the <code class="docutils literal notranslate"><span class="pre">Timestamp()</span></code> constructor, as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-11-30&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-30&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021/11/30&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It can deduced from the preceding examples that regardless of the format
+type, the <code class="docutils literal notranslate"><span class="pre">Timestamp()</span></code> constructor is able to recognize that it is the same
+date. This constructor is also able to work on numeric formats and not only with
+strings. In this case, each argument will correspond in the order of years,
+months, days, hours, minutes, and seconds, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-30 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Pandas library provides us with the <code class="docutils literal notranslate"><span class="pre">to_datetime()</span></code> function which accepts,
+as an argument, a series of objects which will then be converted into DateTime values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">],</span> 
+                   <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+                   <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]})</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2019</td>
+      <td>10</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020</td>
+      <td>6</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021</td>
+      <td>4</td>
+      <td>20</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>It can be converted to DateTime values using the <code class="docutils literal notranslate"><span class="pre">to_datetime()</span></code> function,
+as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_stamp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">t_stamp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   2019-10-15
+1   2020-06-10
+2   2021-04-20
+dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see, the function has converted a DataFrame into a Series of
+<code class="docutils literal notranslate"><span class="pre">datetime64</span></code> values.</p>
+<p>Another possibility is, for example, that of converting strings that describe a
+date and a time but their format is too intelligible for the constructor. In
+fact, the <code class="docutils literal notranslate"><span class="pre">to_datetime()</span></code> function allows you to add as an optional
+parameter, the format in which you can specify the particular formatting
+that follows the string by means of indicators (called format codes, as for
+example, <code class="docutils literal notranslate"><span class="pre">%S</span></code> to indicate the seconds) and, thus, be able to parse. Also, by
+adding the optional errors parameter with the value <code class="docutils literal notranslate"><span class="pre">raise</span></code>, you will get an
+error message whenever the <code class="docutils literal notranslate"><span class="pre">to_datetime()</span></code> function fails to parse the
+string in a datetime64 value, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2021 USA 31--12&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y USA </span><span class="si">%d</span><span class="s1">--%m&#39;</span><span class="p">,</span>
+                   <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-12-31 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="time-deltas">
+<h3>Time Deltas<a class="headerlink" href="#time-deltas" title="Permalink to this heading">#</a></h3>
+<p>DateTimes are precise times to which a data can be assigned. Another
+concept of time on which Pandas is based are the Time Deltas, that are the
+measurements of time durations, that is, the time interval between two
+precise instants (DateTime). This concept is also fundamental to working
+with times and dates in a data analysis.
+Pandas implements this concept through <code class="docutils literal notranslate"><span class="pre">Timedelta</span></code>, a class very similar to
+the one present in the datetime module of the standard library. This class
+also has its own constructor, and the definition of a time interval can be
+very simple and intuitive. For example, if we wanted to define the duration
+of a time equivalent to one day, it would be enough to write the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;1 Day&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;1 days 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, if we wanted to update a Datetime value, for example, by
+increasing its value by an hour, it would be enough to create a Timedelta
+value equivalent to an hour and add it to the Datetime variable, thus,
+obtaining the updated value. It is, therefore, possible to perform arithmetic
+calculations with times using Datetime and Timedelta together, as shown
+as follows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Nov-16 10:30AM&#39;</span><span class="p">)</span>
+<span class="n">df1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-16 10:30:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plus_1</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;1 Hour&#39;</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">plus_1</span> <span class="o">+</span> <span class="n">df1</span>
+<span class="n">df2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-11-16 11:30:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Another, more formal way of defining time intervals is to enter the relative
+amount and unit of time. For example, another way to define a day and time
+is to enter 1 as a numeric value, and use the optional unit parameter
+defining ‘d’ to define days as a unit of time, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;1 days 00:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using smaller time units such as seconds, the manufacturer will convert
+them to the larger time units, thus, converting them to the corresponding
+values of days, hours, and minutes, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="mi">150045</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;1 days 17:40:45&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are also more complex ways to define time intervals, which are
+useful when you have multiple units together, such as days, minutes, and
+hours, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;3D 5:34:23&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;3 days 05:34:23&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We have seen that Timedelta defines time intervals and are useful for
+performing arithmetic calculations on Timestamp objects. This concept is
+even more explicit when we consider the following example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Jan-01 11:30AM&#39;</span><span class="p">)</span>
+<span class="n">ts3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-Mar-13 4:15PM&#39;</span><span class="p">)</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">ts3</span> <span class="o">-</span> <span class="n">ts2</span>
+<span class="n">df3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timedelta(&#39;71 days 04:45:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see from the result, even by making the difference between two
+Timestamps, an object of type <code class="docutils literal notranslate"><span class="pre">Timedelta</span></code> is automatically generated as a
+result, without using the constructor.</p>
+<p>There is also a data conversion function for Timedelta, called
+<code class="docutils literal notranslate"><span class="pre">to_timedelta()</span></code>. In this case, however, parsing is less flexible than
+to_datetime. In fact, there is no optional format parameter, and only the
+default formats that work with the constructor are recognized, as shown as
+follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;00:22:33&#39;</span><span class="p">,</span><span class="s1">&#39;00:13:12&#39;</span><span class="p">,</span><span class="s1">&#39;00:24:14&#39;</span><span class="p">])</span>
+<span class="n">ts4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    00:22:33
+1    00:13:12
+2    00:24:14
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">ts4</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="n">ts5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   0 days 00:22:33
+1   0 days 00:13:12
+2   0 days 00:24:14
+dtype: timedelta64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-arrays-of-time-values">
+<h3>Creating Arrays of Time Values<a class="headerlink" href="#creating-arrays-of-time-values" title="Permalink to this heading">#</a></h3>
+<p>Now that we have seen what <em>Timestamps</em> is  in Pandas, let’s
+take a further step – seeing how it is possible to generate an array of this
+type of values in a simple and automatic way.
+For this purpose, there is the <code class="docutils literal notranslate"><span class="pre">data_range()</span></code> function which allows us to create a predetermined number of values, starting from a given date <code class="docutils literal notranslate"><span class="pre">(Timestamp)</span></code>, and then defining an appropriate time interval, generating a
+series of Datetime values all uniformly staggered.</p>
+<p>For example, it is possible to generate an array of 10 consecutive days
+starting from a specific date (passed as the first argument) defining as
+optional parameters <code class="docutils literal notranslate"><span class="pre">freq</span> <span class="pre">=</span> <span class="pre">'D'</span></code>, to define the duration of 1 day from one
+value to another and, with periods, the number of values to generate. In this
+case, the number of consecutive days are 10, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2021/01/01&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01&#39;, &#39;2021-01-02&#39;, &#39;2021-01-03&#39;, &#39;2021-01-04&#39;,
+               &#39;2021-01-05&#39;, &#39;2021-01-06&#39;, &#39;2021-01-07&#39;, &#39;2021-01-08&#39;,
+               &#39;2021-01-09&#39;, &#39;2021-01-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see, the <code class="docutils literal notranslate"><span class="pre">date_range()</span></code> function creates a DatetimeIndex object
+containing 10 consecutive days starting from <code class="docutils literal notranslate"><span class="pre">1st</span> <span class="pre">January</span> <span class="pre">2021</span></code>.
+Another possibility is to pass two different Timestamps, one starting and
+one ending, as arguments to the <code class="docutils literal notranslate"><span class="pre">data_range()</span></code> function. The default
+intervals are one day, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2021/01/10&quot;</span> <span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01&#39;, &#39;2021-01-02&#39;, &#39;2021-01-03&#39;, &#39;2021-01-04&#39;,
+               &#39;2021-01-05&#39;, &#39;2021-01-06&#39;, &#39;2021-01-07&#39;, &#39;2021-01-08&#39;,
+               &#39;2021-01-09&#39;, &#39;2021-01-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>If, on the other hand, we want a staggered time interval with different times,
+we must explicitly specify it with the freq parameter. Or we could decide to
+subdivide this interval by a certain number of parts; in this case, we will use
+the optional parameter, periods.
+For example, we would like to create a Timestamp array with 5 minutes
+difference within the specified time limits, then we will specify <code class="docutils literal notranslate"><span class="pre">5T</span></code> to
+indicate <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">minutes</span></code> to the optional freq parameter, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">,</span><span class="s2">&quot;2021/01/01 10:00&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;5t&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01 08:00:00&#39;, &#39;2021-01-01 08:05:00&#39;,
+               &#39;2021-01-01 08:10:00&#39;, &#39;2021-01-01 08:15:00&#39;,
+               &#39;2021-01-01 08:20:00&#39;, &#39;2021-01-01 08:25:00&#39;,
+               &#39;2021-01-01 08:30:00&#39;, &#39;2021-01-01 08:35:00&#39;,
+               &#39;2021-01-01 08:40:00&#39;, &#39;2021-01-01 08:45:00&#39;,
+               &#39;2021-01-01 08:50:00&#39;, &#39;2021-01-01 08:55:00&#39;,
+               &#39;2021-01-01 09:00:00&#39;, &#39;2021-01-01 09:05:00&#39;,
+               &#39;2021-01-01 09:10:00&#39;, &#39;2021-01-01 09:15:00&#39;,
+               &#39;2021-01-01 09:20:00&#39;, &#39;2021-01-01 09:25:00&#39;,
+               &#39;2021-01-01 09:30:00&#39;, &#39;2021-01-01 09:35:00&#39;,
+               &#39;2021-01-01 09:40:00&#39;, &#39;2021-01-01 09:45:00&#39;,
+               &#39;2021-01-01 09:50:00&#39;, &#39;2021-01-01 09:55:00&#39;,
+               &#39;2021-01-01 10:00:00&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;5T&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or we might want to divide this time interval into 10 equal parts, each
+delimited by a Timestamp. In this case, 10 is assigned to the optional
+parameter periods, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">,</span><span class="s2">&quot;2021/01/01 10:00&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01 08:00:00&#39;, &#39;2021-01-01 08:13:20&#39;,
+               &#39;2021-01-01 08:26:40&#39;, &#39;2021-01-01 08:40:00&#39;,
+               &#39;2021-01-01 08:53:20&#39;, &#39;2021-01-01 09:06:40&#39;,
+               &#39;2021-01-01 09:20:00&#39;, &#39;2021-01-01 09:33:20&#39;,
+               &#39;2021-01-01 09:46:40&#39;, &#39;2021-01-01 10:00:00&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=None)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In all these cases, we have seen the generation of an object of type
+<code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code> containing a list of Datetime values. In many cases, this
+kind of object is useful for building Series or DataFrame. For example, it is
+quite common to use these values as Index, both in a Series and in a
+DataFrame, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">range_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">,</span><span class="s2">&quot;2021/01/01 10:00&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">tsi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">range_</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">range_</span><span class="p">)</span>
+<span class="n">tsi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-01-01 08:00:00    0.318205
+2021-01-01 08:13:20   -0.268866
+2021-01-01 08:26:40   -0.586331
+2021-01-01 08:40:00   -0.429739
+2021-01-01 08:53:20    1.671267
+2021-01-01 09:06:40   -1.625742
+2021-01-01 09:20:00    1.720103
+2021-01-01 09:33:20    0.528367
+2021-01-01 09:46:40    0.388440
+2021-01-01 10:00:00   -0.028487
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>But they can also be used to populate their values automatically, as shown
+as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">range_</span><span class="p">)</span>
+<span class="n">ts5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0   2021-01-01 08:00:00
+1   2021-01-01 08:13:20
+2   2021-01-01 08:26:40
+3   2021-01-01 08:40:00
+4   2021-01-01 08:53:20
+5   2021-01-01 09:06:40
+6   2021-01-01 09:20:00
+7   2021-01-01 09:33:20
+8   2021-01-01 09:46:40
+9   2021-01-01 10:00:00
+dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the first case, the use of index with datetime64 type values allows you to
+easily select rows relating to a particular time interval, as shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsi</span><span class="p">[</span><span class="s2">&quot;2021/01/01 8:00&quot;</span><span class="p">:</span><span class="s2">&quot;2021/01/01 8:30&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-01-01 08:00:00    0.318205
+2021-01-01 08:13:20   -0.268866
+2021-01-01 08:26:40   -0.586331
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-800080-task-1-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 1:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-1-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>Black Friday has become a significant shopping day globally, thanks to its wide range of discounts and offers. It enables shoppers to seize limited-time deals and locate the best ones. While originally set for the last Friday of November annually, some companies now stretch it until December 31st, starting from the last Monday of November’s final week.</p>
+<p>Mamadou Sekou from the Gambia, owns a superette called <code class="docutils literal notranslate"><span class="pre">SekouShop</span></code> in Bouake, the second largest city in Ivory Coast. He has been wondering lately why his customers complained about the absence of discounts during the holiday season last year.</p>
+<p>As a result of that, he believes he missed out on boosting his sales during what they called “the Black Friday Period”(BFP) and seeks to prepare better for the next one. To achieve this, he wants to understand the dynamics of his sales from the BFP last year and compare them with this year’s data, once available. You work with him on a consultant basis, to help him carrying out such analysis. You have been given the sales data from 1st November 2022 until 31st December 2022 in a csv file called <code class="docutils literal notranslate"><span class="pre">SekouShop_sales.csv</span></code></p>
+<ol class="arabic simple">
+<li><p>Where does the Black Friday term originate from?</p></li>
+<li><p>Re-arrange the data into two sub-seasons: the blackfriday and normal sales seasons. What are the cumulated sales for each of the sub-seasons.</p></li>
+<li><p>The manager of the superette brought to your attention that there were days where the superette did not open its doors. List those days for each of the sub-seasons. what proportion did they represent out of the sub-seasons and out of the whole hoilday season.</p></li>
+<li><p>Usually on fridays, the Superette produced its best sales. Report all the Friday sales for each of the sub-seasons. Which Friday had the best tally?</p></li>
+</ol>
+<div class="section" id="font-color-800080-task-2-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 2:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-2-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>For a better preperation of the upcoming year 2023, Mamadou wants to create schedules or calendars to keep track of certain  processes like restocking, utility bills and special sales.</p>
+<ol class="arabic simple">
+<li><p><strong>SekouShop</strong> restocks certain perishable items like every 3 days. They want you to create a restocking schedule for the next three months (Jan, Feb, Mar 2023) to help with inventory management.</p></li>
+<li><p>SekouShop pays its utility bills on the first day of every month. The manager wants you to generate reminders five days before each due date for the upcoming year to avoid late fees.</p></li>
+<li><p>They are planning to host bi-weekly special sales. Can you create a calendar for all their event dates for the upcoming year?</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../part_1/08_Customizing%20functions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 8: Customizing Functions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 2: Basic Data Manipulation  on Time Series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-time-in-pandas">Working with Time in Pandas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#date-times">Date Times</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-deltas">Time Deltas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-arrays-of-time-values">Creating Arrays of Time Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-1-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 1:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-2-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 2:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

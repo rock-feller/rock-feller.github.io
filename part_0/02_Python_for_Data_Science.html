@@ -1,0 +1,1157 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 3: Introduction to Python for Data Science &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_0/02_Python_for_Data_Science';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 1: Working with Series and DataFrames" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html" />
+    <link rel="prev" title="Chapter 2: Getting started with Jupyter and Colab" href="01_Getting%20Started%20with%20Jupyter%20and%20Colab.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_0/02_Python_for_Data_Science.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_0/02_Python_for_Data_Science.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 3: Introduction to Python for Data Science</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-the-new-fuel-the-new-electricity">Data: The new fuel, The new electricity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-a-tool-among-others">Python: A tool among others</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-libraries-core-to-data-science">Deep Learning Libraries: Core to Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics-of-python-refresher">The basics of Python (refresher)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-font-a-class-anchor-id-exercise-1-a"><font color="#800080">Task:</font> <a class="anchor" id="exercise-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structures">Data Structures</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#values-and-types">Values and types</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">Variables</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-font-color-red-functions-are-crucial-to-your-data-science-workflow-i-suggest-you-brush-up-your-knowledge-on-that"><b><font color="red">Functions are crucial to your data science workflow. I suggest you brush up your knowledge on that</font></b></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modules-and-packages">Modules and Packages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-of-the-librairies">Some of the librairies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customizing-functions">Customizing functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><font color="#800080">Task :</font> <a class="anchor" id="exercise-1"></a></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-3-introduction-to-python-for-data-science">
+<h1>Chapter 3: Introduction to Python for Data Science<a class="headerlink" href="#chapter-3-introduction-to-python-for-data-science" title="Permalink to this heading">#</a></h1>
+<div class="section" id="data-the-new-fuel-the-new-electricity">
+<h2>Data: The new fuel, The new electricity<a class="headerlink" href="#data-the-new-fuel-the-new-electricity" title="Permalink to this heading">#</a></h2>
+<p>We are living in a world that’s drowning in data. As practicionners used to say, <strong>DATA</strong> is the new fuel, the new electricity.</p>
+<p>But it will not make much of sense to limitate ourselves to having the data. Because in fact, data has always existed.  <strong>From Johaness Kepler</strong> back in centuries before J.C in Prague when he tried to understand the movement of planets by recording their motion around the sun, all the way up to a medical doctor in Kenya who records information about a patient before applying any treatment.</p>
+<p>Data has always at the center of (Applied) Science. But what makes it such an attraction nowadays are the tools we use to handle the actual data.</p>
+<p>As said previously, <code class="docutils literal notranslate"><span class="pre">Python</span></code> is one of them. The purpose of this section is to give the reader a glimpse about how to get the best of Python to efficiently carry out any data science project.</p>
+</div>
+<div class="section" id="python-a-tool-among-others">
+<h2>Python: A tool among others<a class="headerlink" href="#python-a-tool-among-others" title="Permalink to this heading">#</a></h2>
+<p>Over the last couple of decades, Python has emerged as a <strong>first-class tool</strong> for scientific computing tasks, including the analysis and visualization of large datasets.</p>
+<p>Though it was not specifically designed with data analysis or scientific computing in mind, it has grown as the language or tool of choice when handling any data science project.</p>
+<p>Mainly because of its wide community of users as well as its large and active ecosystem of third-party packages such as:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code>       for manipulation of homogeneous array-based data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> for manipulation of heterogeneous and labeled data,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy</span></code> for common scientific computing tasks,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> for publication-quality visualizations,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> for classic machine learning algorithms</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">Notebook</span></code> for interactive execution and sharing of code</p></li>
+</ol>
+<p>are the reasons why data scientists stick to it.</p>
+</div>
+<div class="section" id="deep-learning-libraries-core-to-data-science">
+<h2>Deep Learning Libraries: Core to Data Science<a class="headerlink" href="#deep-learning-libraries-core-to-data-science" title="Permalink to this heading">#</a></h2>
+<p>With the recent advent of Machine Learning/Deep Learning and their spectacular success, giant companies like Google and Facebook have put together some amazing educational resources to basically allow any practicioner to conduct any data science project.</p>
+<p>Using the code-light philosophy to express the use of the concept-heavy thing that Machine Learning examplifies. The following libraries haev been released:</p>
+<ol class="arabic simple">
+<li><p><strong>Tensorflow</strong> (Deep Learning Library written in Python powered by Google)</p></li>
+<li><p><strong>Pytorch</strong> (Deep Learning LIbrary written in Python powered by Facebook)</p></li>
+</ol>
+<p>Most of the projects released by those companies make an extensive use of thoSe libraries and they are <strong>FREE and OPEN SOURCE!!!</strong></p>
+<p>There are some other alternatives like <code class="docutils literal notranslate"><span class="pre">Theano</span></code> , <code class="docutils literal notranslate"><span class="pre">Caffe</span></code> , <code class="docutils literal notranslate"><span class="pre">Microsoft</span> <span class="pre">Azure</span> <span class="pre">Machine</span> <span class="pre">Learning</span></code>.</p>
+</div>
+<div class="section" id="the-basics-of-python-refresher">
+<h2>The basics of Python (refresher)<a class="headerlink" href="#the-basics-of-python-refresher" title="Permalink to this heading">#</a></h2>
+<p><strong>Installing Python</strong></p>
+<p>Python is easily downlodable from <strong><a class="reference external" href="http://python.org">python.org</a>.</strong> But if you find the process a bit hectic, we strongly recommend installing <strong>the Anaconda distribution</strong> which already includes most of the libraries needed for data science.</p>
+<p><strong>Launching Python</strong></p>
+<p>There are basically two ways you can launch Python:</p>
+<ol class="arabic">
+<li><p>Either from the terminal by typing  <b><font color=red>(not recommended for this course)</font></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">python</span></code></p>
+</li>
+<li><p>Or  by launching <code class="docutils literal notranslate"><span class="pre">Anaconda-navigator</span></code> from the terminal and clicking on <code class="docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">Notebook</span></code> <b><font color=green>(recommended for Windows Users and to some extent, Linux Users)</font></b></p></li>
+<li><p>Or simply by opening it through a Jupyter Notebook by typing from the terminal<b><font color=blue> (recommended for Linux Users)</font></b>:</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">jupyter</span> <span class="pre">notebook</span></code></p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-font-a-class-anchor-id-exercise-1-a">
+<h3><font color=#800080>Task:</font> <a class="anchor" id="exercise-1"></a><a class="headerlink" href="#font-color-800080-task-font-a-class-anchor-id-exercise-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<ol class="arabic simple">
+<li><p>Make sure you are confortable with opening Anaconda</p></li>
+<li><p>Try and Navigate to the <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> Folder</p></li>
+<li><p>Create two folders called <code class="docutils literal notranslate"><span class="pre">Data_Science</span></code> and <code class="docutils literal notranslate"><span class="pre">Network_Science</span></code></p></li>
+<li><p>At the end of this session, make sure all the practicals are saved in the <code class="docutils literal notranslate"><span class="pre">Data_Science</span></code> Folder</p></li>
+</ol>
+<div class="section" id="data-structures">
+<h3>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this heading">#</a></h3>
+<p>In the core Python language, some features are more important for data analysis than others. In this chapter, you’ll look at the most essential of them such as list, strings,  string functions, data structures, list comprehension, counters.</p>
+<div class="section" id="values-and-types">
+<h4>Values and types<a class="headerlink" href="#values-and-types" title="Permalink to this heading">#</a></h4>
+<p>A value is one of the basic things a program works with, like a letter or a number.
+These values belong to different types:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">10</span>  <span class="c1">#is an integer</span>
+
+<span class="s2">&quot;apple&quot;</span> <span class="c1">#is a string</span>
+
+<span class="mf">7.5</span>  <span class="c1">#is a floating point</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7.5
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="variables">
+<h4>Variables<a class="headerlink" href="#variables" title="Permalink to this heading">#</a></h4>
+<p>One of the most powerful features of Python is the ability to
+manipulate variables. A variable is a name that refers to a value.
+An assignment statement creates new variables and gives them values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">b</span>  <span class="o">=</span> <span class="s2">&quot; data science is cool&quot;</span>
+
+<span class="n">pi</span> <span class="o">=</span> <span class="mf">3.1415926535897931</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+ data science is cool
+3.141592653589793
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(int, str, float)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>List</strong></p>
+<p>A <strong>list</strong> is a sequence of values. In a string, the values in a list can be of any type. The values in a list are called elements or sometimes,  items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">2</span> <span class="p">,</span> <span class="mi">9</span><span class="p">,</span>  <span class="mi">14</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">]</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;orange&quot;</span> <span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span> <span class="p">,</span> <span class="s2">&quot;tomato&quot;</span><span class="p">]</span> 
+
+<span class="nb">print</span> <span class="p">(</span><span class="n">d</span> <span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2, 9, 14, 12.5] [&#39;orange&#39;, &#39;apple&#39;, &#39;banana&#39;, &#39;tomato&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To access elements in a list, we just use their index (starting from 0)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#the type of the object</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>list
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#the length of the list</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="p">(</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 banana
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lists are <strong>mutable</strong> which means you can change an element as compared to <strong>tuples</strong> which share the same properties but are not mutable</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span><span class="s2">&quot;pineapple&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;orange&#39;, &#39;pineapple&#39;, &#39;banana&#39;, &#39;tomato&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;R&quot;</span> <span class="p">,</span> <span class="s2">&quot;Java&quot;</span> <span class="p">,</span> <span class="s2">&quot;C++&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;R&#39;, &#39;Java&#39;, &#39;C++&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tuple
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;perl&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">867</span><span class="n">cd48ef690</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;perl&quot;</span>
+
+<span class="ne">TypeError</span>: &#39;tuple&#39; object does not support item assignment
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>List comprehension</strong></p>
+<p>The most common way to traverse the elements of a list is with a for loop. The
+syntax is the same as for strings:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>orange
+pineapple
+banana
+tomato
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="b-font-color-red-functions-are-crucial-to-your-data-science-workflow-i-suggest-you-brush-up-your-knowledge-on-that">
+<h3><b><font color=red>Functions are crucial to your data science workflow. I suggest you brush up your knowledge on that<a class="headerlink" href="#b-font-color-red-functions-are-crucial-to-your-data-science-workflow-i-suggest-you-brush-up-your-knowledge-on-that" title="Permalink to this heading">#</a></h3>
+<p></font></b></p>
+<p>A function is a named sequence of statements that
+performs a computation. When you define a function, you specify the name and
+the sequence of statements. Later, you can <strong>“call”</strong> the function by name.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">our_addition</span> <span class="p">(</span><span class="n">x</span> <span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function takes two parameters, add them and display the results&quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">z</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">our_addition</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function our_addition in module __main__:
+
+our_addition(x, y)
+    This function takes two parameters, add them and display the results
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_addition</span><span class="p">(</span> <span class="mi">5</span> <span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_two</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function takes two parameters, a string preferably</span>
+<span class="sd">    and chain it with the string _two&quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;_two&#39;</span>
+    <span class="k">return</span> <span class="n">t</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_two</span><span class="p">(</span><span class="s1">&#39;fourty&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;fourty_two&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_two</span><span class="p">(</span><span class="s1">&#39;fifty&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;fifty_two&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="modules-and-packages">
+<h3>Modules and Packages<a class="headerlink" href="#modules-and-packages" title="Permalink to this heading">#</a></h3>
+<p>Modules refer to a file containing Python statements and definitions.</p>
+<p>• Modules allow us to write code, and separate it out from other code into a different file.</p>
+<p>• We can use the import statement to include the code of another file</p>
+<p>To import a module in Python we type the following in the Python prompt.</p>
+<div class="math notranslate nohighlight">
+\[import \quad ”module \_ name”\]</div>
+<p><strong>Examples</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span> <span class="c1">#themath module</span>
+<span class="kn">import</span> <span class="nn">re</span> <span class="c1">#the regular expression module</span>
+<span class="kn">import</span> <span class="nn">random</span> <span class="c1">#the random module</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, Some modules might be relatively long to type. The user can choose to import a module and
+rename it , to save on typing. We can import a module by renaming it as follows.</p>
+<div class="math notranslate nohighlight">
+\[import \quad ”module” \quad as \quad ”new \quad name”\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sklearn</span> <span class="k">as</span> <span class="nn">sk</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="some-of-the-librairies">
+<h3>Some of the librairies<a class="headerlink" href="#some-of-the-librairies" title="Permalink to this heading">#</a></h3>
+<p><strong>Numpy</strong></p>
+<p>Usually, the numpy library is meant to deal with <strong>arrays</strong> and  <strong>matrices operations</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A vector a 10 evenly spaced numbers of step 1</span>
+<span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  
+<span class="n">n1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A vector of 6 evenly spaced numbers between 0 and 50</span>
+<span class="n">my_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span> <span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">my_vector</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.        ,  0.50505051,  1.01010101,  1.51515152,  2.02020202,
+        2.52525253,  3.03030303,  3.53535354,  4.04040404,  4.54545455,
+        5.05050505,  5.55555556,  6.06060606,  6.56565657,  7.07070707,
+        7.57575758,  8.08080808,  8.58585859,  9.09090909,  9.5959596 ,
+       10.1010101 , 10.60606061, 11.11111111, 11.61616162, 12.12121212,
+       12.62626263, 13.13131313, 13.63636364, 14.14141414, 14.64646465,
+       15.15151515, 15.65656566, 16.16161616, 16.66666667, 17.17171717,
+       17.67676768, 18.18181818, 18.68686869, 19.19191919, 19.6969697 ,
+       20.2020202 , 20.70707071, 21.21212121, 21.71717172, 22.22222222,
+       22.72727273, 23.23232323, 23.73737374, 24.24242424, 24.74747475,
+       25.25252525, 25.75757576, 26.26262626, 26.76767677, 27.27272727,
+       27.77777778, 28.28282828, 28.78787879, 29.29292929, 29.7979798 ,
+       30.3030303 , 30.80808081, 31.31313131, 31.81818182, 32.32323232,
+       32.82828283, 33.33333333, 33.83838384, 34.34343434, 34.84848485,
+       35.35353535, 35.85858586, 36.36363636, 36.86868687, 37.37373737,
+       37.87878788, 38.38383838, 38.88888889, 39.39393939, 39.8989899 ,
+       40.4040404 , 40.90909091, 41.41414141, 41.91919192, 42.42424242,
+       42.92929293, 43.43434343, 43.93939394, 44.44444444, 44.94949495,
+       45.45454545, 45.95959596, 46.46464646, 46.96969697, 47.47474747,
+       47.97979798, 48.48484848, 48.98989899, 49.49494949, 50.        ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A vector of 10 random integers between 25 and 45</span>
+<span class="n">another_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">another_vector</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([41, 25, 33, 38, 30, 44, 29, 26, 42, 38])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A vector of 6 ones</span>
+<span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 1., 1., 1.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A vector of 4 zeros</span>
+<span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 0., 0., 0.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>To access an array, we use the same procedure as for the lists</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_array</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">random_array</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.04298399, 0.55089829, 0.88139508, 0.83641585, 0.48454918])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#the first element</span>
+<span class="n">random_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04298399048746615
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#the last element</span>
+<span class="n">random_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.48454917509949924
+</pre></div>
+</div>
+</div>
+</div>
+<p>To reshape an array to a matrix</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vector_integers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">vector_integers</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([48, 25, 23, 15, 10,  5, 21,  7, 30, 23, 12,  7])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vector_integers</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[48, 25, 23],
+       [15, 10,  5],
+       [21,  7, 30],
+       [23, 12,  7]])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="customizing-functions">
+<h2>Customizing functions<a class="headerlink" href="#customizing-functions" title="Permalink to this heading">#</a></h2>
+<p>Let’s make it more fun: Let’s create our own functions</p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="id1">
+<h3><font color=#800080>Task :</font> <a class="anchor" id="exercise-1"></a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+</div>
+<ol class="arabic simple">
+<li><p>Go back on <code class="docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">Dashboard</span></code> and Click on <code class="docutils literal notranslate"><span class="pre">New</span></code> and <code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">File</span></code></p></li>
+<li><p>Rename that file <code class="docutils literal notranslate"><span class="pre">happiness.py</span></code></p></li>
+<li><p>Copy and Paste the two functions we created above.</p></li>
+<li><p>Save the file and close it.</p></li>
+<li><p>In the cell below, try and run <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">happiness</span> <span class="pre">as</span> <span class="pre">hp</span></code></p></li>
+<li><p>Try and use the <code class="docutils literal notranslate"><span class="pre">add</span></code> function. What does that teach you?</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rock</span> <span class="k">as</span> <span class="nn">hp</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hp</span><span class="o">.</span><span class="n">our_addition</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>27
+</pre></div>
+</div>
+</div>
+</div>
+<p><b><font color=red>If you need to revise your Python skills, I suggest you use this <a class="reference external" href="https://python.aims.ac.za/">platform</a>
+</font></b></p>
+<p>Or</p>
+<p>We have a set of <code class="docutils literal notranslate"><span class="pre">videos</span></code>, <code class="docutils literal notranslate"><span class="pre">practicals</span></code> and <code class="docutils literal notranslate"><span class="pre">slides</span></code> for you via this <a class="reference external" href="https://drive.google.com/drive/folders/1f9wDk3J34kTpyZdnn7ak4bIP1Tr7uppU?usp=sharing">link</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/courses_materials_python.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b076c7b4d48b1f07b52a7918ac50d33bcb376edb8d349586b093f9bb0c97777c.png" src="../_images/b076c7b4d48b1f07b52a7918ac50d33bcb376edb8d349586b093f9bb0c97777c.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_0"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_Getting%20Started%20with%20Jupyter%20and%20Colab.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 2: Getting started with Jupyter and Colab</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 1: Working with Series and DataFrames</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-the-new-fuel-the-new-electricity">Data: The new fuel, The new electricity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-a-tool-among-others">Python: A tool among others</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-libraries-core-to-data-science">Deep Learning Libraries: Core to Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basics-of-python-refresher">The basics of Python (refresher)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-font-a-class-anchor-id-exercise-1-a"><font color="#800080">Task:</font> <a class="anchor" id="exercise-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structures">Data Structures</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#values-and-types">Values and types</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">Variables</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-font-color-red-functions-are-crucial-to-your-data-science-workflow-i-suggest-you-brush-up-your-knowledge-on-that"><b><font color="red">Functions are crucial to your data science workflow. I suggest you brush up your knowledge on that</font></b></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modules-and-packages">Modules and Packages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-of-the-librairies">Some of the librairies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customizing-functions">Customizing functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><font color="#800080">Task :</font> <a class="anchor" id="exercise-1"></a></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

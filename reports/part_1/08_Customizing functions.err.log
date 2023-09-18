@@ -1,0 +1,58 @@
+Traceback (most recent call last):
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/rockefeller/.local/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+df1.apply(avg_3)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+[0;32m<ipython-input-16-c7586a24e299>[0m in [0;36m<module>[0;34m[0m
+[0;32m----> 1[0;31m [0mdf1[0m[0;34m.[0m[0mapply[0m[0;34m([0m[0mavg_3[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;32m~/.local/lib/python3.9/site-packages/pandas/core/frame.py[0m in [0;36mapply[0;34m(self, func, axis, raw, result_type, args, **kwargs)[0m
+[1;32m   9421[0m             [0mkwargs[0m[0;34m=[0m[0mkwargs[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   9422[0m         )
+[0;32m-> 9423[0;31m         [0;32mreturn[0m [0mop[0m[0;34m.[0m[0mapply[0m[0;34m([0m[0;34m)[0m[0;34m.[0m[0m__finalize__[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mmethod[0m[0;34m=[0m[0;34m"apply"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   9424[0m [0;34m[0m[0m
+[1;32m   9425[0m     def applymap(
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/core/apply.py[0m in [0;36mapply[0;34m(self)[0m
+[1;32m    676[0m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0mapply_raw[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    677[0m [0;34m[0m[0m
+[0;32m--> 678[0;31m         [0;32mreturn[0m [0mself[0m[0;34m.[0m[0mapply_standard[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    679[0m [0;34m[0m[0m
+[1;32m    680[0m     [0;32mdef[0m [0magg[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/core/apply.py[0m in [0;36mapply_standard[0;34m(self)[0m
+[1;32m    796[0m [0;34m[0m[0m
+[1;32m    797[0m     [0;32mdef[0m [0mapply_standard[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 798[0;31m         [0mresults[0m[0;34m,[0m [0mres_index[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mapply_series_generator[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    799[0m [0;34m[0m[0m
+[1;32m    800[0m         [0;31m# wrap results[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.9/site-packages/pandas/core/apply.py[0m in [0;36mapply_series_generator[0;34m(self)[0m
+[1;32m    812[0m             [0;32mfor[0m [0mi[0m[0;34m,[0m [0mv[0m [0;32min[0m [0menumerate[0m[0;34m([0m[0mseries_gen[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    813[0m                 [0;31m# ignore SettingWithCopy here in case the user mutates[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 814[0;31m                 [0mresults[0m[0;34m[[0m[0mi[0m[0;34m][0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mf[0m[0;34m([0m[0mv[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    815[0m                 [0;32mif[0m [0misinstance[0m[0;34m([0m[0mresults[0m[0;34m[[0m[0mi[0m[0;34m][0m[0;34m,[0m [0mABCSeries[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    816[0m                     [0;31m# If we have a view on v, we need to make a copy because[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mTypeError[0m: avg_3() missing 2 required positional arguments: 'y' and 'z'
+TypeError: avg_3() missing 2 required positional arguments: 'y' and 'z'
+

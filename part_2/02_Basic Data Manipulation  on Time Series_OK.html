@@ -1,0 +1,1686 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 2: Basic Data Manipulation on Time Series &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_2/02_Basic Data Manipulation  on Time Series_OK';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 3: Advanced Manipulation on Time Series" href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html" />
+    <link rel="prev" title="Chapter 1: Working with Time Data" href="01_Working%20with%20Time%20Data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_2/02_Basic Data Manipulation  on Time Series_OK.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_2/02_Basic Data Manipulation  on Time Series_OK.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 2: Basic Data Manipulation  on Time Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-deal-with-datetime-format">How to Deal with Datetime Format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-datetime-format">Reading Datetime Format</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080">Example:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a"><font color="#800080">Q:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-datetime-to-date-and-time">From Datetime to date and time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-the-date">Exploring the date</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assembling-multiple-columns-to-a-datetime">Assembling Multiple Columns to a Datetime</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-3-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 3:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-2-basic-data-manipulation-on-time-series">
+<h1>Chapter 2: Basic Data Manipulation  on Time Series<a class="headerlink" href="#chapter-2-basic-data-manipulation-on-time-series" title="Permalink to this heading">#</a></h1>
+<p>Working with time series data can be intimidating at first. The time series values are not the only information you have to consider. The <code class="docutils literal notranslate"><span class="pre">timestamps</span></code> also contain information, especially about the relationship between the values. In contrast to common data types, timestamps have a few unique characteristics. While they look like a string at first glance, they also have numerical aspects. This section will present essential techniques for effectively managing time series data.</p>
+<div class="section" id="how-to-deal-with-datetime-format">
+<h2>How to Deal with Datetime Format<a class="headerlink" href="#how-to-deal-with-datetime-format" title="Permalink to this heading">#</a></h2>
+<p>The essential part of time series data is the time component. The interval at which the variable or the phenomenon is observed or recorded. In Pandas, they take the form of <strong>timestamps</strong>. If these timestamps are in
+Datetime format, you can apply various manipulations, which we will discuss in this
+section. If not, you will have to convert it into the convenient format to unlock its various functionalities.</p>
+</div>
+<div class="section" id="reading-datetime-format">
+<h2>Reading Datetime Format<a class="headerlink" href="#reading-datetime-format" title="Permalink to this heading">#</a></h2>
+<p>By default, when reading from a CSV file that contains time series, unless carefully coded before hand, <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> reads timestamp columns as <code class="docutils literal notranslate"><span class="pre">strings</span></code> into a DataFrame, instead of <code class="docutils literal notranslate"><span class="pre">datetime64[ns]</span></code> data type.
+Let’s practice the example below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-example-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Example:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<p>Good air quality can have a direct impact on property valuations. For real estate agencies, it is vital to their businesses to study the quality of the air in a certain geographical area before building settlements. The reason is that,</p>
+<ul class="simple">
+<li><p>Areas with better air quality can lead to higher property values.</p></li>
+<li><p>Areas with better air quality reduces the risks of respiratory ailments, allergies, and other health problems as Homebuyers and renters often prioritize their health and the health of their families.</p></li>
+<li><p>Areas with better air quality tend to have lower maintenance costs. Polluted air can lead to faster wear and tear on building materials, increased cleaning needs, and even damage to property.</p></li>
+</ul>
+<p>Alain-realty, a real estate agency located in Kinshasa, Democratic Republic of Congo, plans to build luxious apartments in response to the improved lifestyle of the Congolese people resulting from the exploitation of coltan mines used in electric cars. They have engaged a team of Engineers from P.L. Global Consulting to assess the air quality in Bagata, an outskirt in Kinshasa. They have installed sensors capable of measuring the Ambiant Temperature, relative and absolute humidity from March 3rd, 2004, to April 4th, 2005, at 30-minute intervals. The resulting data is stored in a <code class="docutils literal notranslate"><span class="pre">csv</span></code> file provided below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/Air_Quality_bagata.csv&#39;</span><span class="p">)</span>
+<span class="n">airqual_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Temp</th>
+      <th>Rel_Hum</th>
+      <th>Abs_Hum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2004-10-03 18:00:00</td>
+      <td>13.6</td>
+      <td>48.9</td>
+      <td>0.7578</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2004-10-03 18:30:00</td>
+      <td>13.3</td>
+      <td>47.7</td>
+      <td>0.7255</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004-10-03 19:00:00</td>
+      <td>11.9</td>
+      <td>54.0</td>
+      <td>0.7502</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2004-10-03 19:30:00</td>
+      <td>11.0</td>
+      <td>60.0</td>
+      <td>0.7867</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2004-10-03 20:00:00</td>
+      <td>11.2</td>
+      <td>59.6</td>
+      <td>0.7888</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>8772</th>
+      <td>2005-04-04 12:00:00</td>
+      <td>4.5</td>
+      <td>56.3</td>
+      <td>0.4800</td>
+    </tr>
+    <tr>
+      <th>8773</th>
+      <td>2005-04-04 12:30:00</td>
+      <td>3.8</td>
+      <td>59.7</td>
+      <td>0.4839</td>
+    </tr>
+    <tr>
+      <th>8774</th>
+      <td>2005-04-04 13:00:00</td>
+      <td>4.3</td>
+      <td>58.6</td>
+      <td>0.4915</td>
+    </tr>
+    <tr>
+      <th>8775</th>
+      <td>2005-04-04 13:30:00</td>
+      <td>7.1</td>
+      <td>50.0</td>
+      <td>0.5067</td>
+    </tr>
+    <tr>
+      <th>8776</th>
+      <td>2005-04-04 14:00:00</td>
+      <td>11.1</td>
+      <td>38.4</td>
+      <td>0.5066</td>
+    </tr>
+  </tbody>
+</table>
+<p>8777 rows × 4 columns</p>
+</div></div></div>
+</div>
+<p>Let’s explore the data types of each column</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 8777 entries, 0 to 8776
+Data columns (total 4 columns):
+ #   Column   Non-Null Count  Dtype  
+---  ------   --------------  -----  
+ 0   Date     8777 non-null   object 
+ 1   Temp     8777 non-null   float64
+ 2   Rel_Hum  8777 non-null   float64
+ 3   Abs_Hum  8777 non-null   float64
+dtypes: float64(3), object(1)
+memory usage: 274.4+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<p>Though the date column contains date instances, its data type is still regarded as an <code class="docutils literal notranslate"><span class="pre">object</span></code>. Hence , we need to convert into <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object to use all the date related functionalities. This is done by using the <code class="docutils literal notranslate"><span class="pre">pd.to_datetime()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">airqual_data</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
+<span class="n">airqual_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 8777 entries, 0 to 8776
+Data columns (total 4 columns):
+ #   Column   Non-Null Count  Dtype         
+---  ------   --------------  -----         
+ 0   Date     8777 non-null   datetime64[ns]
+ 1   Temp     8777 non-null   float64       
+ 2   Rel_Hum  8777 non-null   float64       
+ 3   Abs_Hum  8777 non-null   float64       
+dtypes: datetime64[ns](1), float64(3)
+memory usage: 274.4 KB
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-q-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Q:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<p>Let’s get  a visual of the series  by running the code below to see the evolution of temperature.</p>
+<ol class="arabic simple">
+<li><p>Report on what you observe?</p></li>
+<li><p>If you have spotted any anomaly, what do you suggest we do about it?</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">airqual_data</span><span class="p">[</span><span class="s1">&#39;Temp&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time component&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;time component&#39;)
+</pre></div>
+</div>
+<img alt="../_images/0b85fa4b5ff9d5d5273155d4fb4d90f3d37533d2ef01e33d4d6accccbc359ebb.png" src="../_images/0b85fa4b5ff9d5d5273155d4fb4d90f3d37533d2ef01e33d4d6accccbc359ebb.png" />
+</div>
+</div>
+<div class="section" id="from-datetime-to-date-and-time">
+<h3>From Datetime to date and time<a class="headerlink" href="#from-datetime-to-date-and-time" title="Permalink to this heading">#</a></h3>
+<p>When you have a date and a timestamp, you can decompose them into their
+components. As shown below, we are breaking the <code class="docutils literal notranslate"><span class="pre">Date</span></code> column into actual <code class="docutils literal notranslate"><span class="pre">dates</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">column</span></code> respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Splitting date and time</span>
+<span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;dates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+<span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;times&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">time</span>
+<span class="n">airqual_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Temp</th>
+      <th>Rel_Hum</th>
+      <th>Abs_Hum</th>
+      <th>dates</th>
+      <th>times</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2004-10-03 18:00:00</td>
+      <td>13.6</td>
+      <td>48.9</td>
+      <td>0.7578</td>
+      <td>2004-10-03</td>
+      <td>18:00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2004-10-03 18:30:00</td>
+      <td>13.3</td>
+      <td>47.7</td>
+      <td>0.7255</td>
+      <td>2004-10-03</td>
+      <td>18:30:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004-10-03 19:00:00</td>
+      <td>11.9</td>
+      <td>54.0</td>
+      <td>0.7502</td>
+      <td>2004-10-03</td>
+      <td>19:00:00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2004-10-03 19:30:00</td>
+      <td>11.0</td>
+      <td>60.0</td>
+      <td>0.7867</td>
+      <td>2004-10-03</td>
+      <td>19:30:00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2004-10-03 20:00:00</td>
+      <td>11.2</td>
+      <td>59.6</td>
+      <td>0.7888</td>
+      <td>2004-10-03</td>
+      <td>20:00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="exploring-the-date">
+<h3>Exploring the date<a class="headerlink" href="#exploring-the-date" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">date</span></code> itself could also be decomposed it into smaller components, which includes year, month and day as shown below. Further down the line, this could in turn unlock information related to <strong>weekly observations, monthly insights or quaterly observations</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+
+<span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+
+<span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span>
+
+<span class="n">airqual_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Temp</th>
+      <th>Rel_Hum</th>
+      <th>Abs_Hum</th>
+      <th>dates</th>
+      <th>times</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2004-10-03 18:00:00</td>
+      <td>13.6</td>
+      <td>48.9</td>
+      <td>0.7578</td>
+      <td>2004-10-03</td>
+      <td>18:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2004-10-03 18:30:00</td>
+      <td>13.3</td>
+      <td>47.7</td>
+      <td>0.7255</td>
+      <td>2004-10-03</td>
+      <td>18:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004-10-03 19:00:00</td>
+      <td>11.9</td>
+      <td>54.0</td>
+      <td>0.7502</td>
+      <td>2004-10-03</td>
+      <td>19:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2004-10-03 19:30:00</td>
+      <td>11.0</td>
+      <td>60.0</td>
+      <td>0.7867</td>
+      <td>2004-10-03</td>
+      <td>19:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2004-10-03 20:00:00</td>
+      <td>11.2</td>
+      <td>59.6</td>
+      <td>0.7888</td>
+      <td>2004-10-03</td>
+      <td>20:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(8777, 9)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021-10-03 18:00:00&quot;</span><span class="p">,</span><span class="s2">&quot;2022-04-04 14:00:00&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;30T&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-10-03 18:00:00&#39;, &#39;2021-10-03 18:30:00&#39;,
+               &#39;2021-10-03 19:00:00&#39;, &#39;2021-10-03 19:30:00&#39;,
+               &#39;2021-10-03 20:00:00&#39;, &#39;2021-10-03 20:30:00&#39;,
+               &#39;2021-10-03 21:00:00&#39;, &#39;2021-10-03 21:30:00&#39;,
+               &#39;2021-10-03 22:00:00&#39;, &#39;2021-10-03 22:30:00&#39;,
+               ...
+               &#39;2022-04-04 09:30:00&#39;, &#39;2022-04-04 10:00:00&#39;,
+               &#39;2022-04-04 10:30:00&#39;, &#39;2022-04-04 11:00:00&#39;,
+               &#39;2022-04-04 11:30:00&#39;, &#39;2022-04-04 12:00:00&#39;,
+               &#39;2022-04-04 12:30:00&#39;, &#39;2022-04-04 13:00:00&#39;,
+               &#39;2022-04-04 13:30:00&#39;, &#39;2022-04-04 14:00:00&#39;],
+              dtype=&#39;datetime64[ns]&#39;, length=8777, freq=&#39;30T&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021/01/01&quot;</span><span class="p">,</span> <span class="s2">&quot;2021/01/10&quot;</span> <span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2021-01-01&#39;, &#39;2021-01-02&#39;, &#39;2021-01-03&#39;, &#39;2021-01-04&#39;,
+               &#39;2021-01-05&#39;, &#39;2021-01-06&#39;, &#39;2021-01-07&#39;, &#39;2021-01-08&#39;,
+               &#39;2021-01-09&#39;, &#39;2021-01-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you could observe, separate columns have been allocated to <code class="docutils literal notranslate"><span class="pre">year</span></code>, <code class="docutils literal notranslate"><span class="pre">month</span></code> and <code class="docutils literal notranslate"><span class="pre">day</span></code>, which makes it easier to query the data effectively. For instance, see this concrete example.</p>
+<p>The first part of the rainy season in the Democratic Republic of Congo usually runs from October to December. Farmers usually termed it as <code class="docutils literal notranslate"><span class="pre">mpisoli</span> <span class="pre">ya</span> <span class="pre">banzambe</span></code> (tears of gods). Let’s call it <strong>“mpisoli”</strong> for the sake of this exercise. Here is how the operations performed above could be useful.</p>
+<p>The Enigneers from the P.L. Global Constulting might want to know:</p>
+<ul class="simple">
+<li><p>The maximum air temperature throughout the whole Mpisoli duration,</p></li>
+<li><p>The average air temperature of each month of that period.</p></li>
+<li><p>The highest absolute humidity for each month of that spell.</p></li>
+</ul>
+<p>Let’s extract those information from the dataframe.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">30.5</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 8777 entries, 0 to 8776
+Data columns (total 9 columns):
+ #   Column   Non-Null Count  Dtype         
+---  ------   --------------  -----         
+ 0   Date     8777 non-null   datetime64[ns]
+ 1   Temp     8777 non-null   float64       
+ 2   Rel_Hum  8777 non-null   float64       
+ 3   Abs_Hum  8777 non-null   float64       
+ 4   dates    8777 non-null   object        
+ 5   times    8777 non-null   object        
+ 6   year     8777 non-null   int32         
+ 7   month    8777 non-null   int32         
+ 8   day      8777 non-null   int32         
+dtypes: datetime64[ns](1), float64(3), int32(3), object(2)
+memory usage: 514.4+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10, 11, 12,  1,  2,  3,  4], dtype=int32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpisoli_data</span> <span class="o">=</span> <span class="n">airqual_data</span><span class="p">[</span><span class="n">airqual_data</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">])]</span>
+<span class="n">mpisoli_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Temp</th>
+      <th>Rel_Hum</th>
+      <th>Abs_Hum</th>
+      <th>dates</th>
+      <th>times</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2004-10-03 18:00:00</td>
+      <td>13.6</td>
+      <td>48.9</td>
+      <td>0.7578</td>
+      <td>2004-10-03</td>
+      <td>18:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2004-10-03 18:30:00</td>
+      <td>13.3</td>
+      <td>47.7</td>
+      <td>0.7255</td>
+      <td>2004-10-03</td>
+      <td>18:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004-10-03 19:00:00</td>
+      <td>11.9</td>
+      <td>54.0</td>
+      <td>0.7502</td>
+      <td>2004-10-03</td>
+      <td>19:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2004-10-03 19:30:00</td>
+      <td>11.0</td>
+      <td>60.0</td>
+      <td>0.7867</td>
+      <td>2004-10-03</td>
+      <td>19:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2004-10-03 20:00:00</td>
+      <td>11.2</td>
+      <td>59.6</td>
+      <td>0.7888</td>
+      <td>2004-10-03</td>
+      <td>20:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4279</th>
+      <td>2004-12-31 21:30:00</td>
+      <td>27.2</td>
+      <td>33.3</td>
+      <td>1.1788</td>
+      <td>2004-12-31</td>
+      <td>21:30:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>4280</th>
+      <td>2004-12-31 22:00:00</td>
+      <td>27.5</td>
+      <td>30.9</td>
+      <td>1.1155</td>
+      <td>2004-12-31</td>
+      <td>22:00:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>4281</th>
+      <td>2004-12-31 22:30:00</td>
+      <td>27.1</td>
+      <td>33.3</td>
+      <td>1.1762</td>
+      <td>2004-12-31</td>
+      <td>22:30:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>4282</th>
+      <td>2004-12-31 23:00:00</td>
+      <td>26.4</td>
+      <td>35.1</td>
+      <td>1.1919</td>
+      <td>2004-12-31</td>
+      <td>23:00:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>4283</th>
+      <td>2004-12-31 23:30:00</td>
+      <td>25.6</td>
+      <td>37.6</td>
+      <td>1.2131</td>
+      <td>2004-12-31</td>
+      <td>23:30:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+  </tbody>
+</table>
+<p>4284 rows × 9 columns</p>
+</div></div></div>
+</div>
+<p><strong>#1.</strong> The maximum air temperature throughout the whole Mbula duration</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpisoli_data</span><span class="p">[</span><span class="s1">&#39;Temp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>44.6
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>#2.</strong> The average air temperature of each month of that period.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpisoli_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)[</span><span class="s1">&#39;Temp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>month
+10    11.757891
+11    16.026736
+12    21.559274
+Name: Temp, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>#3.</strong> The highest absolute humidity for each month of that spell.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpisoli_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)[</span><span class="s1">&#39;Abs_Hum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>month
+10    1.4852
+11    1.9390
+12    2.1806
+Name: Abs_Hum, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>One could also choose to focus on specific month and get any summary related to that month. See below for instance, the minimum temperature in November 2004.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpisoli_data</span><span class="p">[</span> <span class="p">(</span><span class="n">mpisoli_data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2004</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="p">(</span><span class="n">mpisoli_data</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">11</span><span class="p">)][</span><span class="s1">&#39;Temp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-200.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Strange right?!!</p>
+<p>Another interesting insight is that one could also group data in terms of weeks prior to extracting information from it. For the dataframe to respond to the query effectively, we should set the date column as an index of the dataframe using the <code class="docutils literal notranslate"><span class="pre">set_index</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpisoli_data</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mpisoli_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temp</th>
+      <th>Rel_Hum</th>
+      <th>Abs_Hum</th>
+      <th>dates</th>
+      <th>times</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2004-10-03 18:00:00</th>
+      <td>13.6</td>
+      <td>48.9</td>
+      <td>0.7578</td>
+      <td>2004-10-03</td>
+      <td>18:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2004-10-03 18:30:00</th>
+      <td>13.3</td>
+      <td>47.7</td>
+      <td>0.7255</td>
+      <td>2004-10-03</td>
+      <td>18:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2004-10-03 19:00:00</th>
+      <td>11.9</td>
+      <td>54.0</td>
+      <td>0.7502</td>
+      <td>2004-10-03</td>
+      <td>19:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2004-10-03 19:30:00</th>
+      <td>11.0</td>
+      <td>60.0</td>
+      <td>0.7867</td>
+      <td>2004-10-03</td>
+      <td>19:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2004-10-03 20:00:00</th>
+      <td>11.2</td>
+      <td>59.6</td>
+      <td>0.7888</td>
+      <td>2004-10-03</td>
+      <td>20:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2004-12-31 21:30:00</th>
+      <td>27.2</td>
+      <td>33.3</td>
+      <td>1.1788</td>
+      <td>2004-12-31</td>
+      <td>21:30:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>2004-12-31 22:00:00</th>
+      <td>27.5</td>
+      <td>30.9</td>
+      <td>1.1155</td>
+      <td>2004-12-31</td>
+      <td>22:00:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>2004-12-31 22:30:00</th>
+      <td>27.1</td>
+      <td>33.3</td>
+      <td>1.1762</td>
+      <td>2004-12-31</td>
+      <td>22:30:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>2004-12-31 23:00:00</th>
+      <td>26.4</td>
+      <td>35.1</td>
+      <td>1.1919</td>
+      <td>2004-12-31</td>
+      <td>23:00:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>2004-12-31 23:30:00</th>
+      <td>25.6</td>
+      <td>37.6</td>
+      <td>1.2131</td>
+      <td>2004-12-31</td>
+      <td>23:30:00</td>
+      <td>2004</td>
+      <td>12</td>
+      <td>31</td>
+    </tr>
+  </tbody>
+</table>
+<p>4284 rows × 8 columns</p>
+</div></div></div>
+</div>
+<p>If we are interested in the <strong>weekly averages of Temperature or/and absolute humidity</strong> during mpisoli, one could groupby the data by weeks using the frequency parameter, and pass in a list of variables we need the aggregates for.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weekly_grouping_mpisoli</span> <span class="o">=</span> <span class="n">mpisoli_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="s1">&#39;W&#39;</span><span class="p">))</span>
+<span class="n">mpisoli_data</span><span class="p">[[</span><span class="s1">&#39;Temp&#39;</span><span class="p">,</span> <span class="s1">&#39;Abs_Hum&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Temp       16.597199
+Abs_Hum    -4.902157
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weekly_data_mpisoli</span> <span class="o">=</span> <span class="n">weekly_grouping_mpisoli</span><span class="p">[[</span><span class="s1">&#39;Temp&#39;</span><span class="p">,</span> <span class="s1">&#39;Abs_Hum&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This can lead to answering questions like:</p>
+<ul class="simple">
+<li><p>What is the week with the lowest temperature?</p></li>
+<li><p>Does temperature tend to increase  on a average on weekly basis or</p></li>
+</ul>
+<p>Or also lead to the generation of weekly summaries as seen below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weeks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;week_&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">14</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">weeks</span><span class="p">,</span> <span class="n">weekly_data_mpisoli</span><span class="p">[</span><span class="s1">&#39;Temp&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;weeks&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;avg temperature&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Weekly temperature during Bagata&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Weekly temperature during Bagata&#39;)
+</pre></div>
+</div>
+<img alt="../_images/5e2e4eea2fe662cfce0981b94816d633294a55240d4658f7eff4663c83855889.png" src="../_images/5e2e4eea2fe662cfce0981b94816d633294a55240d4658f7eff4663c83855889.png" />
+</div>
+</div>
+</div>
+<div class="section" id="assembling-multiple-columns-to-a-datetime">
+<h3>Assembling Multiple Columns to a Datetime<a class="headerlink" href="#assembling-multiple-columns-to-a-datetime" title="Permalink to this heading">#</a></h3>
+<p>Sometimes, data could be collected in form of separate columns of date components like  year, month,
+and day. We could also assemble that and create a date column from those components still, using the <code class="docutils literal notranslate"><span class="pre">.to_datetime()</span></code> method. Here, we create a <code class="docutils literal notranslate"><span class="pre">date_2</span></code> column to work that out.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airqual_data</span><span class="p">[</span><span class="s2">&quot;date_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">airqual_data</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]])</span>
+<span class="n">airqual_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Temp</th>
+      <th>Rel_Hum</th>
+      <th>Abs_Hum</th>
+      <th>dates</th>
+      <th>times</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>date_2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2004-10-03 18:00:00</td>
+      <td>13.6</td>
+      <td>48.9</td>
+      <td>0.7578</td>
+      <td>2004-10-03</td>
+      <td>18:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+      <td>2004-10-03</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2004-10-03 18:30:00</td>
+      <td>13.3</td>
+      <td>47.7</td>
+      <td>0.7255</td>
+      <td>2004-10-03</td>
+      <td>18:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+      <td>2004-10-03</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004-10-03 19:00:00</td>
+      <td>11.9</td>
+      <td>54.0</td>
+      <td>0.7502</td>
+      <td>2004-10-03</td>
+      <td>19:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+      <td>2004-10-03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2004-10-03 19:30:00</td>
+      <td>11.0</td>
+      <td>60.0</td>
+      <td>0.7867</td>
+      <td>2004-10-03</td>
+      <td>19:30:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+      <td>2004-10-03</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2004-10-03 20:00:00</td>
+      <td>11.2</td>
+      <td>59.6</td>
+      <td>0.7888</td>
+      <td>2004-10-03</td>
+      <td>20:00:00</td>
+      <td>2004</td>
+      <td>10</td>
+      <td>3</td>
+      <td>2004-10-03</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="font-color-800080-task-3-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 3:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-3-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>Monitoring air quality and understanding the data can guide many industries in making informed decisions, adopting cleaner technologies, ensuring public health, and contributing to the overall betterment of the environment. For instance, in Agriculture,</p>
+<ol class="arabic simple">
+<li><p>Good air quality is necessary for Crop Health, as farmers, could monitor pollutants that can impact crop health and yield.</p></li>
+<li><p>Good air quality could also guide Farming Practices: Selecting crop varieties resistant to certain pollutants or altering farming practices to mitigate the effects of poor air quality.</p></li>
+</ol>
+<p>As a Data Analyst, you are on a working collaboration with JVE Mali, An environmental agency in Mali. The goal is to provide farmers with insights related the Air quality, as this could help them decide whihc plant to grow, when to visit their farms without fearing any respiratory diseases due to air pollution. With the materials acquired from the Government Project titled “Encourger le Paysan Malien (EPM)” which goal is to encourage farming practices among the youth, You have measured different related to polluants in Sikasso</p>
+<p>As a Data Analyst, you collaborate with JVE Mali, an environmental agency in Mali. The aim is to provide farmers with insights on Air quality, enabling them to choose suitable crops and also to plan farm regular visits to their plots without respiratory disease concerns. Using materials acquired from the Government Project named “Encourager le Paysan Malien (EPM)” that aims to promote farming practices among young entrepreneurs, JVE  have rolled out a data collection campaign across Southern Mali, starting with the City of Sikasso throughout the Year 2022. Some of the polluants’ concentration that were measured include</p>
+<ul class="simple">
+<li><p>PM2.5 (Fine particulate matter)</p></li>
+<li><p>PM10 (Coarse particulate matter)</p></li>
+<li><p>O₃ (Ozone)</p></li>
+<li><p>CO (Carbon monoxide)</p></li>
+<li><p>SO₂ (Sulfur dioxide)</p></li>
+<li><p>NO₂ (Nitrogen dioxide)</p></li>
+</ul>
+<p>The resulting information is encapsulated in the csv file called <code class="docutils literal notranslate"><span class="pre">sikasso_aq.csv</span></code>.</p>
+<ol class="arabic simple">
+<li><p>Load the dataset and tell us what you observe.</p></li>
+<li><p>Produce a dataframe that contains the montly averages of the Coarse particulate matter (PM10). Make sure you replace the month number by the actual month name in your final result. You may use the hint below.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">data_frame['month_name']</span> <span class="pre">=</span> <span class="pre">pd.to_datetime(data_frame['month'],</span> <span class="pre">format='%m').dt.month_name().str.slice()</span></code></p>
+<ol class="arabic simple" start="3">
+<li><p>Determine monthly average dynamics of Coarse particulate matter (PM10) and identify the months with lowest and highest average value. Return the results in form of a graph. Save those values somewhere as they represent the <span class="math notranslate nohighlight">\(C_{low}\)</span> and <span class="math notranslate nohighlight">\(C_{high}\)</span> for that polluant.</p></li>
+<li><p>For every other polluant, repeat the Question 2. and 3. above. To avoid re-writing codes from scratch, you might want to customize some functions that perform the Q2 and Q3.</p></li>
+<li><p>Compute the Quaterly average for each of the polluants and report the lowest and largest value for each of the polluants.</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_Working%20with%20Time%20Data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 1: Working with Time Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 3: Advanced Manipulation on Time Series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-deal-with-datetime-format">How to Deal with Datetime Format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-datetime-format">Reading Datetime Format</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-example-font-a-class-anchor-id-task-1-a"><font color="#800080">Example:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a"><font color="#800080">Q:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-datetime-to-date-and-time">From Datetime to date and time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-the-date">Exploring the date</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assembling-multiple-columns-to-a-datetime">Assembling Multiple Columns to a Datetime</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-3-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 3:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2781 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 4: Word Embeddings &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_4/04_Word Embeddings';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Chapter 3: Feature Extraction from Text Data" href="03_Feature%20Extraction%20from%20Texts.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_4/04_Word Embeddings.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_4/04_Word Embeddings.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 4: Word Embeddings</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-numerical-representation-essential">Why is Numerical Representation Essential?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-the-challenges-of-textual-data">Navigating the Challenges of Textual Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variability">1. <strong>Variability</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume">2. <strong>Volume</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">3. <strong>Structure</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nuances">4. <strong>Nuances</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-word-representations">Basic Word Representations:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">One-hot Encoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a"><font color="#800080">Q:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#labelencoder">LabelEncoder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onehotencoder">OneHotEncoder:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words">Bag of words</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-bag-of-words-using-sklearn">Performing bag-of-words using sklearn</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighing-the-pros-and-cons">Weighing the Pros and Cons</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-9-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 9:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-model">N-gram model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engineering-with-word-embeddings">Feature engineering with word embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-processings">Pre-processings:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-the-word2vec-model-from-gensim">Importing the Word2Vec model from Gensim.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t-sne">t-SNE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#word-similarity-dataframe">Word similarity dataframe</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-4-word-embeddings">
+<h1>Chapter 4: Word Embeddings<a class="headerlink" href="#chapter-4-word-embeddings" title="Permalink to this heading">#</a></h1>
+<p>Language, in its essence, is a beautiful collection of words coming together to communicate thoughts, emotions, and facts. But how do we translate that intricacy into a format that machines can understand? Let’s embark on a journey to explore the numerical representation of words.</p>
+<p>In this section, we will understand why representing words numerically is crucial for machine learning models. The beauty of language lies in its diversity and depth. However,computers understand <strong>numbers, not words</strong>. Now, the question is:</p>
+<ul class="simple">
+<li><p>How can we bridge this gap between human language and machine processing?</p></li>
+<li><p>How then do we get a computer to understand the sentiment behind a statement like</p></li>
+</ul>
+<p><strong><code class="docutils literal notranslate"><span class="pre">&quot;The</span> <span class="pre">sunset</span> <span class="pre">at</span> <span class="pre">the</span> <span class="pre">Maasai</span> <span class="pre">Mara</span> <span class="pre">is</span> <span class="pre">breathtaking!&quot;?</span></code></strong></p>
+<p>The answer lies in word representation.</p>
+<p><strong>Learning Objectives:</strong></p>
+<ul class="simple">
+<li><p>Feature Extraction from Text Data</p></li>
+<li><p>OneHot Encoder, LabelEncoder</p></li>
+<li><p>WordVec library</p></li>
+</ul>
+<div class="section" id="why-is-numerical-representation-essential">
+<h2>Why is Numerical Representation Essential?<a class="headerlink" href="#why-is-numerical-representation-essential" title="Permalink to this heading">#</a></h2>
+<p>Before diving into the complexities of numerical word representation, let’s discuss why it’s necessary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Consider the following Swahili sentence:</span>
+<span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;Hakuna Matata! Ni lugha ya Kiswahili.&quot;</span>
+
+
+
+<span class="c1"># Now, let&#39;s transform this sentence into a format that&#39;s inherently numerical: binary.</span>
+<span class="n">binary_representation</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bin</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">))</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">]</span>
+
+
+
+<span class="c1"># Here&#39;s the binary representation of the first few characters of our sentence:</span>
+<span class="n">binary_representation</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;0b1001000&#39;,
+ &#39;0b1100001&#39;,
+ &#39;0b1101011&#39;,
+ &#39;0b1110101&#39;,
+ &#39;0b1101110&#39;,
+ &#39;0b1100001&#39;,
+ &#39;0b100000&#39;,
+ &#39;0b1001101&#39;,
+ &#39;0b1100001&#39;,
+ &#39;0b1110100&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the output above, we’ve successfully transformed our <code class="docutils literal notranslate"><span class="pre">Swahili</span></code> text into a binary format. While this demonstrates that any text can be turned into numbers, it’s merely a direct translation of characters to their binary values.</p>
+<p>This doesn’t help machines “understand” the sentiment or context behind <code class="docutils literal notranslate"><span class="pre">&quot;Hakuna</span> <span class="pre">Matata&quot;</span></code>, not even to mention <code class="docutils literal notranslate"><span class="pre">Ni</span> <span class="pre">lugha</span> <span class="pre">ya</span> <span class="pre">Kiswahili.</span></code> The question now is, how can we represent words such that their meaning, context, and nuances are taken into account? This is where the world of <strong>word representation</strong> comes handy.</p>
+</div>
+<div class="section" id="navigating-the-challenges-of-textual-data">
+<h2>Navigating the Challenges of Textual Data<a class="headerlink" href="#navigating-the-challenges-of-textual-data" title="Permalink to this heading">#</a></h2>
+<p>Representing words numerically isn’t straightforward. Let’s outline the challenges we need to navigate:</p>
+<div class="section" id="variability">
+<h3>1. <strong>Variability</strong>:<a class="headerlink" href="#variability" title="Permalink to this heading">#</a></h3>
+<p>Words are chameleons, changing meanings based on context.  For example:</p>
+<ul class="simple">
+<li><p><strong>“Current:”</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">current</span> <span class="pre">flowed</span> <span class="pre">through</span> <span class="pre">the</span> <span class="pre">wire</span></code>is pointing to the flow of electricity.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">river's</span> <span class="pre">current</span> <span class="pre">was</span> <span class="pre">strong,</span></code> indicating the flow or direction of water.</p></li>
+</ul>
+</li>
+<li><p><strong>“Light:”</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">box</span> <span class="pre">was</span> <span class="pre">very</span> <span class="pre">light</span></code>” meaning it’s not heavy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">room</span> <span class="pre">was</span> <span class="pre">filled</span> <span class="pre">with</span> <span class="pre">bright</span> <span class="pre">light</span></code> is pointing to the brightness or luminescence.</p></li>
+</ul>
+</li>
+<li><p><strong>“Leaves:”</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">leaves</span> <span class="pre">turned</span> <span class="pre">orange</span> <span class="pre">in</span> <span class="pre">autumn</span></code> highlights the parts of plants or trees.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">She</span> <span class="pre">leaves</span> <span class="pre">for</span> <span class="pre">her</span> <span class="pre">trip</span> <span class="pre">tomorrow</span></code> meaning she departs.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="volume">
+<h3>2. <strong>Volume</strong>:<a class="headerlink" href="#volume" title="Permalink to this heading">#</a></h3>
+<p>The lexicon of languages is vast and varied. For example:</p>
+<ul class="simple">
+<li><p>Kiswahili uses <code class="docutils literal notranslate"><span class="pre">&quot;namba&quot;</span></code> for <code class="docutils literal notranslate"><span class="pre">&quot;number&quot;</span></code>, which is reminiscent of <code class="docutils literal notranslate"><span class="pre">&quot;number&quot;</span></code> in English and <code class="docutils literal notranslate"><span class="pre">&quot;numéro&quot;</span></code> in French.</p></li>
+<li><p>The word <code class="docutils literal notranslate"><span class="pre">&quot;sifuri&quot;</span></code> means <code class="docutils literal notranslate"><span class="pre">zero</span></code> in Kiswahili, showing influence from Arabic’s <code class="docutils literal notranslate"><span class="pre">&quot;sifr&quot;</span></code>.</p></li>
+<li><p>The Kiswahili word for <code class="docutils literal notranslate"><span class="pre">&quot;book&quot;</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;kitabu&quot;</span></code>, which shares roots with the Arabic word <code class="docutils literal notranslate"><span class="pre">&quot;kitab&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Bendera&quot;</span></code>, the word for <code class="docutils literal notranslate"><span class="pre">&quot;flag&quot;</span></code> in Kiswahili, can be traced back to the Portuguese word <code class="docutils literal notranslate"><span class="pre">&quot;bandeira&quot;</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="structure">
+<h3>3. <strong>Structure</strong>:<a class="headerlink" href="#structure" title="Permalink to this heading">#</a></h3>
+<p>Unlike neat columns of numbers, text is messy. Sentences can be short or span multiple lines, and the order of words can flip the meaning entirely.</p>
+<ul class="simple">
+<li><p><strong>Sentence Length:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Short:</span></code> “She wept.”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Long:</span></code> “With a heavy heart, gazing out at the pouring rain, she wept silently, thinking of all the memories they had shared.”</p></li>
+</ul>
+</li>
+<li><p><strong>Word Order:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Original:</span></code> “Dogs chase cats.”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Flipped:</span></code> “Cats chase dogs.”</p></li>
+</ul>
+</li>
+<li><p><strong>Modifiers and Clarity:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ambiguous:</span></code> “I saw the man with the telescope.”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Clear</span> <span class="pre">Structures:</span></code></p>
+<ul>
+<li><p>“Using my telescope, I saw the man.”</p></li>
+<li><p>“I saw the man who had a telescope.”</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="nuances">
+<h3>4. <strong>Nuances</strong>:<a class="headerlink" href="#nuances" title="Permalink to this heading">#</a></h3>
+<p>The subtleties in language, like tone, dialects, or cultural references, can be profound. A simple greeting can be factual or dripping in sarcasm, depending on the tone.</p>
+<ul class="simple">
+<li><p><strong>Dialects:</strong></p>
+<ul>
+<li><p>Statement: <code class="docutils literal notranslate"><span class="pre">&quot;I</span> <span class="pre">want</span> <span class="pre">to</span> <span class="pre">buy</span> <span class="pre">maize.&quot;</span></code></p>
+<ul>
+<li><p>English in Kenya: “I want to buy maize.”</p></li>
+<li><p>English in Nigeria: “I want to buy corn.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Cultural References:</strong></p>
+<ul>
+<li><p>Statement: <code class="docutils literal notranslate"><span class="pre">&quot;He</span> <span class="pre">is</span> <span class="pre">the</span> <span class="pre">Kipchoge</span> <span class="pre">of</span> <span class="pre">business.&quot;</span></code></p>
+<ul>
+<li><p>For those familiar with Eliud Kipchoge, the Kenyan long-distance runner, this implies excellence in business.</p></li>
+<li><p>Someone unfamiliar with Kipchoge might miss the significance.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Euphemisms:</strong></p>
+<ul>
+<li><p>Statement: <code class="docutils literal notranslate"><span class="pre">&quot;He</span> <span class="pre">has</span> <span class="pre">joined</span> <span class="pre">the</span> <span class="pre">ancestors.&quot;</span></code></p>
+<ul>
+<li><p>This is an African way of saying <code class="docutils literal notranslate"><span class="pre">&quot;He</span> <span class="pre">has</span> <span class="pre">passed</span> <span class="pre">on</span> <span class="pre">or</span> <span class="pre">died.&quot;</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="basic-word-representations">
+<h2>Basic Word Representations:<a class="headerlink" href="#basic-word-representations" title="Permalink to this heading">#</a></h2>
+<p>Before the rise of advanced word embedding techniques, one of the primary ways to represent words numerically was through one-hot encoding. It’s a simple, yet effective method, especially when dealing with a limited vocabulary.
+Here below, we will explore some of its nuances.</p>
+<div class="section" id="one-hot-encoding">
+<h3>One-hot Encoding<a class="headerlink" href="#one-hot-encoding" title="Permalink to this heading">#</a></h3>
+<p>At a high level, one-hot encoding turns categorical variables into a binary matrix. Think of it as having a unique switch for every word in a vocabulary. A particular word’s switch is turned on (set to 1), while the rest remain off (set to 0).</p>
+<p>Here, we’ll consider some iconic African animals to illustrate the concept.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initializing our sample dataset</span>
+
+<span class="n">animals</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lion&quot;</span><span class="p">,</span> <span class="s2">&quot;elephant&quot;</span><span class="p">,</span> <span class="s2">&quot;giraffe&quot;</span><span class="p">,</span> <span class="s2">&quot;cheetah&quot;</span><span class="p">,</span> <span class="s2">&quot;hippo&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s attempt to represent the animal <code class="docutils literal notranslate"><span class="pre">'lion'</span></code> using one-hot encoding. For the <code class="docutils literal notranslate"><span class="pre">&quot;lion&quot;</span></code>, its designated switch will be turned on, and all others will be off.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoding</span> <span class="o">=</span> <span class="p">{</span><span class="n">animal</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">animal</span> <span class="o">==</span> <span class="n">target</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">animals</span><span class="p">]</span> <span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="n">animals</span><span class="p">}</span>
+
+<span class="n">encoding</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;lion&#39;: [1, 0, 0, 0, 0],
+ &#39;elephant&#39;: [0, 1, 0, 0, 0],
+ &#39;giraffe&#39;: [0, 0, 1, 0, 0],
+ &#39;cheetah&#39;: [0, 0, 0, 1, 0],
+ &#39;hippo&#39;: [0, 0, 0, 0, 1]}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;lion&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 0, 0, 0, 0]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;elephant&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 1, 0, 0, 0]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoding</span><span class="p">[</span><span class="s2">&quot;cheetah&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 0, 0, 1, 0]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-800080-q-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Q:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<ul class="simple">
+<li><p>What could be the shortcomings of One-hot encoder?</p></li>
+</ul>
+</div>
+<div class="section" id="labelencoder">
+<h3>LabelEncoder<a class="headerlink" href="#labelencoder" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">LabelEncoder</span></code> provides a simple way to convert categorical labels into a range of <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">n_classes</span> <span class="pre">-</span> <span class="pre">1]</span></code>. Let’s see it in action with an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+
+<span class="n">animals</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eagle&#39;</span><span class="p">,</span> <span class="s1">&#39;ant&#39;</span><span class="p">,</span> <span class="s1">&#39;giraffe&#39;</span><span class="p">,</span> <span class="s1">&#39;eagle&#39;</span><span class="p">,</span> <span class="s1">&#39;giraffe&#39;</span><span class="p">]</span>
+
+
+<span class="n">animals_labels</span>  <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">animals</span><span class="p">)</span>
+
+
+<span class="n">animals_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 2, 1, 2])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, we’ve transformed our list of animals into numerical labels. Each unique animal is assigned a unique number. It’s a straightforward mapping but has its limitations when used directly in certain machine learning models.</p>
+</div>
+<div class="section" id="onehotencoder">
+<h3>OneHotEncoder:<a class="headerlink" href="#onehotencoder" title="Permalink to this heading">#</a></h3>
+<p>While <code class="docutils literal notranslate"><span class="pre">LabelEncoder</span></code> gives a single number for each category, <code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> represents each category as a binary vector. This is particularly useful for algorithms that might misunderstand numerical closeness as a form of similarity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span> 
+
+<span class="c1"># Reshape animal_labels to be a 2D array, necessary for OneHotEncoder</span>
+<span class="n">animal_labels_reshaped</span> <span class="o">=</span> <span class="n">animals_labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Using OneHotEncoder</span>
+<span class="n">onehotencoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">()</span>
+<span class="n">animal_onehot</span> <span class="o">=</span> <span class="n">onehotencoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">animal_labels_reshaped</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+<span class="n">animal_onehot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0., 1., 0.],
+       [1., 0., 0.],
+       [0., 0., 1.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="bag-of-words">
+<h3>Bag of words<a class="headerlink" href="#bag-of-words" title="Permalink to this heading">#</a></h3>
+<p>Bag of words is a very popular model for feature extraction from text data. It is the process of converting the text data into term vectors. Term vectors are algebraic models used to convert the text into numbers. The vector for a document <span class="math notranslate nohighlight">\(D\)</span> can be mathematically represented as:</p>
+<div class="math notranslate nohighlight">
+\[D_{vs} =  \{ W_{D1} + W_{D2} + W_{D3} + \dots + W_{D1n} \}\]</div>
+<p><span class="math notranslate nohighlight">\(W_{D}\)</span> Stands for distinct words and the weights for each words is the frequency of the word in that
+document.</p>
+<p>We will first manually perform the bag of words model to understand the working in detail. Consider the sample corpus:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docA</span> <span class="o">=</span> <span class="s2">&quot;We live for the freedom we love our freedom&quot;</span>
+
+<span class="n">docB</span> <span class="o">=</span> <span class="s2">&quot;I feel happy enjoying freedom&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The bag of words converts the text into word vectors and the weights are assigned as per the frequency of occurrence in the document. So let us now perform word tokenization to this set:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bowA</span> <span class="o">=</span> <span class="n">docA</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="n">bowB</span> <span class="o">=</span> <span class="n">docB</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bowA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;We&#39;, &#39;live&#39;, &#39;for&#39;, &#39;the&#39;, &#39;freedom&#39;, &#39;we&#39;, &#39;love&#39;, &#39;our&#39;, &#39;freedom&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bowB</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;I&#39;, &#39;feel&#39;, &#39;happy&#39;, &#39;enjoying&#39;, &#39;freedom&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>What we have now is the list of words from each document. The total number of columns for the resultant vector would be the length of the distinct words in all the documents. So our next step is to find all the distinct documents:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wordSet</span><span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">bowA</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">bowB</span><span class="p">))</span>
+<span class="n">wordSet</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;I&#39;,
+ &#39;We&#39;,
+ &#39;enjoying&#39;,
+ &#39;feel&#39;,
+ &#39;for&#39;,
+ &#39;freedom&#39;,
+ &#39;happy&#39;,
+ &#39;live&#39;,
+ &#39;love&#39;,
+ &#39;our&#39;,
+ &#39;the&#39;,
+ &#39;we&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will then create a dictionary to hold the count of the words and then count the term frequency for each words:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wordDictA</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">wordSet</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">wordDictB</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">wordSet</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">wordDictA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;We&#39;: 0,
+ &#39;feel&#39;: 0,
+ &#39;freedom&#39;: 0,
+ &#39;love&#39;: 0,
+ &#39;for&#39;: 0,
+ &#39;I&#39;: 0,
+ &#39;happy&#39;: 0,
+ &#39;the&#39;: 0,
+ &#39;we&#39;: 0,
+ &#39;live&#39;: 0,
+ &#39;our&#39;: 0,
+ &#39;enjoying&#39;: 0}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">bowA</span><span class="p">:</span>
+    <span class="n">wordDictA</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+    
+<span class="n">wordDictA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;We&#39;: 1,
+ &#39;feel&#39;: 0,
+ &#39;freedom&#39;: 2,
+ &#39;love&#39;: 1,
+ &#39;for&#39;: 1,
+ &#39;I&#39;: 0,
+ &#39;happy&#39;: 0,
+ &#39;the&#39;: 1,
+ &#39;we&#39;: 1,
+ &#39;live&#39;: 1,
+ &#39;our&#39;: 1,
+ &#39;enjoying&#39;: 0}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">bowB</span><span class="p">:</span>
+    <span class="n">wordDictB</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let us convert them into matrices:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;We live for the freedom we love our freedom&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">wordDictA</span><span class="p">,</span> <span class="n">wordDictB</span><span class="p">],</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;docA&#39;</span><span class="p">,</span><span class="s1">&#39;docB&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>We</th>
+      <th>feel</th>
+      <th>freedom</th>
+      <th>love</th>
+      <th>for</th>
+      <th>I</th>
+      <th>happy</th>
+      <th>the</th>
+      <th>we</th>
+      <th>live</th>
+      <th>our</th>
+      <th>enjoying</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>docA</th>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>docB</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We have performed the Bag of words manually. But in most of the cases, we will make use of the <code class="docutils literal notranslate"><span class="pre">BOW</span></code> function from sklearn.</p>
+<div class="section" id="performing-bag-of-words-using-sklearn">
+<h4>Performing bag-of-words using sklearn<a class="headerlink" href="#performing-bag-of-words-using-sklearn" title="Permalink to this heading">#</a></h4>
+<p>We will take the same corpus we used for the one-hot encoding for bow (bag – of - words) so that we can differentiate who the two technique works:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;We live for the freedom we love our freedom&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_bows</span> <span class="o">=</span> <span class="p">[</span><span class="n">docA</span>  <span class="p">,</span><span class="n">docB</span><span class="p">]</span>
+<span class="n">all_bows</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;We live for the freedom we love our freedom&#39;,
+ &#39;I feel happy enjoying freedom&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vect_machine</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="n">vect_machine</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>CountVectorizer(min_df=0.0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">CountVectorizer</label><div class="sk-toggleable__content"><pre>CountVectorizer(min_df=0.0)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vect_machine</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">all_bows</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-2 {color: black;background-color: white;}#sk-container-id-2 pre{padding: 0;}#sk-container-id-2 div.sk-toggleable {background-color: white;}#sk-container-id-2 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-2 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-2 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-2 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-2 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-2 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-2 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-2 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-2 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-2 div.sk-item {position: relative;z-index: 1;}#sk-container-id-2 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-2 div.sk-item::before, #sk-container-id-2 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-2 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-2 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-2 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-2 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-2 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-2 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-2 div.sk-label-container {text-align: center;}#sk-container-id-2 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-2 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>CountVectorizer(min_df=0.0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label sk-toggleable__label-arrow">CountVectorizer</label><div class="sk-toggleable__content"><pre>CountVectorizer(min_df=0.0)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vect_machine</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;enjoying&#39;, &#39;feel&#39;, &#39;for&#39;, &#39;freedom&#39;, &#39;happy&#39;, &#39;live&#39;, &#39;love&#39;,
+       &#39;our&#39;, &#39;the&#39;, &#39;we&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformed_data</span> <span class="o">=</span> <span class="n">vect_machine</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">all_bows</span><span class="p">)</span>
+<span class="n">transformed_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;2x10 sparse matrix of type &#39;&lt;class &#39;numpy.int64&#39;&gt;&#39;
+	with 11 stored elements in Compressed Sparse Row format&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">transformed_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scipy.sparse._csr.csr_matrix
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformed_data</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>matrix([[0, 0, 1, 2, 0, 1, 1, 1, 1, 2],
+        [1, 1, 0, 1, 1, 0, 0, 0, 0, 0]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">transformed_data</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vect_machine</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>enjoying</th>
+      <th>feel</th>
+      <th>for</th>
+      <th>freedom</th>
+      <th>happy</th>
+      <th>live</th>
+      <th>love</th>
+      <th>our</th>
+      <th>the</th>
+      <th>we</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="weighing-the-pros-and-cons">
+<h2>Weighing the Pros and Cons<a class="headerlink" href="#weighing-the-pros-and-cons" title="Permalink to this heading">#</a></h2>
+<p>One-hot encoding, like all methods, comes with its strengths and challenges.</p>
+<p><strong>Advantages:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Clarity in Representation</strong>: Each term has a clear, unambiguous vector.</p></li>
+<li><p><strong>Ease of Implementation</strong>: Given its simplicity, it’s easy to grasp and apply.</p></li>
+</ol>
+<p><strong>Challenges:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Scalability Concerns</strong>: Consider the vast array of languages from Africa - Hausa, Zulu, Oromo, Yoruba, and so many more. Representing every unique word from each language would result in incredibly lengthy vectors.</p></li>
+<li><p><strong>Lack of Contextual Depth</strong>: Two dishes, Nigeria’s Jollof rice and Senegal’s Thieboudienne, might share many similarities. However, one-hot encoding sees them as totally distinct, missing out on their shared culinary heritage.</p></li>
+<li><p><strong>Efficiency Issues</strong>: Storing a unique vector for every term isn’t memory-friendly, particularly for languages with extensive lexicons.</p></li>
+</ol>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-9-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Task 9:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-9-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<p>Consider the sample inbox message below.</p>
+<ol class="arabic simple">
+<li><p>Build a vectorizer using parameters of your choice</p></li>
+<li><p>Transform the data into a numerical format.</p></li>
+<li><p>What do you observe?</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inbox_train</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tommorow is ghost town&#39;</span><span class="p">,</span>
+               
+               <span class="s1">&#39;should we play today?&#39;</span><span class="p">,</span>
+               
+               <span class="s1">&#39;TUTORIAL TUESDAY NIGHt!!&#39;</span><span class="p">,</span> 
+               
+               <span class="s1">&#39;Manchester VS Barcelona!!!&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes a bit of cleaning is needed  before the whole vectorization process takes place.</p>
+<p>Some of the steps could involve:</p>
+<ul class="simple">
+<li><p>Removing stopwords</p></li>
+<li><p>Uniformizing the  cases across the vocabulary</p></li>
+<li><p>Considering a minimal number of character for a word.</p></li>
+</ul>
+<p>Let’s explore the documentation of the <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>CountVectorizer<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_vect</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span> <span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span> <span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span> <span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\w\w\w+&quot;</span><span class="p">)</span>
+<span class="n">my_vect</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-3 {color: black;background-color: white;}#sk-container-id-3 pre{padding: 0;}#sk-container-id-3 div.sk-toggleable {background-color: white;}#sk-container-id-3 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-3 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-3 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-3 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-3 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-3 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-3 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-3 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-3 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-3 div.sk-item {position: relative;z-index: 1;}#sk-container-id-3 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-3 div.sk-item::before, #sk-container-id-3 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-3 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-3 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-3 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-3 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-3 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-3 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-3 div.sk-label-container {text-align: center;}#sk-container-id-3 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-3 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>CountVectorizer(stop_words=&#x27;english&#x27;, token_pattern=&#x27;\\w\\w\\w+&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label sk-toggleable__label-arrow">CountVectorizer</label><div class="sk-toggleable__content"><pre>CountVectorizer(stop_words=&#x27;english&#x27;, token_pattern=&#x27;\\w\\w\\w+&#x27;)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_vect</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">inbox_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-4 {color: black;background-color: white;}#sk-container-id-4 pre{padding: 0;}#sk-container-id-4 div.sk-toggleable {background-color: white;}#sk-container-id-4 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-4 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-4 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-4 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-4 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-4 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-4 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-4 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-4 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-4 div.sk-item {position: relative;z-index: 1;}#sk-container-id-4 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-4 div.sk-item::before, #sk-container-id-4 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-4 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-4 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-4 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-4 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-4 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-4 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-4 div.sk-label-container {text-align: center;}#sk-container-id-4 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-4 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>CountVectorizer(stop_words=&#x27;english&#x27;, token_pattern=&#x27;\\w\\w\\w+&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label sk-toggleable__label-arrow">CountVectorizer</label><div class="sk-toggleable__content"><pre>CountVectorizer(stop_words=&#x27;english&#x27;, token_pattern=&#x27;\\w\\w\\w+&#x27;)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;barcelona&#39;, &#39;ghost&#39;, &#39;manchester&#39;, &#39;night&#39;, &#39;play&#39;, &#39;today&#39;,
+       &#39;tommorow&#39;, &#39;town&#39;, &#39;tuesday&#39;, &#39;tutorial&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#transform the dataset into a document term matrix</span>
+<span class="n">inbox_train_new</span> <span class="o">=</span> <span class="n">my_vect</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">inbox_train</span><span class="p">)</span>
+<span class="n">inbox_train_new</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;4x10 sparse matrix of type &#39;&lt;class &#39;numpy.int64&#39;&gt;&#39;
+	with 10 stored elements in Compressed Sparse Row format&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">inbox_train_new</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">my_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>barcelona</th>
+      <th>ghost</th>
+      <th>manchester</th>
+      <th>night</th>
+      <th>play</th>
+      <th>today</th>
+      <th>tommorow</th>
+      <th>town</th>
+      <th>tuesday</th>
+      <th>tutorial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="n-gram-model">
+<h3>N-gram model<a class="headerlink" href="#n-gram-model" title="Permalink to this heading">#</a></h3>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">N-grams</span></code> is a combination of continuous words taken together in a
+sequence.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Bi-grams</span></code> are 2 words taken together where <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">2</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tri-grams</span></code> are 3 words taken together where N = 3, and so on:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mynew_vect</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span> <span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span> <span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span> <span class="p">,</span>
+                          <span class="n">token_pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\w\w\w+&quot;</span> <span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inbox_train</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;tommorow is ghost town&#39;,
+ &#39;should we play today?&#39;,
+ &#39;TUTORIAL TUESDAY NIGHt!!&#39;,
+ &#39;Manchester VS Barcelona!!!&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mynew_vect</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">inbox_train</span><span class="p">)</span>
+<span class="n">mynew_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;barcelona&#39;, &#39;ghost&#39;, &#39;ghost town&#39;, &#39;manchester&#39;,
+       &#39;manchester barcelona&#39;, &#39;night&#39;, &#39;play&#39;, &#39;play today&#39;, &#39;today&#39;,
+       &#39;tommorow&#39;, &#39;tommorow ghost&#39;, &#39;town&#39;, &#39;tuesday&#39;, &#39;tuesday night&#39;,
+       &#39;tutorial&#39;, &#39;tutorial tuesday&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inbox_train_new</span> <span class="o">=</span> <span class="n">mynew_vect</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">inbox_train</span><span class="p">)</span>
+<span class="n">inbox_train_new</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;4x16 sparse matrix of type &#39;&lt;class &#39;numpy.int64&#39;&gt;&#39;
+	with 16 stored elements in Compressed Sparse Row format&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">inbox_train_new</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">mynew_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>barcelona</th>
+      <th>ghost</th>
+      <th>ghost town</th>
+      <th>manchester</th>
+      <th>manchester barcelona</th>
+      <th>night</th>
+      <th>play</th>
+      <th>play today</th>
+      <th>today</th>
+      <th>tommorow</th>
+      <th>tommorow ghost</th>
+      <th>town</th>
+      <th>tuesday</th>
+      <th>tuesday night</th>
+      <th>tutorial</th>
+      <th>tutorial tuesday</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Even though the bag of words captures the term frequency, there might be words that are present across all the documents that may dominate or mask the weight of other words.</p>
+</div>
+</div>
+<div class="section" id="feature-engineering-with-word-embeddings">
+<h2>Feature engineering with word embeddings<a class="headerlink" href="#feature-engineering-with-word-embeddings" title="Permalink to this heading">#</a></h2>
+<p>Here , we will look at feature engineering techniques using Word2Vec.</p>
+<p>Word2vec is a group of related models that are used to produce word embeddings.</p>
+<p>These models are shallow, two-layer neural networks that are trained to reconstruct linguistic contexts of words.</p>
+<p>Created in 2013 by Google based on a pre-defined two-layer neural network trained to generate vector representations of words through which we can extract highly-contextual and semantic similarity. It is an unsupervised method where a large text data is input from which we create a vocabulary and produce similar word embeddings for each word in the vocabulary. As discussed, each word is represented in the form of a vector when it comes to word2vec embedding. Let us now look at an example implementing <code class="docutils literal notranslate"><span class="pre">word2vec</span></code> for a sample corpus:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_colwidth</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;The maize yield has significantly increased in Kenya this year.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ghana&#39;s cocoa industry is seeing substantial growth due to new farming techniques.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Many Ugandan families depend on coffee farming as their primary source of income.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The Johannesburg Stock Exchange is one of the leading stock exchanges in Africa.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mobile banking innovations in Africa, like M-Pesa in Kenya, have revolutionized finance.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Senegal&#39;s football team has made a mark in the FIFA World Cup.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Rugby is becoming increasingly popular in countries like Namibia and Zimbabwe.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;South African wines are known globally, thanks to its fertile vineyards.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Nigeria has seen an uptick in startups focusing on financial technologies.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The Central Bank of Egypt has implemented new regulations to boost financial inclusion.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Marathon runners from Ethiopia have been dominating the long-distance sports category globally.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Morocco is keen on developing its soccer infrastructure to bid for the FIFA World Cup.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cotton farming in Mali is an essential part of its agricultural sector.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The Nile Delta in Egypt is a prime location for rice and wheat farming.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kenya and Tanzania are focusing on enhancing their horticultural exports.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Botswana&#39;s diamond trade has significantly influenced its financial growth.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Investors are eyeing African startups, especially those in fintech.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cameroon&#39;s national football team, the Indomitable Lions, have a rich history in African football.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cricket is gaining traction in Uganda and Kenya.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The cocoa bonds in Cote d&#39;Ivoire are a unique blend of finance and agriculture.&quot;</span><span class="p">]</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sports&quot;</span><span class="p">,</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span> <span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">,</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sports&quot;</span><span class="p">,</span> <span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;agriculture&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;finance&quot;</span><span class="p">,</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span><span class="s2">&quot;sports&quot;</span><span class="p">,</span><span class="s2">&quot;finance&quot;</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># labels = [&#39;weather&#39;, &#39;weather&#39;, &#39;animals&#39;, &#39;food&#39;, &#39;food&#39;,</span>
+<span class="c1"># &#39;animals&#39;, &#39;weather&#39;, &#39;animals&#39;]</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+<span class="n">corpus</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;The maize yield has significantly increased in Kenya this year.&#39;,
+       &quot;Ghana&#39;s cocoa industry is seeing substantial growth due to new farming techniques.&quot;,
+       &#39;Many Ugandan families depend on coffee farming as their primary source of income.&#39;,
+       &#39;The Johannesburg Stock Exchange is one of the leading stock exchanges in Africa.&#39;,
+       &#39;Mobile banking innovations in Africa, like M-Pesa in Kenya, have revolutionized finance.&#39;,
+       &quot;Senegal&#39;s football team has made a mark in the FIFA World Cup.&quot;,
+       &#39;Rugby is becoming increasingly popular in countries like Namibia and Zimbabwe.&#39;,
+       &#39;South African wines are known globally, thanks to its fertile vineyards.&#39;,
+       &#39;Nigeria has seen an uptick in startups focusing on financial technologies.&#39;,
+       &#39;The Central Bank of Egypt has implemented new regulations to boost financial inclusion.&#39;,
+       &#39;Marathon runners from Ethiopia have been dominating the long-distance sports category globally.&#39;,
+       &#39;Morocco is keen on developing its soccer infrastructure to bid for the FIFA World Cup.&#39;,
+       &#39;Cotton farming in Mali is an essential part of its agricultural sector.&#39;,
+       &#39;The Nile Delta in Egypt is a prime location for rice and wheat farming.&#39;,
+       &#39;Kenya and Tanzania are focusing on enhancing their horticultural exports.&#39;,
+       &quot;Botswana&#39;s diamond trade has significantly influenced its financial growth.&quot;,
+       &#39;Investors are eyeing African startups, especially those in fintech.&#39;,
+       &quot;Cameroon&#39;s national football team, the Indomitable Lions, have a rich history in African football.&quot;,
+       &#39;Cricket is gaining traction in Uganda and Kenya.&#39;,
+       &quot;The cocoa bonds in Cote d&#39;Ivoire are a unique blend of finance and agriculture.&quot;],
+      dtype=&#39;&lt;U98&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Document&#39;</span><span class="p">:</span> <span class="n">corpus</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">:</span>
+<span class="n">labels</span><span class="p">})</span>
+<span class="n">corpus_df</span> <span class="o">=</span> <span class="n">corpus_df</span><span class="p">[[</span><span class="s1">&#39;Document&#39;</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">]]</span>
+<span class="n">corpus_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Document</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The maize yield has significantly increased in Kenya this year.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Ghana's cocoa industry is seeing substantial growth due to new farming techniques.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Many Ugandan families depend on coffee farming as their primary source of income.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>The Johannesburg Stock Exchange is one of the leading stock exchanges in Africa.</td>
+      <td>finance</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Mobile banking innovations in Africa, like M-Pesa in Kenya, have revolutionized finance.</td>
+      <td>finance</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Senegal's football team has made a mark in the FIFA World Cup.</td>
+      <td>sports</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Rugby is becoming increasingly popular in countries like Namibia and Zimbabwe.</td>
+      <td>sports</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>South African wines are known globally, thanks to its fertile vineyards.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Nigeria has seen an uptick in startups focusing on financial technologies.</td>
+      <td>finance</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>The Central Bank of Egypt has implemented new regulations to boost financial inclusion.</td>
+      <td>finance</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Marathon runners from Ethiopia have been dominating the long-distance sports category globally.</td>
+      <td>sports</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Morocco is keen on developing its soccer infrastructure to bid for the FIFA World Cup.</td>
+      <td>sports</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Cotton farming in Mali is an essential part of its agricultural sector.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>The Nile Delta in Egypt is a prime location for rice and wheat farming.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Kenya and Tanzania are focusing on enhancing their horticultural exports.</td>
+      <td>agriculture</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Botswana's diamond trade has significantly influenced its financial growth.</td>
+      <td>finance</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Investors are eyeing African startups, especially those in fintech.</td>
+      <td>finance</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Cameroon's national football team, the Indomitable Lions, have a rich history in African football.</td>
+      <td>sports</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Cricket is gaining traction in Uganda and Kenya.</td>
+      <td>sports</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>The cocoa bonds in Cote d'Ivoire are a unique blend of finance and agriculture.</td>
+      <td>finance</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="pre-processings">
+<h3>Pre-processings:<a class="headerlink" href="#pre-processings" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">normalize_document</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="c1"># lower case and remove special characters\whitespaces</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^a-zA-Z\s]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="o">|</span><span class="n">re</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="c1"># tokenize document</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="c1"># filter stopwords out of document</span>
+    <span class="n">filtered_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">token</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
+    <span class="c1"># re-create document from filtered tokens</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtered_tokens</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">doc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">normalize_corpus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">normalize_document</span><span class="p">)</span>
+<span class="n">norm_corpus</span> <span class="o">=</span> <span class="n">normalize_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+<span class="n">norm_corpus</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;maize yield significantly increased kenya year&#39;,
+       &#39;ghanas cocoa industry seeing substantial growth due new farming techniques&#39;,
+       &#39;many ugandan families depend coffee farming primary source income&#39;,
+       &#39;johannesburg stock exchange one leading stock exchanges africa&#39;,
+       &#39;mobile banking innovations africa like mpesa kenya revolutionized finance&#39;,
+       &#39;senegals football team made mark fifa world cup&#39;,
+       &#39;rugby becoming increasingly popular countries like namibia zimbabwe&#39;,
+       &#39;south african wines known globally thanks fertile vineyards&#39;,
+       &#39;nigeria seen uptick startups focusing financial technologies&#39;,
+       &#39;central bank egypt implemented new regulations boost financial inclusion&#39;,
+       &#39;marathon runners ethiopia dominating longdistance sports category globally&#39;,
+       &#39;morocco keen developing soccer infrastructure bid fifa world cup&#39;,
+       &#39;cotton farming mali essential part agricultural sector&#39;,
+       &#39;nile delta egypt prime location rice wheat farming&#39;,
+       &#39;kenya tanzania focusing enhancing horticultural exports&#39;,
+       &#39;botswanas diamond trade significantly influenced financial growth&#39;,
+       &#39;investors eyeing african startups especially fintech&#39;,
+       &#39;cameroons national football team indomitable lions rich history african football&#39;,
+       &#39;cricket gaining traction uganda kenya&#39;,
+       &#39;cocoa bonds cote divoire unique blend finance agriculture&#39;],
+      dtype=&#39;&lt;U80&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="importing-the-word2vec-model-from-gensim">
+<h3>Importing the Word2Vec model from Gensim.<a class="headerlink" href="#importing-the-word2vec-model-from-gensim" title="Permalink to this heading">#</a></h3>
+<p>Gensim is an open-source library that can be used for unsupervised natural language processing. It already includes implementations of models like wor2vec, fastText, and so on. This allows us to select the parameters like
+word vector dimensionality, the window size which determines the number of words before and after that would be included as the context word for the given word, and the minimum times a word needs to be seen in the training
+data for quality results. So, let us now understand what these terms mean. Consider the following
+sentence:</p>
+<p><code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">maize</span> <span class="pre">yield</span> <span class="pre">has</span> <span class="pre">significantly</span> <span class="pre">increased</span> <span class="pre">in</span> <span class="pre">Kenya</span> <span class="pre">this</span> <span class="pre">year.</span></code></p>
+<p>Let us assume the window size here is 3, Skip-gram here is 1. Given a specific word with window 3, we will start forming words inside the window with that specific word.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">word2vec</span>
+<span class="n">tokenized_corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">norm_corpus</span><span class="p">]</span>
+<span class="c1"># Set values for various parameters</span>
+
+<span class="n">feature_size</span> <span class="o">=</span> <span class="mi">15</span> <span class="c1"># Word vector dimensionality</span>
+<span class="n">window_context</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1"># Context window size</span>
+<span class="n">min_word_count</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Minimum word count</span>
+<span class="n">sg</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># skip-gram model</span>
+
+
+<span class="n">w2v_model</span> <span class="o">=</span> <span class="n">word2vec</span><span class="o">.</span><span class="n">Word2Vec</span><span class="p">(</span><span class="n">tokenized_corpus</span><span class="p">,</span> <span class="n">vector_size</span><span class="o">=</span><span class="n">feature_size</span><span class="p">,</span> 
+                              <span class="n">window</span><span class="o">=</span><span class="n">window_context</span><span class="p">,</span> <span class="n">min_count</span> <span class="o">=</span> <span class="n">min_word_count</span><span class="p">,</span>
+                              <span class="n">sg</span><span class="o">=</span><span class="n">sg</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="s1">&#39;maize&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.45873812,  0.8737446 ,  1.3789333 ,  0.40094075, -1.3420331 ,
+       -0.8606223 ,  0.09125492,  0.7699283 , -0.38733578,  0.1362881 ,
+        2.7762766 ,  1.8425084 , -0.1110498 ,  0.20724857, -0.85556376],
+      dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The shape of the vector is 15, which we have already specified as feature_size</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="s1">&#39;significantly&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-2.2331746 , -0.25249022,  0.09747826,  0.71427405, -1.2824974 ,
+       -0.68737614, -0.02547072, -0.43150347, -0.3415621 ,  0.62626266,
+        2.5488322 ,  1.4629017 , -0.91038805, -0.2530523 , -2.1594386 ],
+      dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="t-sne">
+<h3>t-SNE<a class="headerlink" href="#t-sne" title="Permalink to this heading">#</a></h3>
+<p>t-SNE stands for t-Distributed Stochastic Neighbor Embedding. This is an unsupervised learning technique that can be used mainly for visualization of
+high-dimensional data and also for data exploration purposes. The visualization of the embeddings is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="c1"># visualize embeddings</span>
+<span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index_to_key</span>
+<span class="n">wvs</span> <span class="o">=</span> <span class="n">w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="n">words</span><span class="p">]</span>
+<span class="n">tsne</span> <span class="o">=</span> <span class="n">TSNE</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">perplexity</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">tsne</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">wvs</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">words</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/rockefeller/.local/lib/python3.9/site-packages/sklearn/manifold/_t_sne.py:800: FutureWarning: The default initialization in TSNE will change from &#39;random&#39; to &#39;pca&#39; in 1.2.
+  warnings.warn(
+/home/rockefeller/.local/lib/python3.9/site-packages/sklearn/manifold/_t_sne.py:810: FutureWarning: The default learning rate in TSNE will change from 200.0 to &#39;auto&#39; in 1.2.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">T</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;offset points&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/24994e873db7dc6eb6ea1182934c8870c8f5c1c38b78a577cadd809e5e050559.png" src="../_images/24994e873db7dc6eb6ea1182934c8870c8f5c1c38b78a577cadd809e5e050559.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vec_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">wvs</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">words</span><span class="p">)</span>
+<span class="n">vec_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>kenya</th>
+      <td>0.561231</td>
+      <td>1.639635</td>
+      <td>2.029844</td>
+      <td>1.575998</td>
+      <td>-0.976132</td>
+      <td>-0.717271</td>
+      <td>1.949077</td>
+      <td>-0.181016</td>
+      <td>0.047426</td>
+      <td>1.898577</td>
+      <td>1.467426</td>
+      <td>0.530454</td>
+      <td>-0.275948</td>
+      <td>0.544185</td>
+      <td>-0.831209</td>
+    </tr>
+    <tr>
+      <th>farming</th>
+      <td>-0.174367</td>
+      <td>0.110400</td>
+      <td>0.471425</td>
+      <td>-1.858607</td>
+      <td>-1.270719</td>
+      <td>2.000992</td>
+      <td>0.289586</td>
+      <td>0.682565</td>
+      <td>0.626566</td>
+      <td>2.692659</td>
+      <td>-0.338978</td>
+      <td>0.600450</td>
+      <td>1.280935</td>
+      <td>0.468232</td>
+      <td>-1.354149</td>
+    </tr>
+    <tr>
+      <th>financial</th>
+      <td>-1.982795</td>
+      <td>-0.696186</td>
+      <td>2.332054</td>
+      <td>0.914670</td>
+      <td>-1.665265</td>
+      <td>-0.748790</td>
+      <td>2.387444</td>
+      <td>0.510440</td>
+      <td>1.258746</td>
+      <td>0.224496</td>
+      <td>-0.373364</td>
+      <td>-0.241373</td>
+      <td>0.336640</td>
+      <td>-0.401789</td>
+      <td>-0.701419</td>
+    </tr>
+    <tr>
+      <th>football</th>
+      <td>-0.599907</td>
+      <td>-0.598198</td>
+      <td>1.828045</td>
+      <td>0.393926</td>
+      <td>0.945743</td>
+      <td>-0.836179</td>
+      <td>0.956818</td>
+      <td>0.349481</td>
+      <td>-0.644804</td>
+      <td>2.286049</td>
+      <td>0.027624</td>
+      <td>1.631302</td>
+      <td>0.462132</td>
+      <td>-0.618069</td>
+      <td>0.292970</td>
+    </tr>
+    <tr>
+      <th>african</th>
+      <td>-2.664818</td>
+      <td>0.245410</td>
+      <td>0.720836</td>
+      <td>-1.416514</td>
+      <td>0.469644</td>
+      <td>-0.722265</td>
+      <td>-0.373836</td>
+      <td>1.113331</td>
+      <td>-1.489850</td>
+      <td>-0.067820</td>
+      <td>1.593321</td>
+      <td>1.510321</td>
+      <td>0.467839</td>
+      <td>-1.448800</td>
+      <td>0.464510</td>
+    </tr>
+    <tr>
+      <th>growth</th>
+      <td>-1.455088</td>
+      <td>0.118582</td>
+      <td>1.203023</td>
+      <td>-0.681053</td>
+      <td>-1.372198</td>
+      <td>0.426928</td>
+      <td>0.499600</td>
+      <td>-0.545330</td>
+      <td>0.889958</td>
+      <td>-1.609990</td>
+      <td>1.898579</td>
+      <td>1.705582</td>
+      <td>-0.583347</td>
+      <td>-2.411299</td>
+      <td>-1.024775</td>
+    </tr>
+    <tr>
+      <th>egypt</th>
+      <td>-1.701611</td>
+      <td>0.041544</td>
+      <td>2.126919</td>
+      <td>-0.663635</td>
+      <td>-1.096295</td>
+      <td>1.510980</td>
+      <td>-0.733691</td>
+      <td>-0.869595</td>
+      <td>1.285621</td>
+      <td>0.592550</td>
+      <td>0.160046</td>
+      <td>0.978664</td>
+      <td>1.375105</td>
+      <td>0.698507</td>
+      <td>1.391626</td>
+    </tr>
+    <tr>
+      <th>cup</th>
+      <td>0.117098</td>
+      <td>-1.506914</td>
+      <td>1.273515</td>
+      <td>0.237334</td>
+      <td>1.036157</td>
+      <td>0.011876</td>
+      <td>-0.449337</td>
+      <td>-1.166061</td>
+      <td>0.264145</td>
+      <td>1.631096</td>
+      <td>2.378946</td>
+      <td>1.403784</td>
+      <td>1.043565</td>
+      <td>-1.303885</td>
+      <td>0.745391</td>
+    </tr>
+    <tr>
+      <th>world</th>
+      <td>0.139035</td>
+      <td>-0.746017</td>
+      <td>2.036175</td>
+      <td>-0.756923</td>
+      <td>1.694397</td>
+      <td>0.438469</td>
+      <td>-0.475222</td>
+      <td>-0.725418</td>
+      <td>-0.003726</td>
+      <td>2.070664</td>
+      <td>2.401485</td>
+      <td>0.325184</td>
+      <td>0.009199</td>
+      <td>-0.849018</td>
+      <td>0.538207</td>
+    </tr>
+    <tr>
+      <th>fifa</th>
+      <td>-0.147396</td>
+      <td>-0.626625</td>
+      <td>1.743245</td>
+      <td>0.055830</td>
+      <td>1.953142</td>
+      <td>0.110812</td>
+      <td>-0.760711</td>
+      <td>-0.549049</td>
+      <td>-0.131664</td>
+      <td>1.110139</td>
+      <td>2.413607</td>
+      <td>1.675161</td>
+      <td>0.723214</td>
+      <td>0.109861</td>
+      <td>0.904174</td>
+    </tr>
+    <tr>
+      <th>africa</th>
+      <td>0.015147</td>
+      <td>0.962103</td>
+      <td>1.953921</td>
+      <td>2.079165</td>
+      <td>-0.130454</td>
+      <td>-0.337574</td>
+      <td>-0.182475</td>
+      <td>0.140271</td>
+      <td>-0.717915</td>
+      <td>0.645916</td>
+      <td>0.805746</td>
+      <td>0.476833</td>
+      <td>1.916162</td>
+      <td>-2.332844</td>
+      <td>-0.462485</td>
+    </tr>
+    <tr>
+      <th>finance</th>
+      <td>0.381307</td>
+      <td>1.851419</td>
+      <td>0.770652</td>
+      <td>0.341087</td>
+      <td>1.020754</td>
+      <td>0.273479</td>
+      <td>0.791069</td>
+      <td>0.995393</td>
+      <td>-0.354039</td>
+      <td>0.613456</td>
+      <td>0.807616</td>
+      <td>1.523808</td>
+      <td>1.072136</td>
+      <td>-1.176546</td>
+      <td>-3.135080</td>
+    </tr>
+    <tr>
+      <th>new</th>
+      <td>-1.199363</td>
+      <td>0.436553</td>
+      <td>2.044400</td>
+      <td>-2.149819</td>
+      <td>-1.925895</td>
+      <td>0.624204</td>
+      <td>0.763262</td>
+      <td>-1.077171</td>
+      <td>1.847955</td>
+      <td>-0.267310</td>
+      <td>0.390057</td>
+      <td>0.647966</td>
+      <td>-0.123182</td>
+      <td>0.320186</td>
+      <td>-1.219674</td>
+    </tr>
+    <tr>
+      <th>stock</th>
+      <td>-0.638886</td>
+      <td>0.160003</td>
+      <td>0.592092</td>
+      <td>-0.162302</td>
+      <td>-0.804528</td>
+      <td>-0.709368</td>
+      <td>0.122333</td>
+      <td>0.064840</td>
+      <td>-0.422148</td>
+      <td>1.934692</td>
+      <td>1.783332</td>
+      <td>-0.156854</td>
+      <td>2.199332</td>
+      <td>-1.943675</td>
+      <td>-0.533379</td>
+    </tr>
+    <tr>
+      <th>team</th>
+      <td>-0.616710</td>
+      <td>-1.435065</td>
+      <td>2.443826</td>
+      <td>-0.292895</td>
+      <td>0.718745</td>
+      <td>-1.403654</td>
+      <td>1.174186</td>
+      <td>0.216660</td>
+      <td>-0.911088</td>
+      <td>1.266980</td>
+      <td>0.293602</td>
+      <td>1.162798</td>
+      <td>0.572534</td>
+      <td>0.016897</td>
+      <td>0.687640</td>
+    </tr>
+    <tr>
+      <th>globally</th>
+      <td>-1.892786</td>
+      <td>0.212381</td>
+      <td>1.967501</td>
+      <td>-0.111168</td>
+      <td>-0.517427</td>
+      <td>0.636939</td>
+      <td>-0.545757</td>
+      <td>-2.129190</td>
+      <td>-1.524419</td>
+      <td>-0.404751</td>
+      <td>0.008088</td>
+      <td>0.713473</td>
+      <td>2.064778</td>
+      <td>1.045552</td>
+      <td>-0.914348</td>
+    </tr>
+    <tr>
+      <th>cocoa</th>
+      <td>-0.441136</td>
+      <td>-0.889903</td>
+      <td>1.613013</td>
+      <td>0.429460</td>
+      <td>-0.218218</td>
+      <td>2.380472</td>
+      <td>0.465251</td>
+      <td>0.230195</td>
+      <td>0.196187</td>
+      <td>0.069559</td>
+      <td>-0.098212</td>
+      <td>0.754158</td>
+      <td>-0.136118</td>
+      <td>-1.337207</td>
+      <td>-2.494269</td>
+    </tr>
+    <tr>
+      <th>focusing</th>
+      <td>-2.181024</td>
+      <td>0.263437</td>
+      <td>1.218267</td>
+      <td>1.865963</td>
+      <td>-0.816072</td>
+      <td>0.967212</td>
+      <td>0.412735</td>
+      <td>1.691297</td>
+      <td>1.292062</td>
+      <td>1.126398</td>
+      <td>2.084992</td>
+      <td>-0.390683</td>
+      <td>0.557935</td>
+      <td>-0.407550</td>
+      <td>0.153855</td>
+    </tr>
+    <tr>
+      <th>startups</th>
+      <td>-2.723265</td>
+      <td>-0.146492</td>
+      <td>2.280907</td>
+      <td>-0.202294</td>
+      <td>0.886327</td>
+      <td>1.578477</td>
+      <td>0.137987</td>
+      <td>0.171010</td>
+      <td>-0.624616</td>
+      <td>0.993810</td>
+      <td>0.747750</td>
+      <td>-0.994057</td>
+      <td>-0.668463</td>
+      <td>0.327406</td>
+      <td>-0.325893</td>
+    </tr>
+    <tr>
+      <th>significantly</th>
+      <td>-2.233175</td>
+      <td>-0.252490</td>
+      <td>0.097478</td>
+      <td>0.714274</td>
+      <td>-1.282497</td>
+      <td>-0.687376</td>
+      <td>-0.025471</td>
+      <td>-0.431503</td>
+      <td>-0.341562</td>
+      <td>0.626263</td>
+      <td>2.548832</td>
+      <td>1.462902</td>
+      <td>-0.910388</td>
+      <td>-0.253052</td>
+      <td>-2.159439</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="word-similarity-dataframe">
+<h3>Word similarity dataframe<a class="headerlink" href="#word-similarity-dataframe" title="Permalink to this heading">#</a></h3>
+<p>The first step is to importing necessary packages. This is how you need to import packages -</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+
+<span class="n">similarity_matrix</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">vec_df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">similarity_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">similarity_matrix</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">words</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">words</span><span class="p">)</span>
+
+<span class="n">similarity_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>kenya</th>
+      <th>farming</th>
+      <th>financial</th>
+      <th>football</th>
+      <th>african</th>
+      <th>growth</th>
+      <th>egypt</th>
+      <th>cup</th>
+      <th>world</th>
+      <th>fifa</th>
+      <th>...</th>
+      <th>infrastructure</th>
+      <th>bid</th>
+      <th>cotton</th>
+      <th>mali</th>
+      <th>essential</th>
+      <th>part</th>
+      <th>agricultural</th>
+      <th>sector</th>
+      <th>nile</th>
+      <th>maize</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>kenya</th>
+      <td>1.000000</td>
+      <td>0.198895</td>
+      <td>0.481067</td>
+      <td>0.482151</td>
+      <td>-0.050550</td>
+      <td>0.141203</td>
+      <td>0.089833</td>
+      <td>0.217462</td>
+      <td>0.272020</td>
+      <td>0.231694</td>
+      <td>...</td>
+      <td>0.166824</td>
+      <td>0.440876</td>
+      <td>0.285629</td>
+      <td>0.194649</td>
+      <td>0.269419</td>
+      <td>0.305182</td>
+      <td>0.297984</td>
+      <td>0.371519</td>
+      <td>0.326587</td>
+      <td>0.634779</td>
+    </tr>
+    <tr>
+      <th>farming</th>
+      <td>0.198895</td>
+      <td>1.000000</td>
+      <td>0.175875</td>
+      <td>0.239357</td>
+      <td>0.028617</td>
+      <td>0.025747</td>
+      <td>0.446392</td>
+      <td>0.098351</td>
+      <td>0.199800</td>
+      <td>0.032521</td>
+      <td>...</td>
+      <td>0.180601</td>
+      <td>0.136962</td>
+      <td>0.464581</td>
+      <td>0.452790</td>
+      <td>0.466008</td>
+      <td>0.496535</td>
+      <td>0.507270</td>
+      <td>0.489204</td>
+      <td>0.525161</td>
+      <td>0.101511</td>
+    </tr>
+    <tr>
+      <th>financial</th>
+      <td>0.481067</td>
+      <td>0.175875</td>
+      <td>1.000000</td>
+      <td>0.382851</td>
+      <td>0.113599</td>
+      <td>0.388303</td>
+      <td>0.323151</td>
+      <td>0.019873</td>
+      <td>-0.042202</td>
+      <td>-0.107205</td>
+      <td>...</td>
+      <td>0.108207</td>
+      <td>0.142011</td>
+      <td>0.435638</td>
+      <td>0.214136</td>
+      <td>0.350546</td>
+      <td>0.371989</td>
+      <td>0.291625</td>
+      <td>0.357817</td>
+      <td>0.353548</td>
+      <td>0.291457</td>
+    </tr>
+    <tr>
+      <th>football</th>
+      <td>0.482151</td>
+      <td>0.239357</td>
+      <td>0.382851</td>
+      <td>1.000000</td>
+      <td>0.426743</td>
+      <td>0.044682</td>
+      <td>0.228179</td>
+      <td>0.602738</td>
+      <td>0.576725</td>
+      <td>0.596906</td>
+      <td>...</td>
+      <td>0.425634</td>
+      <td>0.400231</td>
+      <td>0.292596</td>
+      <td>0.304152</td>
+      <td>0.053826</td>
+      <td>0.160813</td>
+      <td>0.212781</td>
+      <td>0.295991</td>
+      <td>0.450576</td>
+      <td>0.320843</td>
+    </tr>
+    <tr>
+      <th>african</th>
+      <td>-0.050550</td>
+      <td>0.028617</td>
+      <td>0.113599</td>
+      <td>0.426743</td>
+      <td>1.000000</td>
+      <td>0.493359</td>
+      <td>0.231115</td>
+      <td>0.354054</td>
+      <td>0.360231</td>
+      <td>0.442981</td>
+      <td>...</td>
+      <td>0.118985</td>
+      <td>0.034619</td>
+      <td>0.039523</td>
+      <td>0.166208</td>
+      <td>0.045709</td>
+      <td>-0.016091</td>
+      <td>0.213361</td>
+      <td>0.070236</td>
+      <td>-0.010416</td>
+      <td>0.491246</td>
+    </tr>
+    <tr>
+      <th>growth</th>
+      <td>0.141203</td>
+      <td>0.025747</td>
+      <td>0.388303</td>
+      <td>0.044682</td>
+      <td>0.493359</td>
+      <td>1.000000</td>
+      <td>0.275615</td>
+      <td>0.287191</td>
+      <td>0.180493</td>
+      <td>0.158735</td>
+      <td>...</td>
+      <td>0.096170</td>
+      <td>0.179796</td>
+      <td>0.026650</td>
+      <td>-0.064340</td>
+      <td>0.111426</td>
+      <td>0.053753</td>
+      <td>0.079945</td>
+      <td>0.002787</td>
+      <td>0.225173</td>
+      <td>0.554789</td>
+    </tr>
+    <tr>
+      <th>egypt</th>
+      <td>0.089833</td>
+      <td>0.446392</td>
+      <td>0.323151</td>
+      <td>0.228179</td>
+      <td>0.231115</td>
+      <td>0.275615</td>
+      <td>1.000000</td>
+      <td>0.354687</td>
+      <td>0.320377</td>
+      <td>0.396620</td>
+      <td>...</td>
+      <td>0.278479</td>
+      <td>0.166226</td>
+      <td>0.393346</td>
+      <td>0.376108</td>
+      <td>0.357723</td>
+      <td>0.437981</td>
+      <td>0.487747</td>
+      <td>0.349134</td>
+      <td>0.638814</td>
+      <td>0.186135</td>
+    </tr>
+    <tr>
+      <th>cup</th>
+      <td>0.217462</td>
+      <td>0.098351</td>
+      <td>0.019873</td>
+      <td>0.602738</td>
+      <td>0.354054</td>
+      <td>0.287191</td>
+      <td>0.354687</td>
+      <td>1.000000</td>
+      <td>0.859346</td>
+      <td>0.872869</td>
+      <td>...</td>
+      <td>0.722120</td>
+      <td>0.738453</td>
+      <td>0.185723</td>
+      <td>0.223380</td>
+      <td>0.043679</td>
+      <td>0.235153</td>
+      <td>0.207593</td>
+      <td>0.220996</td>
+      <td>0.455695</td>
+      <td>0.334081</td>
+    </tr>
+    <tr>
+      <th>world</th>
+      <td>0.272020</td>
+      <td>0.199800</td>
+      <td>-0.042202</td>
+      <td>0.576725</td>
+      <td>0.360231</td>
+      <td>0.180493</td>
+      <td>0.320377</td>
+      <td>0.859346</td>
+      <td>1.000000</td>
+      <td>0.862752</td>
+      <td>...</td>
+      <td>0.701402</td>
+      <td>0.718895</td>
+      <td>0.192126</td>
+      <td>0.308349</td>
+      <td>0.037676</td>
+      <td>0.234917</td>
+      <td>0.233086</td>
+      <td>0.266742</td>
+      <td>0.348224</td>
+      <td>0.283277</td>
+    </tr>
+    <tr>
+      <th>fifa</th>
+      <td>0.231694</td>
+      <td>0.032521</td>
+      <td>-0.107205</td>
+      <td>0.596906</td>
+      <td>0.442981</td>
+      <td>0.158735</td>
+      <td>0.396620</td>
+      <td>0.872869</td>
+      <td>0.862752</td>
+      <td>1.000000</td>
+      <td>...</td>
+      <td>0.724468</td>
+      <td>0.729731</td>
+      <td>0.248653</td>
+      <td>0.363956</td>
+      <td>0.136658</td>
+      <td>0.262908</td>
+      <td>0.295861</td>
+      <td>0.283607</td>
+      <td>0.407225</td>
+      <td>0.419816</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 128 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="n">similarity_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">feature_names</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span> <span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kenya              [maize, increased, year]
+farming         [substantial, source, many]
+financial            [nigeria, bank, trade]
+football          [team, indomitable, rich]
+african         [known, vineyards, fertile]
+                           ...             
+part            [sector, cotton, essential]
+agricultural         [cotton, sector, part]
+sector            [cotton, part, essential]
+nile                [wheat, location, rice]
+maize              [increased, year, yield]
+Length: 128, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_Feature%20Extraction%20from%20Texts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 3: Feature Extraction from Text Data</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-numerical-representation-essential">Why is Numerical Representation Essential?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-the-challenges-of-textual-data">Navigating the Challenges of Textual Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variability">1. <strong>Variability</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume">2. <strong>Volume</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">3. <strong>Structure</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nuances">4. <strong>Nuances</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-word-representations">Basic Word Representations:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">One-hot Encoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a"><font color="#800080">Q:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#labelencoder">LabelEncoder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onehotencoder">OneHotEncoder:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words">Bag of words</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-bag-of-words-using-sklearn">Performing bag-of-words using sklearn</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighing-the-pros-and-cons">Weighing the Pros and Cons</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-9-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 9:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-model">N-gram model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engineering-with-word-embeddings">Feature engineering with word embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-processings">Pre-processings:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-the-word2vec-model-from-gensim">Importing the Word2Vec model from Gensim.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t-sne">t-SNE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#word-similarity-dataframe">Word similarity dataframe</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

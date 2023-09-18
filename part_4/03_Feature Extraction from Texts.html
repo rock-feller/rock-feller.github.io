@@ -1,0 +1,1821 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 3: Feature Extraction from Text Data &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_4/03_Feature Extraction from Texts';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 4: Word Embeddings" href="04_Word%20Embeddings.html" />
+    <link rel="prev" title="Chapter 2: Text Mining Operations" href="02_Text%20Mining%20Operations.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_4/03_Feature Extraction from Texts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_4/03_Feature Extraction from Texts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 3: Feature Extraction from Text Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-document-term-matrix-dtm">Understanding Document-Term Matrix (DTM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#countvectorizer">CountVectorizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidfvectorizer">TfidfVectorizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidftransformer">TfidfTransformer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-7-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 7:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyzing-news-articles-on-african-youth-unemployment">Analyzing News Articles on African Youth Unemployment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-8-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 8:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyzing-economic-reports-on-the-african-agricultural-export-potential">Analyzing Economic Reports on the African Agricultural Export Potential</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-3-feature-extraction-from-text-data">
+<h1>Chapter 3: Feature Extraction from Text Data<a class="headerlink" href="#chapter-3-feature-extraction-from-text-data" title="Permalink to this heading">#</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>Feature extraction is a pivotal step in the text mining process. Essentially, it translates textual data into a numerical form so that machine learning models can understand.  It is the bedrock of many natural language processing tasks. Sklearn provides a suite of tools to efficiently transform text data into a format suitable for machine learning. Through African-context examples, we’ve witnessed the versatility and applicability of these tools across various textual scenarios. As we venture into more advanced topics, mastering the basics of feature extraction remains paramount.</p>
+<p>This chapter offers an exploration into sklearn’s text feature extraction techniques.</p>
+<p><strong>Learning Objectives:</strong></p>
+<ul class="simple">
+<li><p><strong>Understand Basic Text Representation:</strong> Comprehend the necessity of converting textual data into numerical format for machine learning applications, and appreciate the significance of feature extraction in text mining.</p></li>
+<li><p><strong>Master CountVectorizer:</strong> Confidently utilize the CountVectorizer method to transform text documents into a matrix of token counts, distinguishing how individual words and tokens are represented in this format.</p></li>
+<li><p><strong>Differentiate Vectorization Techniques:</strong> Discern the differences between TfidfVectorizer and the combination of CountVectorizer with TfidfTransformer. Know when to apply each method based on the task at hand.</p></li>
+</ul>
+</div>
+<div class="section" id="understanding-document-term-matrix-dtm">
+<h2>Understanding Document-Term Matrix (DTM)<a class="headerlink" href="#understanding-document-term-matrix-dtm" title="Permalink to this heading">#</a></h2>
+<p>The Document-Term Matrix (DTM) is a matrix representation of the text dataset where each row corresponds to a document, and each column represents a term (typically a word), and each cell contains the frequency of the term in the document.</p>
+<p>Consider two sentences:</p>
+<ol class="arabic simple">
+<li><p>“I love machine learning.”</p></li>
+<li><p>“Learning machine algorithms is fun.”</p></li>
+</ol>
+<p>The DTM for these sentences would have a row for each sentence and columns for each unique word.</p>
+</div>
+<div class="section" id="countvectorizer">
+<h2>CountVectorizer<a class="headerlink" href="#countvectorizer" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> turns text documents into a matrix of token counts. Each row will represent a document, and each column will represent a token (word), with the value indicating the count of the token in the respective document.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Constructing a DTM using the above example</span>
+
+<span class="n">sample_sentences</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I love machine learning.&quot;</span><span class="p">,</span> <span class="s2">&quot;Learning machine algorithms is fun.&quot;</span><span class="p">]</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X0</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">sample_sentences</span><span class="p">)</span>
+
+<span class="c1"># Convert to a DataFrame for better visualization</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X0</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>algorithms</th>
+      <th>fun</th>
+      <th>is</th>
+      <th>learning</th>
+      <th>love</th>
+      <th>machine</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docs_1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nairobi is the capital of Kenya.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Lagos is a bustling city in Nigeria.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Cairo is the heart of Egypt.&quot;</span><span class="p">]</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">vectorizer_2</span> <span class="o">=</span>  <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+<span class="n">X1</span><span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_1</span><span class="p">)</span>
+
+<span class="c1"># Convert to a DataFrame for better visualization</span>
+<span class="n">capitals_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">capitals_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bustling</th>
+      <th>cairo</th>
+      <th>capital</th>
+      <th>city</th>
+      <th>egypt</th>
+      <th>heart</th>
+      <th>in</th>
+      <th>is</th>
+      <th>kenya</th>
+      <th>lagos</th>
+      <th>nairobi</th>
+      <th>nigeria</th>
+      <th>of</th>
+      <th>the</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer_2</span> <span class="o">=</span>  <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+<span class="n">X1</span><span class="o">=</span> <span class="n">vectorizer_2</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_1</span><span class="p">)</span>
+
+<span class="c1"># Convert to a DataFrame for better visualization</span>
+<span class="n">capitals_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer_2</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">capitals_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bustling</th>
+      <th>cairo</th>
+      <th>capital</th>
+      <th>city</th>
+      <th>egypt</th>
+      <th>heart</th>
+      <th>kenya</th>
+      <th>lagos</th>
+      <th>nairobi</th>
+      <th>nigeria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docs_2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;African proverbs are wise sayings.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Proverbs offer wisdom and life lessons.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Wisdom is wealth.&quot;</span><span class="p">]</span>
+
+<span class="n">X2</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">capitals_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X2</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">capitals_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;african&#39; &#39;and&#39; &#39;are&#39; &#39;is&#39; &#39;lessons&#39; &#39;life&#39; &#39;offer&#39; &#39;proverbs&#39; &#39;sayings&#39;
+ &#39;wealth&#39; &#39;wisdom&#39; &#39;wise&#39;]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>african</th>
+      <th>and</th>
+      <th>are</th>
+      <th>is</th>
+      <th>lessons</th>
+      <th>life</th>
+      <th>offer</th>
+      <th>proverbs</th>
+      <th>sayings</th>
+      <th>wealth</th>
+      <th>wisdom</th>
+      <th>wise</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Token Patterns (extracting only words without numbers)</span>
+
+<span class="n">vectorizer_3</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">token_pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\b\w+\b&#39;</span><span class="p">)</span>
+<span class="n">docs_3</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Africa has 54 countries.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;It is the 2nd largest continent.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Kilimanjaro is the tallest mountain in Africa.&quot;</span><span class="p">]</span>
+
+<span class="n">X3</span> <span class="o">=</span> <span class="n">vectorizer_3</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_3</span><span class="p">)</span>
+
+<span class="n">facts_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X3</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer_3</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">facts_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>2nd</th>
+      <th>54</th>
+      <th>africa</th>
+      <th>continent</th>
+      <th>countries</th>
+      <th>has</th>
+      <th>in</th>
+      <th>is</th>
+      <th>it</th>
+      <th>kilimanjaro</th>
+      <th>largest</th>
+      <th>mountain</th>
+      <th>tallest</th>
+      <th>the</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="tfidfvectorizer">
+<h2>TfidfVectorizer<a class="headerlink" href="#tfidfvectorizer" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> converts text documents into a matrix of token counts and then transforms this count matrix into a tf-idf representation. Tf-idf stands for “Term Frequency-Inverse Document Frequency”. It’s a way to score the importance of words (tokens) in the document based on how frequently they appear across multiple documents.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span> <span class="c1"># Basic Tf-idf Scores</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+
+<span class="n">docs_4</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nelson Mandela was a leader in South Africa.&quot;</span><span class="p">,</span> 
+      <span class="s2">&quot;Mandela fought for freedom and equality.&quot;</span><span class="p">,</span> 
+      <span class="s2">&quot;South Africa saw profound change under Mandela&#39;s leadership.&quot;</span><span class="p">]</span>
+
+
+<span class="n">vectorizer_4</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">()</span>
+
+<span class="n">X4</span> <span class="o">=</span> <span class="n">vectorizer_4</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_4</span><span class="p">)</span>
+
+<span class="n">sa_facts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X4</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer_4</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">sa_facts</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>africa</th>
+      <th>and</th>
+      <th>change</th>
+      <th>equality</th>
+      <th>for</th>
+      <th>fought</th>
+      <th>freedom</th>
+      <th>in</th>
+      <th>leader</th>
+      <th>leadership</th>
+      <th>mandela</th>
+      <th>nelson</th>
+      <th>profound</th>
+      <th>saw</th>
+      <th>south</th>
+      <th>under</th>
+      <th>was</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.324124</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.426184</td>
+      <td>0.426184</td>
+      <td>0.000000</td>
+      <td>0.251711</td>
+      <td>0.426184</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.324124</td>
+      <td>0.000000</td>
+      <td>0.426184</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>0.432385</td>
+      <td>0.000000</td>
+      <td>0.432385</td>
+      <td>0.432385</td>
+      <td>0.432385</td>
+      <td>0.432385</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.255374</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.298174</td>
+      <td>0.000000</td>
+      <td>0.392063</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.392063</td>
+      <td>0.231559</td>
+      <td>0.000000</td>
+      <td>0.392063</td>
+      <td>0.392063</td>
+      <td>0.298174</td>
+      <td>0.392063</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docs_5</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Lions and cheetahs are both big cats found in Africa.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Elephants in Africa are known for their large tusks.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Cheetahs are the fastest land animals.&quot;</span><span class="p">]</span>
+
+<span class="n">X5</span> <span class="o">=</span> <span class="n">vectorizer_4</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_5</span><span class="p">)</span>
+
+
+<span class="n">sa_facts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X5</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer_4</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">sa_facts</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>africa</th>
+      <th>and</th>
+      <th>animals</th>
+      <th>are</th>
+      <th>big</th>
+      <th>both</th>
+      <th>cats</th>
+      <th>cheetahs</th>
+      <th>elephants</th>
+      <th>fastest</th>
+      <th>for</th>
+      <th>found</th>
+      <th>in</th>
+      <th>known</th>
+      <th>land</th>
+      <th>large</th>
+      <th>lions</th>
+      <th>the</th>
+      <th>their</th>
+      <th>tusks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.267485</td>
+      <td>0.351711</td>
+      <td>0.000000</td>
+      <td>0.207726</td>
+      <td>0.351711</td>
+      <td>0.351711</td>
+      <td>0.351711</td>
+      <td>0.267485</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.351711</td>
+      <td>0.267485</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.351711</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.277601</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.215582</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.365011</td>
+      <td>0.000000</td>
+      <td>0.365011</td>
+      <td>0.000000</td>
+      <td>0.277601</td>
+      <td>0.365011</td>
+      <td>0.000000</td>
+      <td>0.365011</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.365011</td>
+      <td>0.365011</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.450504</td>
+      <td>0.266075</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.342620</td>
+      <td>0.000000</td>
+      <td>0.450504</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.450504</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.450504</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer_6</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">docs_6</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;The Sahara is a vast desert.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;The Nile cuts through several African countries.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;The Congo rainforest is vast and diverse.&quot;</span><span class="p">]</span>
+
+<span class="n">X6</span> <span class="o">=</span> <span class="n">vectorizer_6</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_6</span><span class="p">)</span>
+
+<span class="n">rivers_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X6</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer_6</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">rivers_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>african</th>
+      <th>african countries</th>
+      <th>and</th>
+      <th>and diverse</th>
+      <th>congo</th>
+      <th>congo rainforest</th>
+      <th>countries</th>
+      <th>cuts</th>
+      <th>cuts through</th>
+      <th>desert</th>
+      <th>...</th>
+      <th>several african</th>
+      <th>the</th>
+      <th>the congo</th>
+      <th>the nile</th>
+      <th>the sahara</th>
+      <th>through</th>
+      <th>through several</th>
+      <th>vast</th>
+      <th>vast and</th>
+      <th>vast desert</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.375716</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.221904</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.375716</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.285742</td>
+      <td>0.000000</td>
+      <td>0.375716</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.284569</td>
+      <td>0.284569</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.284569</td>
+      <td>0.284569</td>
+      <td>0.284569</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.284569</td>
+      <td>0.168071</td>
+      <td>0.000000</td>
+      <td>0.284569</td>
+      <td>0.000000</td>
+      <td>0.284569</td>
+      <td>0.284569</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.300366</td>
+      <td>0.300366</td>
+      <td>0.300366</td>
+      <td>0.300366</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.177401</td>
+      <td>0.300366</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.228436</td>
+      <td>0.300366</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 30 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="tfidftransformer">
+<h2>TfidfTransformer<a class="headerlink" href="#tfidftransformer" title="Permalink to this heading">#</a></h2>
+<p>While <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> takes in raw text and produces tf-idf scores, <code class="docutils literal notranslate"><span class="pre">TfidfTransformer</span></code> is used after <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> to convert the count matrix into a tf-idf representation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfTransformer</span>
+
+<span class="n">docs_7</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Accra is the hub of Ghana.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Ghana is known for its gold resources.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Accra hosts several historic sites.&quot;</span><span class="p">]</span>
+
+
+<span class="n">count_vect</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X7_count</span> <span class="o">=</span> <span class="n">count_vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_7</span><span class="p">)</span>
+
+<span class="n">tfidf_transformer</span> <span class="o">=</span> <span class="n">TfidfTransformer</span><span class="p">()</span>
+<span class="n">X7_tfidf</span> <span class="o">=</span> <span class="n">tfidf_transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X7_count</span><span class="p">)</span>
+
+<span class="n">rivers_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X7_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">count_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">rivers_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accra</th>
+      <th>for</th>
+      <th>ghana</th>
+      <th>gold</th>
+      <th>historic</th>
+      <th>hosts</th>
+      <th>hub</th>
+      <th>is</th>
+      <th>its</th>
+      <th>known</th>
+      <th>of</th>
+      <th>resources</th>
+      <th>several</th>
+      <th>sites</th>
+      <th>the</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.349498</td>
+      <td>0.000000</td>
+      <td>0.349498</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.459548</td>
+      <td>0.349498</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.459548</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.459548</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>0.403016</td>
+      <td>0.306504</td>
+      <td>0.403016</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.306504</td>
+      <td>0.403016</td>
+      <td>0.403016</td>
+      <td>0.000000</td>
+      <td>0.403016</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.355432</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.467351</td>
+      <td>0.467351</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.467351</td>
+      <td>0.467351</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docs_8</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Jollof rice is a popular dish in West Africa.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Ugali is a staple food in East Africa.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Biltong is a snack originating from South Africa.&quot;</span><span class="p">]</span>
+
+
+<span class="n">X8_count</span> <span class="o">=</span> <span class="n">count_vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_8</span><span class="p">)</span>
+<span class="n">X8_tfidf</span> <span class="o">=</span> <span class="n">tfidf_transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X8_count</span><span class="p">)</span>
+
+<span class="n">afrofoods_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X8_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">count_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">afrofoods_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>africa</th>
+      <th>biltong</th>
+      <th>dish</th>
+      <th>east</th>
+      <th>food</th>
+      <th>from</th>
+      <th>in</th>
+      <th>is</th>
+      <th>jollof</th>
+      <th>originating</th>
+      <th>popular</th>
+      <th>rice</th>
+      <th>snack</th>
+      <th>south</th>
+      <th>staple</th>
+      <th>ugali</th>
+      <th>west</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.235756</td>
+      <td>0.00000</td>
+      <td>0.399169</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.303578</td>
+      <td>0.235756</td>
+      <td>0.399169</td>
+      <td>0.00000</td>
+      <td>0.399169</td>
+      <td>0.399169</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.399169</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.257129</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.435357</td>
+      <td>0.435357</td>
+      <td>0.00000</td>
+      <td>0.331100</td>
+      <td>0.257129</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.435357</td>
+      <td>0.435357</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.247433</td>
+      <td>0.41894</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.41894</td>
+      <td>0.000000</td>
+      <td>0.247433</td>
+      <td>0.000000</td>
+      <td>0.41894</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.41894</td>
+      <td>0.41894</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tfidf_transformer_9</span> <span class="o">=</span> <span class="n">TfidfTransformer</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">)</span>
+<span class="n">docs_9</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;African music is diverse.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Afrobeats and Highlife are popular genres.&quot;</span><span class="p">,</span> 
+          <span class="s2">&quot;Music festivals are common across the continent.&quot;</span><span class="p">]</span>
+
+<span class="n">X9_count</span> <span class="o">=</span> <span class="n">count_vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_9</span><span class="p">)</span>
+<span class="n">X9_tfidf</span> <span class="o">=</span> <span class="n">tfidf_transformer_9</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X9_count</span><span class="p">)</span>
+
+<span class="n">afrimusic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X9_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">count_vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">afrimusic_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>across</th>
+      <th>african</th>
+      <th>afrobeats</th>
+      <th>and</th>
+      <th>are</th>
+      <th>common</th>
+      <th>continent</th>
+      <th>diverse</th>
+      <th>festivals</th>
+      <th>genres</th>
+      <th>highlife</th>
+      <th>is</th>
+      <th>music</th>
+      <th>popular</th>
+      <th>the</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00000</td>
+      <td>0.26592</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.26592</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.26592</td>
+      <td>0.202239</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.173595</td>
+      <td>0.173595</td>
+      <td>0.132024</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.173595</td>
+      <td>0.173595</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.173595</td>
+      <td>0.00000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.15335</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.116626</td>
+      <td>0.15335</td>
+      <td>0.15335</td>
+      <td>0.00000</td>
+      <td>0.15335</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.116626</td>
+      <td>0.000000</td>
+      <td>0.15335</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-7-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Task 7:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-7-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="analyzing-news-articles-on-african-youth-unemployment">
+<h2>Analyzing News Articles on African Youth Unemployment<a class="headerlink" href="#analyzing-news-articles-on-african-youth-unemployment" title="Permalink to this heading">#</a></h2>
+<p>You’re a sociologist who’s investigating the portrayal of youth unemployment in African news media. You’ve collected several news articles discussing youth unemployment in various African nations. Your aim is to identify the most discussed themes and assess the importance of different terms in the articles using feature extraction methods.</p>
+<ol class="arabic simple">
+<li><p>Load the youth employment articles using the following command <code class="docutils literal notranslate"><span class="pre">%load</span> </code>youth_emp_article.py`</p></li>
+<li><p>Tokenize the articles into individual words.</p></li>
+<li><p>Use the CountVectorizer to count word occurrences.</p></li>
+<li><p>Use the TfidfVectorizer to compute the Term Frequency-Inverse Document Frequency (TF-IDF) values for each term.</p></li>
+<li><p>Alternatively, use the TfidfTransformer to compute TF-IDF values if starting with raw count from CountVectorizer.</p></li>
+<li><p>Analyze the top terms to understand the main themes in the articles.</p></li>
+</ol>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-8-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Task 8:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-8-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="analyzing-economic-reports-on-the-african-agricultural-export-potential">
+<h2>Analyzing Economic Reports on the African Agricultural Export Potential<a class="headerlink" href="#analyzing-economic-reports-on-the-african-agricultural-export-potential" title="Permalink to this heading">#</a></h2>
+<p>You’re an economist at the African Union’s Department of Economic Affairs. With increasing talks about intra-African trade and global exports, you’ve gathered several economic reports discussing the potential of African agricultural exports and their economic impact. Your goal is to extract insights about the most emphasized agricultural commodities and understand the most significant themes across the reports using text analysis techniques.</p>
+<ol class="arabic simple">
+<li><p>Load the youth economics reports using the following command <code class="docutils literal notranslate"><span class="pre">%load</span> <span class="pre">eco_reports.py</span></code></p></li>
+<li><p>Tokenize the economic reports into individual words.</p></li>
+<li><p>Use the CountVectorizer to compute the frequency of word occurrences.</p></li>
+<li><p>Apply the TfidfVectorizer to determine the Term Frequency-Inverse Document Frequency (TF-IDF) values for each term.
+Alternatively, if starting with raw counts from CountVectorizer, use the TfidfTransformer to calculate TF-IDF values.</p></li>
+<li><p>Evaluate the top terms to decipher the primary commodities and themes in the economic reports.</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_Text%20Mining%20Operations.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 2: Text Mining Operations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_Word%20Embeddings.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 4: Word Embeddings</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-document-term-matrix-dtm">Understanding Document-Term Matrix (DTM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#countvectorizer">CountVectorizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidfvectorizer">TfidfVectorizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidftransformer">TfidfTransformer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-7-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 7:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyzing-news-articles-on-african-youth-unemployment">Analyzing News Articles on African Youth Unemployment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-8-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 8:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyzing-economic-reports-on-the-african-agricultural-export-potential">Analyzing Economic Reports on the African Agricultural Export Potential</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

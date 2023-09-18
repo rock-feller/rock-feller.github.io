@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 1: The Data Science Ecosystem &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_0/00_The hype of Data Science';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 2: Getting started with Jupyter and Colab" href="01_Getting%20Started%20with%20Jupyter%20and%20Colab.html" />
+    <link rel="prev" title="An African flavour to Data Preprocessing Recipes" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Chapter 1: The Data Science Ecosystem</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_1/01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/02_Data_Reading_Methods.html">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_1/08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_0/00_The hype of Data Science.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_0/00_The hype of Data Science.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 1: The Data Science Ecosystem</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hype-around-data-science">The hype around Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-is-africa-on-the-map-of-data-science">Where is Africa on the map of Data Science?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-science-tools">Data Science Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-world-of-open-source">The World of Open Source</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-anaconda">What is Anaconda?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-font-a-class-anchor-id-exercise-1-a"><font color="#800080">Task:</font> <a class="anchor" id="exercise-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-toolbox">The toolbox</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-vs-python">R vs Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">Python</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#r">R</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-1-the-data-science-ecosystem">
+<h1>Chapter 1: The Data Science Ecosystem<a class="headerlink" href="#chapter-1-the-data-science-ecosystem" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/network_points.jpeg&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4002c5ac0de46230df8a209917f735bd86a8458b51c93b887303a1f77e93e8ba.jpg" src="../_images/4002c5ac0de46230df8a209917f735bd86a8458b51c93b887303a1f77e93e8ba.jpg" />
+</div>
+</div>
+<div class="section" id="the-hype-around-data-science">
+<h2>The hype around Data Science<a class="headerlink" href="#the-hype-around-data-science" title="Permalink to this heading">#</a></h2>
+<p>The term Data Science has nothing fancy.  The terms that compose it has been used among folks for decades.
+<strong>Data</strong> which is a piece of information of any kind, used for a specific purpose and <strong>Science</strong>, which is the art of using reasoning and logic to achieve a designed goal.
+But what does make this term such a hype?</p>
+<p>Actually, The answer lies in the words “data” and “science” themselves.</p>
+<ol class="arabic simple">
+<li><p><strong>Data:</strong></p></li>
+</ol>
+<p>Because gone are the days where data was a scarce currency: nowadays we are flooded with billions of data of any kind and sort.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Science:</strong></p></li>
+</ol>
+<p>Because powerful and easy-to-use scientific tools has been developed to deal with those data.  Properly defined, Data science is a multidisciplinary field that combines the latest
+innovations in advanced analytics, including machine learning and artificial intelligence, with high-performance computing and visualizations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/unreadable_programs.jpg&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/08e91db2d055a85c0ac7849aa5b61ebcd254ae457bdd3d229ebc5c0cdca4ad47.jpg" src="../_images/08e91db2d055a85c0ac7849aa5b61ebcd254ae457bdd3d229ebc5c0cdca4ad47.jpg" />
+</div>
+</div>
+</div>
+<div class="section" id="where-is-africa-on-the-map-of-data-science">
+<h2>Where is Africa on the map of Data Science?<a class="headerlink" href="#where-is-africa-on-the-map-of-data-science" title="Permalink to this heading">#</a></h2>
+<p>The lack of skilled people in the data science industry and software engineering sectors is a problem worldwide but it is especially true on the African continent.</p>
+<p>With the raise of accurate tools as well as the fastest growing amount of data on the continent in sectors like <strong>Agriculture, Health, Transportation,</strong> just to name a few, this issue can be resolved if the necessary training is provided.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/africa_continent.png&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0c1f8dc88e364b4ba12b7819ca4516fbaeddd471657e264eb60848ff909efd5c.png" src="../_images/0c1f8dc88e364b4ba12b7819ca4516fbaeddd471657e264eb60848ff909efd5c.png" />
+</div>
+</div>
+</div>
+<div class="section" id="data-science-tools">
+<h2>Data Science Tools<a class="headerlink" href="#data-science-tools" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/tool_box.jpg&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>   
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e07e3c295f32be471d6244e1b6813473fd3bf09974e7d589ec2b98a3b7018a29.jpg" src="../_images/e07e3c295f32be471d6244e1b6813473fd3bf09974e7d589ec2b98a3b7018a29.jpg" />
+</div>
+</div>
+<p>Nowadays, a  large spectrum of tools is being currently used to extract insights and learn pattern from data in order to make more sensed decision.</p>
+<p>We can enumerate a few:</p>
+<ul class="simple">
+<li><p>The Microsoft Office Suite (Excel),</p></li>
+<li><p>SAS,</p></li>
+<li><p>Stata,</p></li>
+<li><p>Tableau, etc.</p></li>
+</ul>
+</div>
+<div class="section" id="the-world-of-open-source">
+<h2>The World of Open Source<a class="headerlink" href="#the-world-of-open-source" title="Permalink to this heading">#</a></h2>
+<p>But at the core of Data Science, lie <strong>open source Softwares</strong> and vibrant communities of users. The Open source arena provides rooms for the new contributors to build upon the work done by those who came before them. Those actual contributors often wear the costume of analysts, engineers, statisticians, and computer scientists.  They leverage the use of softwares/programming languages like <strong>Java, C, Python, R, Scala</strong> to tackle today’s most challenging problems. Out of this bunch, The two most popular programming tools used for data science work are <strong>Python and R.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/anaconda.png&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3d9abb743bb9c3626ca606b20592a0bb24637c41dc24eb586721ca1a462840dd.png" src="../_images/3d9abb743bb9c3626ca606b20592a0bb24637c41dc24eb586721ca1a462840dd.png" />
+</div>
+</div>
+<div class="section" id="what-is-anaconda">
+<h3>What is Anaconda?<a class="headerlink" href="#what-is-anaconda" title="Permalink to this heading">#</a></h3>
+<p>Anaconda is a complete, open source data science package with a community of over 6 million users. What positively strikes about it is its easiness to download and install, and its supported on <strong>Linux, MacOS, and Windows.</strong> Though this part of the course will be taught using Python, Anaconda provides a great support for R through diverse libraries and packages.  The Anaconda distribution comes ready with more than <strong>1,000 data science packages</strong> as well as the Conda package and virtual environment manager, which clears the pain of installing each library independently.</p>
+<p>As the Anaconda’s website says, “The Python and R conda packages in the Anaconda Repository are curated and compiled in our secure environment so you get optimized binaries that ‘just work’ on your system.” Apeasing the frustration of newbie users to get started through its desktop graphical  user interface (GUI), its homepage provide links to all the applications included with the distribution including <strong>RStudio, iPython, JupyterLab, Spyder, Glue, Orange and Jupyter Notebook</strong>. The latter will be the focus of the next section.</p>
+<div class="section" id="font-color-800080-task-font-a-class-anchor-id-exercise-1-a">
+<h4><font color=#800080>Task:</font> <a class="anchor" id="exercise-1"></a><a class="headerlink" href="#font-color-800080-task-font-a-class-anchor-id-exercise-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<ol class="arabic simple">
+<li><p>Which Operating system are you running?</p></li>
+<li><p>Try and Open <code class="docutils literal notranslate"><span class="pre">Anaconda</span></code> and make sure the <strong>dashboard</strong> is visible.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="the-toolbox">
+<h2>The toolbox<a class="headerlink" href="#the-toolbox" title="Permalink to this heading">#</a></h2>
+<p>Nowadays, a  large spectrum of tools is being currently used to extract insights and learn pattern from data in order to make more sensed decision.</p>
+<p>We can enumerate a few:</p>
+<ul class="simple">
+<li><p>The Microsoft Office Suite (Excel),</p></li>
+<li><p>SAS,</p></li>
+<li><p>Stata,</p></li>
+<li><p>Tableau, etc.</p></li>
+</ul>
+<p>But at the core of Data Science, lie <strong>open source Softwares</strong> and vibrant communities of users.</p>
+<p>The Open source arena provides rooms for the new contributors to build upon the work done by those who came before them. Those actual contributors often wear the costume of analysts, engineers, statisticians, and computer scientists.</p>
+<p>They leverage the use of softwares/programming languages like <strong>Java, C, Python, R, Scala</strong> to tackle today’s most challenging problems.</p>
+<p>Out of this bunch, The two most popular programming tools used for data science work are <strong>Python and R</strong></p>
+<div class="section" id="r-vs-python">
+<h3>R vs Python<a class="headerlink" href="#r-vs-python" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/RvsPy.jpeg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6b88e5515cfaa29249366f47cd2dfad7ad1502e0c531cf8c9870ac6b8cd486e1.jpg" src="../_images/6b88e5515cfaa29249366f47cd2dfad7ad1502e0c531cf8c9870ac6b8cd486e1.jpg" />
+</div>
+</div>
+<p>The world of data scientists has made a tremendous use of those two to the extent where it is difficult one over the other when it comes to perform analytics on your data.</p>
+<p>The richness of those two giants comes from the fact there are free and open source.</p>
+<p>Though <strong>R</strong> is widely considered as a tool for statistical analysis, <strong>Python</strong> pauses more as a general-purpose programming language.</p>
+<p>For anyone practicionner (beginner or advanced) in machine learning, working with large datasets, or creating complex data visualizations, those languages come essentially handy. Let’s walk ourselves through a brief introduction of both.</p>
+<div class="section" id="python">
+<h4>Python<a class="headerlink" href="#python" title="Permalink to this heading">#</a></h4>
+<p>Released in 1989, Python is an object-oriented programming language whose philosophy has a particular emphasis on code readability and efficiency.</p>
+<p>Simply put, Python works by grouping data and code into objects that can interact with and modify one another. Data scientists find it fairly easy deal with since it helps them execute tasks with better stability, modularity, and code readability.</p>
+<p>To see the bigger picture, the Python ecosystem is quite diverse and goes far beyond serving the Data Science community. Web Developers, Software engineers, could also find their way through it.</p>
+<p>Recently, The Python community has empowered the Machine Learning and Deep Learning ecosystem with its state-of-the-art suite of libraries including  <strong>scikit-learn, Keras, and TensorFlow,</strong> which enable data scientists to develop sophisticated Machine Learning and Deep Learning models that plug directly into a production system</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/python.jpg&#39;</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/def7394737c179663c71b112a27f299221111ab4240df342a9fe6a9d8cf9309a.jpg" src="../_images/def7394737c179663c71b112a27f299221111ab4240df342a9fe6a9d8cf9309a.jpg" />
+</div>
+</div>
+</div>
+<div class="section" id="r">
+<h4>R<a class="headerlink" href="#r" title="Permalink to this heading">#</a></h4>
+<p>Developed in 1992 with the purpose of serving Academia, it has been the bread and  butter of most data scientists/statisticians for years. Pictured as a procedural language built upon the philosophy of statistical learning, it works by breaking down a programming task into a series of steps, procedures, and subroutines. When it comes to building data models, it can be of a great advantage because it makes complex operations relatively easy to understand, though this is often at the expense of performance and code readability.</p>
+<p>The community behind it being more analysis-oriented, they have developed open-source packages for specific complex models that would spare a data scientist the pain of building those from scratch.
+Another great thing about R is it emphasis on quality reporting backed with clean visualizations and frameworks for creating interactive web applications. As stated above, it slower performance and a lack of key features like unit testing and web frameworks are the reasons that some data scientists prefer to look elsewhere.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/R.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dddefe05261fec25e219c824cb994548830d2121caa70f8091fc229291b5b24f.png" src="../_images/dddefe05261fec25e219c824cb994548830d2121caa70f8091fc229291b5b24f.png" />
+</div>
+</div>
+<p>Depending on the tasks one is presented with, the goal to achieve as well the priority, a couple of questions need
+to be answered before making a trade-off:</p>
+<ul class="simple">
+<li><p>Is the user has enough experience in programming language?</p></li>
+<li><p>Is the bottom line of the work going to serve the industry or the academia?</p></li>
+<li><p>Does visualisation play a key role in the process of the work?</p></li>
+<li><p>Does the work entail Machine Learning or Stastistical Learning?</p></li>
+<li><p>Does the work mix data analytic with any complex analysis pipelines?</p></li>
+</ul>
+<p>Though it is recommended to learn both to widen your knowledge and enrich your data science toolbox, answering those questions could be helpful to deciding which one to go for.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;img/exit.jpg&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/633dd5908f4472b251e4a09d5dfc2bbde9e13012939cc471596016d240ad4a45.jpg" src="../_images/633dd5908f4472b251e4a09d5dfc2bbde9e13012939cc471596016d240ad4a45.jpg" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_0"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">An African flavour to Data Preprocessing Recipes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01_Getting%20Started%20with%20Jupyter%20and%20Colab.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 2: Getting started with Jupyter and Colab</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hype-around-data-science">The hype around Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-is-africa-on-the-map-of-data-science">Where is Africa on the map of Data Science?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-science-tools">Data Science Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-world-of-open-source">The World of Open Source</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-anaconda">What is Anaconda?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-font-a-class-anchor-id-exercise-1-a"><font color="#800080">Task:</font> <a class="anchor" id="exercise-1"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-toolbox">The toolbox</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-vs-python">R vs Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">Python</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#r">R</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

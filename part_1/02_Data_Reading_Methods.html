@@ -1,0 +1,1352 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 2: Data Reading Methods &#8212; An African flavour to Data Preprocessing Recipes</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'part_1/02_Data_Reading_Methods';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 3: Introducing Features and Observations" href="03_Tidying_the_Data.html" />
+    <link rel="prev" title="Chapter 1: Working with Series and DataFrames" href="01_Refresher%20on%20Series%20and%20DataFrame.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ending_ia.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/ending_ia.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An African flavour to Data Preprocessing Recipes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. An overview of Data Science tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../part_0/00_The%20hype%20of%20Data%20Science.html">Chapter 1: The Data Science Ecosystem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/01_Getting%20Started%20with%20Jupyter%20and%20Colab.html">Chapter 2: Getting started with Jupyter and Colab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_0/02_Python_for_Data_Science.html">Chapter 3: Introduction to Python for Data Science</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Dealing with tabular data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Refresher%20on%20Series%20and%20DataFrame.html">Chapter 1: Working with Series and DataFrames</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 2: Data Reading Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Tidying_the_Data.html">Chapter 3: Introducing Features and Observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Handling%20Text%20Data.html">Chapter 4: Handling Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Grouping_Data.html">Chapter 5: Grouping the Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Basic%20Data%20Explorations.html">Chapter 6: Basic Data Explorations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Data%20Organization%20Methods.html">Chapter 7: Data Organization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_Customizing%20functions.html">Chapter 8: Customizing Functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Dealing with Time Series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_2/01_Working%20with%20Time%20Data.html">Chapter 1: Working with Time Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/02_Basic%20Data%20Manipulation%20%20on%20Time%20Series_OK.html">Chapter 2: Basic Data Manipulation  on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/03_%20Advanced%20Manipulation%20on%20Time%20Series_OK.html">Chapter 3: Advanced Manipulation on Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_2/04_Framing%20TimeSeries%20_OK.html">Chapter 4: Framing Time Series</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Dealing with Image data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_3/01_Introduction%20to%20Image%20Data.html">Chapter 1: Introduction to Image Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/02_Basic_Image%20Pre-processing_operations.html">Chapter 2: Basic Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/03_Advanced%20Image%20Pre-processing%20operations.html">Chapter 3: Advanced Image Pre-processing operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/04_Feature%20Extraction%20from%20Images_SVD.html">Chapter 4: Feature Extraction from Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_3/05_Preparing%20Images%20Data%20for%20Model%20Training.html">Chapter 5: Preparing Image Data for Model Training</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Dealing with Text data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../part_4/01_Strings%20as%20Text%20Data%20in%20Python.html">Chapter 1: Introduction to Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/02_Text%20Mining%20Operations.html">Chapter 2: Text Mining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/03_Feature%20Extraction%20from%20Texts.html">Chapter 3: Feature Extraction from Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../part_4/04_Word%20Embeddings.html">Chapter 4: Word Embeddings</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/rock-feller/rock-feller.github.io/issues/new?title=Issue%20on%20page%20%2Fpart_1/02_Data_Reading_Methods.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/part_1/02_Data_Reading_Methods.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 2: Data Reading Methods</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-methods">Reading Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a"><font color="#800080">Q:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-read-csv-method">The <code class="docutils literal notranslate"><span class="pre">pandas.read_csv</span></code> method</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-2-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 2:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-3-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 3:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-read-excel-method">The <code class="docutils literal notranslate"><span class="pre">pandas.read_excel</span></code> method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-read-clipboard-method">The <code class="docutils literal notranslate"><span class="pre">pandas.read_clipboard</span></code> method</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-and-datatype">Shape and datatype</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-4-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 4:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-5-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 5:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="chapter-2-data-reading-methods">
+<h1>Chapter 2: Data Reading Methods<a class="headerlink" href="#chapter-2-data-reading-methods" title="Permalink to this heading">#</a></h1>
+<p>Before diving deep into data manipulation and analysis, mastering the art of data ingestion using pandas is pivotal. This chapter will guide you through the essentials of reading data from various sources, ensuring a robust foundation for your data exploration journey.</p>
+<p><strong>Learning Objectives:</strong></p>
+<ul class="simple">
+<li><p>Introducing different files reading methods</p></li>
+<li><p>Developing the ability to query dataframes to answer practical questions</p></li>
+<li><p>Updating dataframes based on useful insights</p></li>
+</ul>
+<div class="section" id="reading-methods">
+<h2>Reading Methods<a class="headerlink" href="#reading-methods" title="Permalink to this heading">#</a></h2>
+<p>Python has become a beloved language for text and file munging due to its simple syntax for
+interacting with files, intuitive data structures, and convenient features. Pandas features a number of functions for reading tabular data as a DataFrame object. Let’s import it</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A plethore of  reading method is available in the pandas library.  You can have access to it by typing the <code class="docutils literal notranslate"><span class="pre">tab</span></code> key after typing <code class="docutils literal notranslate"><span class="pre">pd.</span></code>:</p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-q-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Q:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<ul class="simple">
+<li><p>How many of them could you see and at first glance, what could they possibly mean to you?</p></li>
+</ul>
+<p>For sake of the context , we will just focus on the 3 main reading methods</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Large pd.read\_csv\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Large pd.read\_excel\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Large pd.read\_clipboard\)</span></p></li>
+</ul>
+<div class="section" id="the-pandas-read-csv-method">
+<h3>The <code class="docutils literal notranslate"><span class="pre">pandas.read_csv</span></code> method<a class="headerlink" href="#the-pandas-read-csv-method" title="Permalink to this heading">#</a></h3>
+<p>Reading a csv file requires passing as argument the path to the actual file. For simplicity,  the file should be saved in the same folder as the notebook you are running but you could also specify the path to it. See below.</p>
+<p>Here is the pattern to follow:</p>
+<p><code class="docutils literal notranslate"><span class="pre">dataframe_name</span>&#160; <span class="pre">=</span>&#160; <span class="pre">pd.read_csv(</span> <span class="pre">&quot;path/to/the/file.csv&quot;</span> <span class="pre">)</span></code></p>
+<div class="section" id="font-color-800080-task-2-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 2:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-2-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>It was a somber afternoon, and Dr. Amara stood at the front of the conference room, a projector screen displaying the infamous date: <strong>2014</strong>. Everyone in the room knew what that year meant, especially for West Africa.</p>
+<ol class="arabic simple">
+<li><p><strong>“2014,”</strong> Dr. Amara began, <strong>“the year the Ebola crisis took a grip on some of our neighboring countries.</strong> But before we delve into the specifics, can anyone highlight the distinction between an ‘outbreak’ and a ‘pandemic’?”</p></li>
+<li><p>She paused for a moment, letting the room reflect on the question. Then, pointing to the screen which now showcased a map of Africa, she continued, <strong>“Ebola wasn’t new to science, but its rapid spread in 2014 took many by surprise.</strong>  Does anyone know its origins and why it spread with such ferocity at that particular time?”</p></li>
+<li><p>After a brief discussion, she steered the group towards the day’s task. “On your workstations, you’ll find a folder labeled <code class="docutils literal notranslate"><span class="pre">data</span></code>. Within it, there’s a file called <code class="docutils literal notranslate"><span class="pre">ebola_WA.csv</span></code>. It captures the historical trajectory of Ebola cases in <strong>Nigeria</strong>, <strong>Guinea</strong>, and <strong>Sierra Leone</strong>. Take a moment, ensure the file’s there and load it using the standard protocols we’ve practiced.”</p></li>
+<li><p>Minutes later, as rows and columns filled various screens, Dr. Amara asked, <strong>“From the data in front of you, what anomalies or patterns stand out? Let’s discuss.”</strong></p></li>
+</ol>
+<hr class="docutils" />
+<div class="section" id="font-color-800080-task-3-font-a-class-anchor-id-task-1-a">
+<h4><font color=#800080>Task 3:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-3-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h4>
+</div>
+<p>Dr. Amara took a momentary pause, then shifted her focus. “Often,” she began, with an understanding tone, “as data analysts, we aren’t always involved in the actual data collection phase. This detachment sometimes means we encounter datasets with unfamiliar structures or entries saved differently than what we’re used to.”</p>
+<ol class="arabic simple">
+<li><p>Pulling up a new slide, she continued, <strong>“I’ve been handed another set of historical data - this time from our colleagues who worked in parts of Central Africa. I’d like you all to delve into this. Access it  via</strong> <code class="docutils literal notranslate"><span class="pre">ebola_CA.csv</span></code><strong>and share your initial observations.”</strong></p></li>
+<li><p>As attendees began accessing the new set of data, she added, **”Once you’ve skimmed through, use the same method we practiced earlier to load this data into a dataframe ande tell us what you observe.”</p></li>
+</ol>
+<p>You might have guessed it. CSV stands for comma separated values. Other files similar file extensions are also used. See below:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;,&quot;</span></code> for the csv file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\t&quot;</span></code> for a tsv file</p></li>
+<li><p>or any other character that separates the different variables for an observation</p></li>
+</ul>
+<p>As example of the  <code class="docutils literal notranslate"><span class="pre">.tsv</span></code> file, see the gapminder dataset below. Let’s read this dataset where variables are separated by a tabulation key.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">world_gapminder</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/gapminder.tsv&#39;</span> <span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">world_gapminder</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country</th>
+      <th>continent</th>
+      <th>year</th>
+      <th>lifeExp</th>
+      <th>pop</th>
+      <th>gdpPercap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1952</td>
+      <td>28.801</td>
+      <td>8425333</td>
+      <td>779.445314</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1957</td>
+      <td>30.332</td>
+      <td>9240934</td>
+      <td>820.853030</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1962</td>
+      <td>31.997</td>
+      <td>10267083</td>
+      <td>853.100710</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1967</td>
+      <td>34.020</td>
+      <td>11537966</td>
+      <td>836.197138</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1972</td>
+      <td>36.088</td>
+      <td>13079460</td>
+      <td>739.981106</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="the-pandas-read-excel-method">
+<h3>The <code class="docutils literal notranslate"><span class="pre">pandas.read_excel</span></code> method<a class="headerlink" href="#the-pandas-read-excel-method" title="Permalink to this heading">#</a></h3>
+<p>Excel files are also quite common files for saving data. The XLS file extension is used for files saved as Microsoft Excel worksheets. Reading an excel file requires the same process as reading a csv file. The only difference lies in specifying the sheet you want to get access to.</p>
+<p>The dataset below comes from the mining industry. It contains mining locations in some African countries both at the region and at the district level. See here a link to an interesting website where you can download the shapefiles of such regions.  <a class="reference external" href="https://gadm.org/formats.html">https://gadm.org/formats.html</a></p>
+<p>The code below accesses an excel sheet called <code class="docutils literal notranslate"><span class="pre">Mines_Africa_Districts</span></code>and the sheet named <code class="docutils literal notranslate"><span class="pre">Africa_Districts</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mines_sites</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;data/Mines_Africa_Districts.xls&#39;</span> <span class="p">,</span> 
+                    <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Africa_Districts&#39;</span><span class="p">)</span>
+<span class="n">mines_sites</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>countrycode</th>
+      <th>countryname</th>
+      <th>ADM1</th>
+      <th>ADM2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AGO</td>
+      <td>Angola</td>
+      <td>BiÚ</td>
+      <td>Nharea</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AGO</td>
+      <td>Angola</td>
+      <td>HuÝla</td>
+      <td>Humpata</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AGO</td>
+      <td>Angola</td>
+      <td>Cuando Cubango</td>
+      <td>Cuangar</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AGO</td>
+      <td>Angola</td>
+      <td>Cabinda</td>
+      <td>Buco Zau</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AGO</td>
+      <td>Angola</td>
+      <td>Lunda Norte</td>
+      <td>Cuango</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Could you possibly guess what ADM2 might mean?</strong></p>
+<p>The code below access a sheet named <code class="docutils literal notranslate"><span class="pre">Type_of_Mines</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">types_mines</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;data/Mines_Africa_Districts.xls&#39;</span> <span class="p">,</span> 
+                    <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Type_of_Mines&#39;</span><span class="p">)</span>
+<span class="n">types_mines</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mines</th>
+      <th>aluminum_mine</th>
+      <th>asbestos_mine</th>
+      <th>bariumbarite_mine</th>
+      <th>beryllium_mine</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5829</th>
+      <td>0</td>
+      <td>3</td>
+      <td>12.0</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>5830</th>
+      <td>0</td>
+      <td>4</td>
+      <td>2.0</td>
+      <td>5</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5831</th>
+      <td>5</td>
+      <td>5</td>
+      <td>1.5</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>5832</th>
+      <td>1</td>
+      <td>6</td>
+      <td>2.0</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>5833</th>
+      <td>22</td>
+      <td>7</td>
+      <td>1.0</td>
+      <td>8</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5834</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="the-pandas-read-clipboard-method">
+<h3>The <code class="docutils literal notranslate"><span class="pre">pandas.read_clipboard</span></code> method<a class="headerlink" href="#the-pandas-read-clipboard-method" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">pandas.read_clipboard</span></code> method is a convenient tool that reads the contents of your clipboard directly into a pandas DataFrame. This method can be quite useful when you want to quickly grab tables or data that you’ve copied from websites, spreadsheets, or other sources without having to save them as files first.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lets practice some.  </span>
+<span class="c1"># Take a look at this website https://www.timeanddate.com/</span>
+
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1">#pd.read_clipboard()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are several other pandas reading methods. Depending on the files you are dealing with, you might have to choose the convenient method. Other popular methods include <code class="docutils literal notranslate"><span class="pre">pd.read_json</span></code> (for <code class="docutils literal notranslate"><span class="pre">json</span></code> files) , <code class="docutils literal notranslate"><span class="pre">pd.read_html</span></code> (for <code class="docutils literal notranslate"><span class="pre">html</span></code> files) , <code class="docutils literal notranslate"><span class="pre">pd.read_</span></code></p>
+<p>The principle stays the same, which is reading from external sources and casting it into a pandas dataframe for facilitating the analysis.</p>
+</div>
+</div>
+<div class="section" id="shape-and-datatype">
+<h2>Shape and datatype<a class="headerlink" href="#shape-and-datatype" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/ebola_WA.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get the first n rows and the last n rows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Day</th>
+      <th>Cases_Guinea</th>
+      <th>Cases_Liberia</th>
+      <th>Cases_SierraLeone</th>
+      <th>Cases_Nigeria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1/5/2015</td>
+      <td>289</td>
+      <td>2776.0</td>
+      <td>NaN</td>
+      <td>10030.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1/4/2015</td>
+      <td>288</td>
+      <td>2775.0</td>
+      <td>NaN</td>
+      <td>9780.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1/3/2015</td>
+      <td>287</td>
+      <td>2769.0</td>
+      <td>8166.0</td>
+      <td>9722.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1/2/2015</td>
+      <td>286</td>
+      <td>NaN</td>
+      <td>8157.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Day</th>
+      <th>Cases_Guinea</th>
+      <th>Cases_Liberia</th>
+      <th>Cases_SierraLeone</th>
+      <th>Cases_Nigeria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>117</th>
+      <td>3/27/2014</td>
+      <td>5</td>
+      <td>103.0</td>
+      <td>8.0</td>
+      <td>6.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>118</th>
+      <td>3/26/2014</td>
+      <td>4</td>
+      <td>86.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>3/25/2014</td>
+      <td>3</td>
+      <td>86.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>120</th>
+      <td>3/24/2014</td>
+      <td>2</td>
+      <td>86.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>121</th>
+      <td>3/22/2014</td>
+      <td>0</td>
+      <td>49.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>A random sample of 3 rows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Day</th>
+      <th>Cases_Guinea</th>
+      <th>Cases_Liberia</th>
+      <th>Cases_SierraLeone</th>
+      <th>Cases_Nigeria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>106</th>
+      <td>4/16/2014</td>
+      <td>25</td>
+      <td>197.0</td>
+      <td>27.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>12/21/2014</td>
+      <td>273</td>
+      <td>2597.0</td>
+      <td>NaN</td>
+      <td>9004.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>11/11/2014</td>
+      <td>234</td>
+      <td>1919.0</td>
+      <td>NaN</td>
+      <td>5586.0</td>
+      <td>20.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To check the shape of the dataframe (rows and columns)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(122, 6)
+</pre></div>
+</div>
+</div>
+</div>
+<p>To check the datatype of each of the columns</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 122 entries, 0 to 121
+Data columns (total 6 columns):
+ #   Column             Non-Null Count  Dtype  
+---  ------             --------------  -----  
+ 0   Date               122 non-null    object 
+ 1   Day                122 non-null    int64  
+ 2   Cases_Guinea       93 non-null     float64
+ 3   Cases_Liberia      83 non-null     float64
+ 4   Cases_SierraLeone  87 non-null     float64
+ 5   Cases_Nigeria      38 non-null     float64
+dtypes: float64(4), int64(1), object(1)
+memory usage: 5.8+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>We can notice that the dataset contains 122 entries with their index ranging from 0 to 121</p></li>
+<li><p>The columns  <strong>Cases_Guinea, Cases_Liberia, Cases_SierraLeone</strong> and <strong>Cases_Nigeria</strong> are <strong>float64</strong> type.
+Which means they contain floating points.</p></li>
+<li><p>The *<strong>Day</strong> column is of <strong>int64</strong> type</p></li>
+<li><p>Some of the columns contains missing values:
+122-93 = 29 for the Cases_Guinea
+122-83 = 39 for the Cases_Liberia
+122-87 = 35 for the Cases_SierraLeone
+122-38 = 84 for the Cases_Nigeria</p></li>
+</ul>
+<p>To check the list of columns</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebola_wa</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Date&#39;, &#39;Day&#39;, &#39;Cases_Guinea&#39;, &#39;Cases_Liberia&#39;, &#39;Cases_SierraLeone&#39;,
+       &#39;Cases_Nigeria&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s consider another dataset</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">world_gapminder</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/gapminder.tsv&#39;</span> <span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">world_gapminder</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country</th>
+      <th>continent</th>
+      <th>year</th>
+      <th>lifeExp</th>
+      <th>pop</th>
+      <th>gdpPercap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1952</td>
+      <td>28.801</td>
+      <td>8425333</td>
+      <td>779.445314</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1957</td>
+      <td>30.332</td>
+      <td>9240934</td>
+      <td>820.853030</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1962</td>
+      <td>31.997</td>
+      <td>10267083</td>
+      <td>853.100710</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1967</td>
+      <td>34.020</td>
+      <td>11537966</td>
+      <td>836.197138</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+      <td>1972</td>
+      <td>36.088</td>
+      <td>13079460</td>
+      <td>739.981106</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To check the unique values inside a column</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">world_gapminder</span><span class="p">[</span><span class="s1">&#39;continent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Asia&#39;, &#39;Europe&#39;, &#39;Africa&#39;, &#39;Americas&#39;, &#39;Oceania&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">world_gapminder</span><span class="p">[</span><span class="s1">&#39;continent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>continent
+Africa      624
+Asia        396
+Europe      360
+Americas    300
+Oceania      24
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get a subset of the data, let’s query the dataframe and get some insights</p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-4-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Task 4:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-4-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<ol class="arabic simple">
+<li><p>Sitting in a bustling cafe in Luanda, Maria, a public health student, turned to her colleague, João, and posed a question, “João, do you recall the years when Angola’s life expectancy surpassed 40? And what do you think such a figure signifies about our nation’s health and development?”</p></li>
+<li><p>Under the shade of a large acacia tree, two economics professors, Dr. Kofi and Dr. Amina, sat enjoying their afternoon tea. Dr. Kofi, with a nostalgic glint in his eyes, posed a question, <strong>“Amina, think back to the 80s. Which African nation do you reckon had the highest GDP?</strong></p>
+<ul class="simple">
+<li><p>Could you guess before computing?</p></li>
+<li><p>What could be the explanation for that?</p></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="font-color-800080-task-5-font-a-class-anchor-id-task-1-a">
+<h3><font color=#800080>Task 5:</font> <a class="anchor" id="Task-1"></a><a class="headerlink" href="#font-color-800080-task-5-font-a-class-anchor-id-task-1-a" title="Permalink to this heading">#</a></h3>
+</div>
+<p>Look at the gapminder dataset and answer the following questions:</p>
+<ol class="arabic simple">
+<li><p><strong>Southern European GDP in the 2000s:</strong></p></li>
+</ol>
+<p>At a global financial seminar in Johannesburg, attendees were embarked in discussions about economic shifts. Sofia, a delegate from Greece, turned to Kwame, a noted economic analyst from Ghana. “Kwame,” she began, <strong>“in the 2000s, do you know which Southern European countries stood out in terms of GDP? both at the top and bottom?</strong></p>
+<ol class="arabic simple" start="2">
+<li><p><strong>African Life Expectancy in the 1970s:</strong></p></li>
+</ol>
+<p>In a health and development conference in Addis Ababa, there was a buzz about historical health metrics. Fatima, a public health student from Algeria, approached Zola, an esteemed demographic analyst from Tanzania. <strong>“Zola, in the 1970s, can you pinpoint the African countries that led and trailed in life expectancy? What factors do you think contributed to such outcomes?”</strong></p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Asian vs. European GDP in the 90s:</strong></p></li>
+</ol>
+<p>During a multinational economic colloquium in Dakar, conversations were abuzz about past economic giants. Ravi, a researcher from India, curiously asked Chijioke, a skilled economic analyst from Cameroon, <strong>“Chijioke, reflecting on the 90s, how many Asian countries do you recall, exceeded the European average GDP?”</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SE_countries</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Albania&#39;</span><span class="p">,</span> <span class="s1">&#39;Andorra&#39;</span><span class="p">,</span> <span class="s1">&#39;Bosnia and Herzegovina&#39;</span><span class="p">,</span> <span class="s1">&#39;Croatia&#39;</span><span class="p">,</span> <span class="s1">&#39;Gibraltar&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;Greece&#39;</span><span class="p">,</span> <span class="s1">&#39;Italy&#39;</span><span class="p">,</span> <span class="s1">&#39;Kosovo&#39;</span><span class="p">,</span> <span class="s1">&#39;Malta&#39;</span><span class="p">,</span> <span class="s1">&#39;Montenegro&#39;</span><span class="p">,</span> <span class="s1">&#39;North Macedonia&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;Portugal&#39;</span><span class="p">,</span> <span class="s1">&#39;San Marino&#39;</span><span class="p">,</span> <span class="s1">&#39;Serbia&#39;</span><span class="p">,</span> <span class="s1">&#39;Slovenia&#39;</span><span class="p">,</span> <span class="s1">&#39;Spain&#39;</span><span class="p">,</span> <span class="s1">&#39;Vatican City&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./part_1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_Refresher%20on%20Series%20and%20DataFrame.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chapter 1: Working with Series and DataFrames</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_Tidying_the_Data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 3: Introducing Features and Observations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-methods">Reading Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-q-font-a-class-anchor-id-task-1-a"><font color="#800080">Q:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-read-csv-method">The <code class="docutils literal notranslate"><span class="pre">pandas.read_csv</span></code> method</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-2-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 2:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-3-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 3:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-read-excel-method">The <code class="docutils literal notranslate"><span class="pre">pandas.read_excel</span></code> method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-read-clipboard-method">The <code class="docutils literal notranslate"><span class="pre">pandas.read_clipboard</span></code> method</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-and-datatype">Shape and datatype</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-4-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 4:</font> <a class="anchor" id="Task-1"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#font-color-800080-task-5-font-a-class-anchor-id-task-1-a"><font color="#800080">Task 5:</font> <a class="anchor" id="Task-1"></a></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rockefeller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
